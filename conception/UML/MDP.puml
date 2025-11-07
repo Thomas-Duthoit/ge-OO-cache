@@ -1,0 +1,61 @@
+@startuml
+
+package "modele" #EEEEEE{
+
+object Utilisateur{
+  {static} id : int
+  + pseudo : String 
+  + mdp : String
+  + admin : bool
+  + reseaux : List<ReseauCache>
+}
+
+object ReseauCache{
+  {static} id : int
+  + listeCaches : List<Cache>
+  # <b>idProprietaire : int</b>
+  + nom : String
+}
+
+object Utilisateur_reseau{
+  
+}
+
+object Cache{
+  {static} numero : int
+  + descriptionTextuelle : String
+  + descriptionTechnique : String 
+  + rubriqueLibre : String
+  + type : TypeCache
+  + listLogs : List<Log>
+}
+
+object Cache_reseau{
+
+}
+
+object Log{
+  {static} id : int
+  + commentaire : String
+  + trouver : bool
+  + date : DateTime
+  + image : url /optionnel/
+}
+
+object Log_cache{
+
+}
+
+
+(Utilisateur, ReseauCache) .. Utilisateur_reseau
+(Cache, ReseauCache) .. Cache_reseau
+(Cache, Log) .. Log_cache
+
+Utilisateur::reseaux "0..*" -- "0..*" ReseauCache : accède
+
+ReseauCache::listCaches "0..*" -- "1" Cache : appartient
+
+Log "1" -- "0..*" Cache : enregister
+}
+
+@enduml
