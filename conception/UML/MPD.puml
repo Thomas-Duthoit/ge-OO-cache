@@ -1,13 +1,10 @@
 @startuml
 
-package "modele" #EEEEEE{
-
 object Utilisateur{
   {static} id : int
   + pseudo : String 
   + mdp : String
   + admin : bool
-  + reseaux : List<ReseauCache>
 }
 
 object ReseauCache{
@@ -23,6 +20,7 @@ object Utilisateur_reseau{
 
 object Cache{
   {static} numero : int
+  # <b>idReseau : int</b>
   + descriptionTextuelle : String
   + descriptionTechnique : String 
   + rubriqueLibre : String
@@ -30,32 +28,20 @@ object Cache{
   + listLogs : List<Log>
 }
 
-object Cache_reseau{
-
-}
-
 object Log{
   {static} id : int
+  # <b>idCache : int</b>
   + commentaire : String
   + trouver : bool
   + date : DateTime
   + image : url /optionnel/
 }
 
-object Log_cache{
+Utilisateur "0..*" - "0..*" ReseauCache 
+(Utilisateur, ReseauCache) . Utilisateur_reseau
 
-}
+Cache::idReseau "1" -- "0..*" ReseauCache::id 
 
-
-(Utilisateur, ReseauCache) .. Utilisateur_reseau
-(Cache, ReseauCache) .. Cache_reseau
-(Cache, Log) .. Log_cache
-
-Utilisateur::reseaux "0..*" -- "0..*" ReseauCache : accède
-
-ReseauCache::listCaches "0..*" -- "1" Cache : appartient
-
-Log "1" -- "0..*" Cache : enregister
-}
+Cache::numero "0..*" - "1" Log::idCache
 
 @enduml
