@@ -1,1 +1,39 @@
+@startuml
+class Utilisateur{
+  - id : int
+  - pseudo : String 
+  - mdp : String
+  - admin : bool
+  - reseaux : List<ReseauCache>
+}
 
+class ReseauCache{
+  - listeCaches : List<Cache>
+  - idProprietaire : int
+  - nom : String
+}
+
+class Cache{
+  - numero : int
+  - descriptionTextuelle : String
+  - descriptionTechnique : String 
+  - rubriqueLibre : String
+  - type : TypeCache
+  - listLogs : List<Log>
+}
+
+enum TypeCache{
+  - id : int 
+  - texte : String
+}
+
+class Log{
+  - id : int
+  - commentaire : String
+  - trouver : bool
+  - date : DateTime
+  - image : url /optionnel/
+}
+
+Cache --> TypeCache
+@enduml
