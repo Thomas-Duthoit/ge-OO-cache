@@ -1,4 +1,7 @@
 @startuml
+
+package "modele" #EEEEEE{
+
 class Utilisateur{
   - id : int
   - pseudo : String 
@@ -36,4 +39,7 @@ class Log{
 }
 
 Cache --> TypeCache
+
+}
+
 @enduml
