@@ -40,6 +40,12 @@ class Log{
 
 Cache --> TypeCache
 
+Utilisateur::reseaux "0..*" -- "0..*" ReseauCache : accède
+Utilisateur::id "0..*" -- "1" ReseauCache::idProprietaire : possède
+
+ReseauCache::listCaches "0..*" -- "1" Cache : appartient
+
+Log "1" -- "0..*" Cache : enregister
 }
 
 @enduml
