@@ -33,6 +33,7 @@ object Log{
   {static} id : int
   # <b>idCache : int</b>
   + commentaire : String
+  + note : int
   + trouver : bool
   + date : DateTime
   + image : url /optionnel/

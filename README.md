@@ -43,3 +43,4 @@ On regroupe les idées à ajouter à la fin du projet si le temps le rend possib
 - ajouter une fonctionnalité d'indice / des photos 
 - faire la partie utilisateur pour voir une géo-cache
 - drop down dans une barre en haut de l'appli pour la sélection de l'interface à afficher
+- système de première connexion -> changement de mdp ?

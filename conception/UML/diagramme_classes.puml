@@ -34,6 +34,7 @@ class Log{
   - id : int
   - commentaire : String
   - trouver : bool
+  - note : int
   - date : DateTime
   - image : url /optionnel/
 }
