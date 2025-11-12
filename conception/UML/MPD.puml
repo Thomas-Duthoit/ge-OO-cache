@@ -15,7 +15,8 @@ object ReseauCache{
 }
 
 object Utilisateur_reseau{
-  
+  # <b>idUtiliisateur : int</b>
+  # <b>idReseau: int</b>
 }
 
 object Cache{
@@ -43,5 +44,6 @@ Utilisateur "0..*" - "0..*" ReseauCache
 Cache::idReseau "1" -- "0..*" ReseauCache::id 
 
 Cache::numero "0..*" - "1" Log::idCache
+Utilisateur::id "0..*" - "1" ReseauCache::idProprietaire
 
 @enduml
