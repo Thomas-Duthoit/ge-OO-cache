@@ -9,7 +9,6 @@ object Utilisateur{
 
 object ReseauCache{
   {static} id : int
-  + listeCaches : List<Cache>
   # <b>idProprietaire : int</b>
   + nom : String
 }
@@ -26,7 +25,7 @@ object Cache{
   + descriptionTechnique : String 
   + rubriqueLibre : String
   + type : TypeCache
-  + listLogs : List<Log>
+  + statut : StatutCache
 }
 
 object Log{
