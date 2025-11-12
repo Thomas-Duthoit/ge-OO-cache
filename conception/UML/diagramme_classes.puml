@@ -22,6 +22,7 @@ class Cache{
   - descriptionTechnique : String 
   - rubriqueLibre : String
   - type : TypeCache
+  - statut : StatutCache
   - listLogs : List<Log>
 }
 
@@ -29,6 +30,12 @@ enum TypeCache{
   - id : int 
   - texte : String
 }
+
+enum StatutCache{
+  - id : int 
+  - texte : String
+}
+
 
 class Log{
   - id : int
@@ -40,6 +47,7 @@ class Log{
 }
 
 Cache --> TypeCache
+Cache --> StatutCache
 
 Utilisateur::reseaux "0..*" -- "0..*" ReseauCache : accède
 Utilisateur::id "0..*" -- "1" ReseauCache::idProprietaire : possède
