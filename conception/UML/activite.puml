@@ -1,0 +1,28 @@
+@startuml
+
+start
+
+:Connexion;
+
+if (connexion réussie) then (non)
+stop
+else (oui)
+
+endif
+
+:Affichage du menu;
+
+repeat 
+  :Choix de l'option;
+  :Afficahge du menu correspondant;
+  :Traitement des donées puis persistance en BDD;
+
+repeat while(fermeture de l'application ?); 
+
+
+
+ 
+
+stop
+
+@enduml
