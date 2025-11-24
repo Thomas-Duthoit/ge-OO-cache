@@ -50,11 +50,11 @@ Cache --> TypeCache
 Cache --> StatutCache
 
 Utilisateur::reseaux "0..*" -- "0..*" ReseauCache : accède
-Utilisateur::id "0..*" -- "1" ReseauCache::idProprietaire : possède
+Utilisateur::id "1" -- "0..*" ReseauCache::idProprietaire : possède
 
-ReseauCache::listCaches "0..*" -- "1" Cache : appartient
+ReseauCache::listCaches "1" -- "0..*" Cache : appartient
 
-Log "1" -- "0..*" Cache : enregister
+Log "0..*" -- "1" Cache : enregister
 }
 
 @enduml
