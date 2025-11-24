@@ -7,12 +7,9 @@ class Utilisateur{
   - pseudo : String 
   - mdp : String
   - admin : bool
-  - reseaux : List<ReseauCache>
 }
 
 class ReseauCache{
-  - listeCaches : List<Cache>
-  - idProprietaire : int
   - nom : String
 }
 
@@ -23,15 +20,14 @@ class Cache{
   - rubriqueLibre : String
   - type : TypeCache
   - statut : StatutCache
-  - listLogs : List<Log>
 }
 
-enum TypeCache{
+class TypeCache{
   - id : int 
   - texte : String
 }
 
-enum StatutCache{
+class StatutCache{
   - id : int 
   - texte : String
 }
@@ -46,11 +42,12 @@ class Log{
   - image : url /optionnel/
 }
 
-Cache --> TypeCache
-Cache --> StatutCache
+Cache::numero "0..*" -- "1" TypeCache::id : caractérisé par
+Cache::numero "0..*" -- "1" StatutCache::id : état
 
 Utilisateur::reseaux "0..*" -- "0..*" ReseauCache : accède
 Utilisateur::id "1" -- "0..*" ReseauCache::idProprietaire : possède
+Utilisateur::id "1" -- "0..*" Log::id : possède
 
 ReseauCache::listCaches "1" -- "0..*" Cache : appartient
 
