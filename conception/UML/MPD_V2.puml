@@ -36,7 +36,7 @@ object Log{
   + note : int
   + trouver : bool
   + date : DateTime
-  + image : url /optionnel/
+  + image : varchar(100) /optionnel/
 }
 
 object Statut{
