@@ -1,0 +1,64 @@
+@startuml
+
+object Utilisateur{
+  {static} id : int
+  + pseudo : varchar(20)
+  + mdp : varchar(20)
+  + admin : bool
+}
+
+object ReseauCache{
+  {static} id : int
+  # <b>idProprietaire : int</b>
+  + nom : varchar(20)
+}
+
+object Utilisateur_reseau{
+  # <b>idUtiliisateur : int</b>
+  # <b>idReseau: int</b>
+}
+
+object Cache{
+  {static} numero : int
+  # <b>idReseau : int</b>
+  + descriptionTextuelle : varchar(100)
+  + descriptionTechnique : varchar(100) 
+  + rubriqueLibre : varchar(100)
+  # <b>idType : int</b>
+  # <b>idStatut : int</b>
+}
+
+object Log{
+  {static} id : int
+  # <b>idCache : int</b>
+  # <b>idUtilisateur : int</b>
+  + commentaire : varchar(100)
+  + note : int
+  + trouver : bool
+  + date : DateTime
+  + image : url /optionnel/
+}
+
+object Statut{
+  {static} id : int 
+  statut : varchar(50)
+}
+
+object Type{
+  {static} id : int 
+  type : varchar(50) 
+}
+
+Utilisateur "0..*" -- "0..*" ReseauCache 
+(Utilisateur, ReseauCache) . Utilisateur_reseau
+
+Cache::idReseau "1" --- "0..*" ReseauCache::id 
+
+Cache::numero "0..*" --- "1" Log::idCache
+Utilisateur::id "0..*" -- "1" ReseauCache::idProprietaire
+Log::idUtilisateur "1" - "0..*" Utilisateur::id
+
+Cache::idStatut "1" -- "0..*" Statut::id
+Cache::idType "1" --- "0..*" Type::id
+
+@enduml

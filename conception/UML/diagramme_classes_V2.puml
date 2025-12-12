@@ -1,0 +1,53 @@
+@startuml
+
+package "modele" #EEEEEE{
+
+class Utilisateur{
+  - pseudo : String 
+  - mdp : String
+  - admin : bool
+}
+
+class ReseauCache{
+  - nom : String
+}
+
+class Cache{
+  - numero : int
+  - descriptionTextuelle : String
+  - descriptionTechnique : String 
+  - rubriqueLibre : String
+  - type : TypeCache
+  - statut : StatutCache
+}
+
+class TypeCache{
+  - texte : String
+}
+
+class StatutCache{ 
+  - texte : String
+}
+
+
+class Log{
+  - commentaire : String
+  - trouver : bool
+  - note : int
+  - date : DateTime
+  - image : url /optionnel/
+}
+
+Cache::numero "0..*" -- "1" TypeCache::id : caractérisé par
+Cache::numero "0..*" -- "1" StatutCache::id : état
+
+Utilisateur::reseaux "0..*" -- "0..*" ReseauCache : accède
+Utilisateur::id "1" -- "0..*" ReseauCache::idProprietaire : possède
+Utilisateur::id "1" -- "0..*" Log::id : possède
+
+ReseauCache::listCaches "1" -- "0..*" Cache : appartient
+
+Log "0..*" -- "1" Cache : enregister
+}
+
+@enduml
