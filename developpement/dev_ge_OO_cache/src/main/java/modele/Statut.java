@@ -1,3 +1,5 @@
+package modele;
+
 public class Statut {
     private int id;
 

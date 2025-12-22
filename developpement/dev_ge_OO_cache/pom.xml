@@ -15,9 +15,8 @@
     <maven.compiler.source>24</maven.compiler.source>
     <junit.version>5.13.2</junit.version>
   </properties>
-
-  <dependencies>
-<dependency>
+<dependencies>
+    <dependency>
       <groupId>org.hibernate.orm</groupId>
       <artifactId>hibernate-core</artifactId>
       <version>7.0.4.Final</version>
@@ -38,7 +37,8 @@
         <artifactId>junit-jupiter-engine</artifactId>
         <version>${junit.version}</version>
         <scope>test</scope>
-      </dependency>  </dependencies>
+      </dependency>
+    </dependencies>
 
   <build>
     <plugins>

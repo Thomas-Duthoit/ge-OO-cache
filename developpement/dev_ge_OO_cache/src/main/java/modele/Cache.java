@@ -1,3 +1,7 @@
+package modele;
+
+import jakarta.persistence.*;
+
 public class Cache {
     private int numero;
     private String descriptionTextuelle;
@@ -7,3 +11,4 @@ public class Cache {
     private Statut StatutCache;
 
 }
+

@@ -1,3 +1,5 @@
+package modele;
+
 public class Type {
     private int id;
 
