@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/developpement/dev_ge_OO_cache/dev_ge_OO_cache.iml" filepath="$PROJECT_DIR$/developpement/dev_ge_OO_cache/dev_ge_OO_cache.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/ge-OO-cache.iml" filepath="$PROJECT_DIR$/.idea/ge-OO-cache.iml" />
     </modules>
   </component>
