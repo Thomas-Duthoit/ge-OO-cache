@@ -22,15 +22,18 @@ public class ReseauCache {
 
 
     // Associations
-
-
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "UTILISATEUR_RESEAU_CACHE",
             joinColumns = @JoinColumn(name = "RESEAU_CACHE_ID"),
             inverseJoinColumns = @JoinColumn(name = "UTILISATEUR_ID")
     )
-    private List<Utilisateur> utilisateurs;
+    private List<Utilisateur> utilisateurs;  // association "accède" entre Utilisateur et ReseauCache
+
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "PROPRIETAIRE_ID")
+    private Utilisateur proprietaire;  // association "possède" entre Utilisateur et ReseauCache
 
 
 
@@ -52,6 +55,7 @@ public class ReseauCache {
         return "ReseauCache{" +
                 "id=" + id +
                 ", nom='" + nom + '\'' +
+                ", proprietaire='" + proprietaire + '\'' +
                 ", nombre d'utilisateurs : " + utilisateurs.size()  +
                 '}';
     }
@@ -63,6 +67,13 @@ public class ReseauCache {
         if (u != null) {
             this.utilisateurs.add(u);
             u.ajouterAccesReseau(this);
+        }
+    }
+
+    public void setProprietaire(Utilisateur u) {
+        if (u != null) {
+            this.proprietaire = u;
+            u.ajouterReseauPossede(this);
         }
     }
 

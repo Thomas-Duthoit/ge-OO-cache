@@ -34,15 +34,16 @@ public class Utilisateur {
     @ManyToMany(mappedBy = "utilisateurs", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<ReseauCache> accede;
 
-    public List<ReseauCache> getAccede() {
-        return accede;
-    }
+
+    @OneToMany(mappedBy = "proprietaire", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<ReseauCache> possede;
 
 
     public Utilisateur() {
         this.pseudo = "";
         this.mdp = "";
         this.accede = new ArrayList<>();
+        this.possede = new ArrayList<>();
     }
 
     public Utilisateur(String pseudo, String mdp, boolean admin) {
@@ -63,7 +64,8 @@ public class Utilisateur {
                 ", pseudo='" + pseudo + '\'' +
                 ", mdp='" + mdp + '\'' +
                 ", admin=" + admin +
-                ", réseaux accessibles : " + accede.size()  +
+                ", réseaux accessibles : " + accede.size() +
+                ", réseaux possédés : " + possede.size()  +
                 '}';
     }
 
@@ -73,6 +75,12 @@ public class Utilisateur {
     protected void ajouterAccesReseau(ReseauCache r) {
         if (r != null) {
             this.accede.add(r);
+        }
+    }
+
+    protected void ajouterReseauPossede(ReseauCache r) {
+        if (r != null) {
+            this.possede.add(r);
         }
     }
 
