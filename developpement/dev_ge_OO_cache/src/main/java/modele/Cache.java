@@ -1,50 +1,73 @@
 package modele;
 
-//import jakarta.persistence.*;
+import jakarta.persistence.*;
 
 /**
  * Classe Cache :
  * décrit la géocache ou le cache caché à trouver
  */
-//@Entity
-//@Table(name = "Cache")
+@Entity
+@Table(name = "Cache")
 public class Cache {
     /**
      *                  Variables
      */
 
-    //@Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "NUMERO")
     private int numero; //"clé primaire" avec la contrainte d'unicité pour l'entité
     //Le numéro est une caractéristique unique demandé par le sujet
 
-    //@Column(
-    //        name = "descriptionTextuelle",
-    //        length = 100
-    //)
-    //Variables permettant la description du cache
-    private String descriptionTextuelle; // Une description textuelle
-    private String descriptionTechnique; // Une description plus technique
-    private String informationsGeolocalisation; // regroupent les informations pour la localiser
-    private String rubriqueLibre; // Une rubrique libre pour détailler le contenu et la forme de la cache
-    private Type typeCache; //Type de cache unique : cache traditionnelle, cache jeu de piste (étape), ...
-    private Statut statutCache; // Etat du cache : activée, en cours, d'activation, fermée, suspendue
 
-    private static int NUMERO_CACHE = 0; //TODO : à retirer quand on passera à la persistance des données
+    //Variables permettant la description du cache
+    @Column(
+            name = "descriptionTextuelle",
+            length = 100
+    )
+    private String descriptionTextuelle; // Une description textuelle
+
+    @Column(
+            name = "descriptionTechnique",
+            length = 100
+    )
+    private String descriptionTechnique; // Une description plus technique
+
+    @Column(
+            name = "informationsGeolocalisation",
+            length = 100
+    )
+    private String informationsGeolocalisation; // regroupent les informations pour la localiser
+
+    @Column(
+            name = "rubriqueLibre",
+            length = 100
+    )
+    private String rubriqueLibre; // Une rubrique libre pour détailler le contenu et la forme de la cache
+
+    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE })
+    @JoinColumn(
+            name = "fk_Cache_Type"
+    )
+    private TypeCache typeCache; //Type de cache unique : cache traditionnelle, cache jeu de piste (étape), ...
+
+    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE })
+    @JoinColumn(
+            name = "fk_Cache_Statut"
+    )
+    private StatutCache statutCache; // Etat du cache : activée, en cours, d'activation, fermée, suspendue
+
     /**
      *               Constructeurs
      */
 
     // Constructeur par défaut : dans notre cas il ne sert qu'à prendre l'espace mémoire
     public Cache(){
-        //TODO : à retirer quand on passera à la persistance des données
-        this.numero = NUMERO_CACHE;
-        NUMERO_CACHE++;
     }
 
     // Constructeur par données par :
     //        descriptionTextuelle, descriptionTechnique, informationsGeolocalisation, rubriqueLibre, typeCache, statutCache
-    public Cache(String descriptionTextuelle, String descriptionTechnique, String informationsGeolocalisation, String rubriqueLibre, Type typeCache, Statut statutCache){
+    public Cache(String descriptionTextuelle, String descriptionTechnique, String informationsGeolocalisation, String rubriqueLibre){
         this();
         if(descriptionTextuelle != null) {
             this.descriptionTextuelle = descriptionTextuelle;
@@ -70,17 +93,8 @@ public class Cache {
             this.rubriqueLibre = "Aucune informations supplémentaires n'a été ajouté";
         }
 
-        if (this.typeCache != null){
-            this.typeCache = typeCache;
-        } else {
-            this.typeCache = null; //TODO : Mettre un typeCache de type Non détaillé
-        }
-
-        if(this.statutCache != null){
-            this.statutCache = statutCache;
-        }else {
-            this.statutCache = null; //TODO : Mettre un typeCache de type Non finalisé
-        }
+        this.statutCache = null;
+        this.typeCache = null;
     }
 
     /**
@@ -88,29 +102,63 @@ public class Cache {
      */
     @Override
     public String toString() {
-        return "Cache{" +
+        String texte = "Cache{" +
                 "numero=" + numero +
                 ", descriptionTextuelle='" + descriptionTextuelle + '\'' +
                 ", descriptionTechnique='" + descriptionTechnique + '\'' +
                 ", informationsGeolocalisation='" + informationsGeolocalisation + '\'' +
-                ", rubriqueLibre='" + rubriqueLibre + '\'' +
-                ", typeCache=" + typeCache +
-                ", statutCache=" + statutCache +
-                '}';
+                ", rubriqueLibre='" + rubriqueLibre + '\'';
+        if(this.typeCache != null)
+            texte += ", typeCache=" + typeCache.toStringCache();
+        if(this.statutCache != null)
+            texte += ", statutCache=" + statutCache.toStringCache() + '}';
+        return texte;
     }
 
     /**
-     *             Zone de tests de la classe
+     *            Méthodes de la classe Cache
      */
-    public static void main(String[] args) {
-        Type t = new Type("test de la classe Cache avec un Type");
-        System.out.println(t);
-        Statut s = new Statut("test de la classe Cache avec un Statut");
-        System.out.println(s);
-        Cache c = new Cache("test Textuelle", "test Technique", "test informations Geo", "test rubrique", t, s);
-        System.out.println(c);
-        Cache c2 = new Cache("Test", null, null, null, null, null);
-        System.out.println(c2);
+
+
+    /**
+     *  Méthode de modification du statut de cache
+     */
+    public boolean setStatutCache(StatutCache statutCache) {
+        if(statutCache != null) {
+            this.statutCache = statutCache;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     *  Méthode d'ajout de l'association StatutCache et Cache
+     */
+
+    public boolean addStatutCache(StatutCache statutCache) {
+        if(statutCache != null) {
+            if(this.statutCache != null)
+                this.statutCache.getCaches().remove(this);
+            this.statutCache = statutCache;
+            statutCache.getCaches().add(this);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     *  Méthode d'ajout de l'association StatutCache et Cache
+     */
+
+    public boolean addTypeCache(TypeCache typeCache) {
+        if(typeCache != null) {
+            if(this.typeCache != null)
+                this.typeCache.getCaches().remove(this);
+            this.typeCache = typeCache;
+            typeCache.getCaches().add(this);
+            return true;
+        }
+        return false;
     }
 }
 
