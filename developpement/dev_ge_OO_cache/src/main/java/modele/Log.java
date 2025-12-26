@@ -44,6 +44,12 @@ public class Log {
         }
     }
 
+    // Associations
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "PROPRIETAIRE_ID")
+    private Utilisateur proprietaire;  // association "possède" entre Utilisateur et Log
+
+
     @Override
     public String toString() {
         return "Log{" +
@@ -52,8 +58,22 @@ public class Log {
                 ", trouver=" + trouver +
                 ", note=" + note +
                 ", date=" + date +
+                ", proprietaire='" + proprietaire + '\'' +
                 '}';
     }
+
+
+
+    // méthodes pour les associations
+
+    public void setProprietaire(Utilisateur u) {
+        if (u != null) {
+            this.proprietaire = u;
+            u.ajouterLogPossede(this);
+        }
+    }
+
+
 
     public static void main(String[] args) {
         // TESTS DE LA CLASSE "Log"
