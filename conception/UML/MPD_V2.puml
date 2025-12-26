@@ -1,3 +1,4 @@
+
 @startuml
 
 object Utilisateur{
@@ -14,7 +15,7 @@ object ReseauCache{
 }
 
 object Utilisateur_reseau{
-  # <b>idUtiliisateur : int</b>
+  # <b>idUtilisateur : int</b>
   # <b>idReseau: int</b>
 }
 
@@ -22,6 +23,7 @@ object Cache{
   {static} numero : int
   # <b>idReseau : int</b>
   + descriptionTextuelle : varchar(100)
+  + informationsGeolocalisation : varchar(100) 
   + descriptionTechnique : varchar(100) 
   + rubriqueLibre : varchar(100)
   # <b>idType : int</b>
