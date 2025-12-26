@@ -49,6 +49,10 @@ public class Log {
     @JoinColumn(name = "PROPRIETAIRE_ID")
     private Utilisateur proprietaire;  // association "possède" entre Utilisateur et Log
 
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "fk_Cache_Id")
+    private Cache enregistrer;  // association "enregistrer" entre Cache et Log
+
 
     @Override
     public String toString() {
@@ -59,6 +63,7 @@ public class Log {
                 ", note=" + note +
                 ", date=" + date +
                 ", proprietaire='" + proprietaire + '\'' +
+                ", cache='" + enregistrer + '\'' +
                 '}';
     }
 
@@ -66,11 +71,20 @@ public class Log {
 
     // méthodes pour les associations
 
-    public void setProprietaire(Utilisateur u) {
+    public boolean setProprietaire(Utilisateur u) {
         if (u != null) {
             this.proprietaire = u;
-            u.ajouterLogPossede(this);
+            return u.ajouterLogPossede(this);
         }
+        return false;
+    }
+
+    public boolean setCache(Cache cache) {
+        if (cache != null) {
+            this.enregistrer = cache;
+            return cache.ajouterLog(this);
+        }
+        return false;
     }
 
 

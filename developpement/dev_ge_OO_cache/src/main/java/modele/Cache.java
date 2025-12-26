@@ -2,6 +2,9 @@ package modele;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Classe Cache :
  * décrit la géocache ou le cache caché à trouver
@@ -57,12 +60,20 @@ public class Cache {
     )
     private StatutCache statutCache; // Etat du cache : activée, en cours, d'activation, fermée, suspendue
 
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "fk_ReseauCache_Id")
+    private ReseauCache appartient;  // association "appartient" entre Cache et ReseauCache
+
+    @OneToMany(mappedBy = "enregistrer", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<Log> logs;  // association "enregistrer" entre Cache et Log
+
     /**
      *               Constructeurs
      */
 
     // Constructeur par défaut : dans notre cas il ne sert qu'à prendre l'espace mémoire
     public Cache(){
+        logs = new ArrayList<>();
     }
 
     // Constructeur par données par :
@@ -111,7 +122,12 @@ public class Cache {
         if(this.typeCache != null)
             texte += ", typeCache=" + typeCache.toStringCache();
         if(this.statutCache != null)
-            texte += ", statutCache=" + statutCache.toStringCache() + '}';
+            texte += ", statutCache=" + statutCache.toStringCache();
+        if(this.logs != null)
+            texte += ", logs=" + logs.size();
+
+
+        texte += '}';
         return texte;
     }
 
@@ -156,6 +172,31 @@ public class Cache {
                 this.typeCache.getCaches().remove(this);
             this.typeCache = typeCache;
             typeCache.getCaches().add(this);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     *  Méthode de selection d'un reseau propriétaire
+     */
+
+    public boolean setReseau(ReseauCache reseauCache) {
+        if(reseauCache != null) {
+            this.appartient = reseauCache;
+            reseauCache.addCache(this);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     *  Méthode d'ajout d'un log aux logs enregistrés pour la cache
+     */
+
+    protected boolean ajouterLog(Log log) {
+        if(log != null) {
+            this.logs.add(log);
             return true;
         }
         return false;

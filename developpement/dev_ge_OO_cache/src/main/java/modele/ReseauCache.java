@@ -36,11 +36,15 @@ public class ReseauCache {
     private Utilisateur proprietaire;  // association "possède" entre Utilisateur et ReseauCache
 
 
+    @OneToMany(mappedBy = "appartient", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<Cache> caches;  // association "appartient" entre Cache et ReseauCache
+
 
 
     public ReseauCache() {
         nom = "";
         utilisateurs = new ArrayList<>();
+        caches = new ArrayList<>();
     }
 
     public ReseauCache(String nom) {
@@ -56,7 +60,8 @@ public class ReseauCache {
                 "id=" + id +
                 ", nom='" + nom + '\'' +
                 ", proprietaire='" + proprietaire + '\'' +
-                ", nombre d'utilisateurs : " + utilisateurs.size()  +
+                ", nombre d'utilisateurs : " + utilisateurs.size() +
+                ", nombre de caches : " + caches.size() +
                 '}';
     }
 
@@ -74,6 +79,13 @@ public class ReseauCache {
         if (u != null) {
             this.proprietaire = u;
             u.ajouterReseauPossede(this);
+        }
+    }
+
+
+    protected void addCache(Cache cache) {
+        if (cache != null) {
+            this.caches.add(cache);
         }
     }
 
