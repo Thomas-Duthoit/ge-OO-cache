@@ -1,29 +1,40 @@
 package modele;
 
+import jakarta.persistence.*;
+
 /**
- * classe Statut
- * Permet de détailler l'état unique du cache : activée, en cours d'activation, fermée, suspendue
+ * classe Type
+ * Permet de détailler le type unique du cache : cache traditionnelle, cache jeu de piste, cache objet, ...
  */
-//@Entity
-//@Table(name = "Statut")
-public class Statut {
+
+@Entity
+@Table(name = "Type")
+public class TypeCache {
     /**
      *              Variables
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_Type")
     private int id; //"clé primaire" avec la contrainte d'unicité pour l'entité
-    private String texte; //Texte décrivant le statut
+
+    @Column(
+            name = "Texte",
+            length = 50
+    )
+    private String texte; //Texte décrivant le type
 
     /**
      *              Constructeurs
      */
 
     //Constructeurs par défaut : dans notre cas il ne sert qu'à prendre l'espace mémoire
-    public Statut(){
+    public TypeCache(){
 
     }
 
     //Constructeurs par données de texte
-    public Statut(String texte){
+    public TypeCache(String texte){
         this();
         if (texte != null){
             this.texte = texte;
@@ -37,18 +48,10 @@ public class Statut {
      */
     @Override
     public String toString() {
-        return "Statut{" +
+        return "Type{" +
                 "id=" + id +
                 ", texte='" + texte + '\'' +
                 '}';
     }
 
-    /**
-     *             Zone de tests de la classe
-     */
-
-    public static void main(String[] args) {
-        Statut s = new Statut("test de la classe Statut");
-        System.out.println(s);
-    }
 }
