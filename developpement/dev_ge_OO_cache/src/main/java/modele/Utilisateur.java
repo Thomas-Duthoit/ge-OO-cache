@@ -89,10 +89,12 @@ public class Utilisateur {
         }
     }
 
-    protected void ajouterLogPossede(Log l) {
+    protected boolean ajouterLogPossede(Log l) {
         if (l != null) {
             this.possedeLog.add(l);
+            return true;
         }
+        return false;
     }
 
 
