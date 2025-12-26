@@ -2,6 +2,9 @@ package modele;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * classe Statut
  * Permet de détailler l'état unique du cache : activée, en cours d'activation, fermée, suspendue
@@ -23,13 +26,15 @@ public class StatutCache {
     )
     private String texte; //Texte décrivant le statut
 
+    @OneToMany(mappedBy = "statutCache", cascade={CascadeType.PERSIST, CascadeType.REMOVE })
+    private List<Cache> caches;
     /**
      *              Constructeurs
      */
 
     //Constructeurs par défaut : dans notre cas il ne sert qu'à prendre l'espace mémoire
     public StatutCache(){
-
+        this.caches = new ArrayList<>();
     }
 
     //Constructeurs par données de texte
@@ -47,9 +52,24 @@ public class StatutCache {
      */
     @Override
     public String toString() {
+        return "StatutCache{" +
+                "id=" + id +
+                ", texte='" + texte + '\'' +
+                ", caches=" + caches +
+                '}';
+    }
+
+    public String toStringCache() {
         return "Statut{" +
                 "id=" + id +
                 ", texte='" + texte + '\'' +
                 '}';
+    }
+
+    /**
+     *          GET et SETTER
+     */
+    public List<Cache> getCaches() {
+        return caches;
     }
 }

@@ -17,14 +17,34 @@ public class TestUnitaireCache {
             try{
                 et.begin();
                 TypeCache t1 = new TypeCache("cache traditionnelle");
+                TypeCache t2 = new TypeCache("cache caché");
                 StatutCache s1 = new StatutCache("activée");
-                Cache c1 = new Cache("cache caché", "boite blanche", "derrière vous", "oui oui", t1, s1);
-                System.out.println(t1);
-                System.out.println(s1);
-                System.out.println(c1);
+                StatutCache s2 = new StatutCache("en cours d'activation");
+
                 em.persist(t1);
+                em.persist(t2);
                 em.persist(s1);
+                em.persist(s2);
+
+                Cache c1 = new Cache("cache caché", "boite blanche", "derrière vous", "oui oui");
+                Cache c2 = new Cache("test", "test", "test", "test");
+                Cache c3 = new Cache("essai", "essai", "essai", "essai");
+                c1.addTypeCache(t1);
+                c1.addStatutCache(s1);
+
+                c2.addTypeCache(t1);
+                c2.addStatutCache(s2);
+
+                c3.addStatutCache(s1);
+                c3.addTypeCache(t1);
+                System.out.println(c3);
+                c3.addTypeCache(t2);
+                System.out.println(c3);
+                c3.addStatutCache(s2);
+                System.out.println(c3);
                 em.persist(c1);
+                em.persist(c2);
+                em.persist(c3);
                 et.commit();
 
 

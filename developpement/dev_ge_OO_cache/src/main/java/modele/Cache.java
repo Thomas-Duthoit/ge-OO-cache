@@ -45,16 +45,16 @@ public class Cache {
     )
     private String rubriqueLibre; // Une rubrique libre pour détailler le contenu et la forme de la cache
 
-    @OneToOne(cascade={
-            CascadeType.PERSIST,
-            CascadeType.REMOVE})
-    @JoinColumn(name="ID_Type")
+    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE })
+    @JoinColumn(
+            name = "fk_Cache_Type"
+    )
     private TypeCache typeCache; //Type de cache unique : cache traditionnelle, cache jeu de piste (étape), ...
 
-    @OneToOne(cascade={
-            CascadeType.PERSIST,
-            CascadeType.REMOVE})
-    @JoinColumn(name="ID_Statut")
+    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE })
+    @JoinColumn(
+            name = "fk_Cache_Statut"
+    )
     private StatutCache statutCache; // Etat du cache : activée, en cours, d'activation, fermée, suspendue
 
     /**
@@ -67,7 +67,7 @@ public class Cache {
 
     // Constructeur par données par :
     //        descriptionTextuelle, descriptionTechnique, informationsGeolocalisation, rubriqueLibre, typeCache, statutCache
-    public Cache(String descriptionTextuelle, String descriptionTechnique, String informationsGeolocalisation, String rubriqueLibre, TypeCache typeCache, StatutCache statutCache){
+    public Cache(String descriptionTextuelle, String descriptionTechnique, String informationsGeolocalisation, String rubriqueLibre){
         this();
         if(descriptionTextuelle != null) {
             this.descriptionTextuelle = descriptionTextuelle;
@@ -93,17 +93,8 @@ public class Cache {
             this.rubriqueLibre = "Aucune informations supplémentaires n'a été ajouté";
         }
 
-        if (typeCache != null){
-            this.typeCache = typeCache;
-        } else {
-            this.typeCache = null; //TODO : Mettre un typeCache de type Non détaillé
-        }
-
-        if(statutCache != null){
-            this.statutCache = statutCache;
-        }else {
-            this.statutCache = null; //TODO : Mettre un typeCache de type Non finalisé
-        }
+        this.statutCache = null;
+        this.typeCache = null;
     }
 
     /**
@@ -111,15 +102,17 @@ public class Cache {
      */
     @Override
     public String toString() {
-        return "Cache{" +
+        String texte = "Cache{" +
                 "numero=" + numero +
                 ", descriptionTextuelle='" + descriptionTextuelle + '\'' +
                 ", descriptionTechnique='" + descriptionTechnique + '\'' +
                 ", informationsGeolocalisation='" + informationsGeolocalisation + '\'' +
-                ", rubriqueLibre='" + rubriqueLibre + '\'' +
-                ", typeCache=" + typeCache +
-                ", statutCache=" + statutCache +
-                '}';
+                ", rubriqueLibre='" + rubriqueLibre + '\'';
+        if(this.typeCache != null)
+            texte += ", typeCache=" + typeCache.toStringCache();
+        if(this.statutCache != null)
+            texte += ", statutCache=" + statutCache.toStringCache() + '}';
+        return texte;
     }
 
     /**
@@ -130,9 +123,42 @@ public class Cache {
     /**
      *  Méthode de modification du statut de cache
      */
-    public void setStatutCache(StatutCache statutCache) {
-        if(statutCache != null)
+    public boolean setStatutCache(StatutCache statutCache) {
+        if(statutCache != null) {
             this.statutCache = statutCache;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     *  Méthode d'ajout de l'association StatutCache et Cache
+     */
+
+    public boolean addStatutCache(StatutCache statutCache) {
+        if(statutCache != null) {
+            if(this.statutCache != null)
+                this.statutCache.getCaches().remove(this);
+            this.statutCache = statutCache;
+            statutCache.getCaches().add(this);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     *  Méthode d'ajout de l'association StatutCache et Cache
+     */
+
+    public boolean addTypeCache(TypeCache typeCache) {
+        if(typeCache != null) {
+            if(this.typeCache != null)
+                this.typeCache.getCaches().remove(this);
+            this.typeCache = typeCache;
+            typeCache.getCaches().add(this);
+            return true;
+        }
+        return false;
     }
 }
 
