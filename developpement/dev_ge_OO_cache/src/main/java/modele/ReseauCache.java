@@ -2,7 +2,9 @@ package modele;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity(name = "ReseauCache")
 @Table(
@@ -17,8 +19,25 @@ public class ReseauCache {
     private String nom;
 
 
+
+
+    // Associations
+
+
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "UTILISATEUR_RESEAU_CACHE",
+            joinColumns = @JoinColumn(name = "RESEAU_CACHE_ID"),
+            inverseJoinColumns = @JoinColumn(name = "UTILISATEUR_ID")
+    )
+    private List<Utilisateur> utilisateurs;
+
+
+
+
     public ReseauCache() {
         nom = "";
+        utilisateurs = new ArrayList<>();
     }
 
     public ReseauCache(String nom) {
@@ -33,8 +52,22 @@ public class ReseauCache {
         return "ReseauCache{" +
                 "id=" + id +
                 ", nom='" + nom + '\'' +
+                ", nombre d'utilisateurs : " + utilisateurs.size()  +
                 '}';
     }
+
+
+
+    // méthodes pour les associations:
+    public void ajouterAccesUtilisateur(Utilisateur u) {
+        if (u != null) {
+            this.utilisateurs.add(u);
+            u.ajouterAccesReseau(this);
+        }
+    }
+
+
+
 
     public static void main(String[] args) {
         // TESTS DE LA CLASSE "ReseauCache"

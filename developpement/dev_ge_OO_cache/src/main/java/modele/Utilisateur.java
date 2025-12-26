@@ -2,6 +2,8 @@ package modele;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 // TODO: Rajouter une longueur max pour les champs "string"
@@ -26,9 +28,21 @@ public class Utilisateur {
     private String mdp;  // mot de passe de l'utilisateur
     private boolean admin;  // utilisateur administrateur ?
 
+
+
+    // Associations:
+    @ManyToMany(mappedBy = "utilisateurs", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<ReseauCache> accede;
+
+    public List<ReseauCache> getAccede() {
+        return accede;
+    }
+
+
     public Utilisateur() {
         this.pseudo = "";
         this.mdp = "";
+        this.accede = new ArrayList<>();
     }
 
     public Utilisateur(String pseudo, String mdp, boolean admin) {
@@ -49,8 +63,20 @@ public class Utilisateur {
                 ", pseudo='" + pseudo + '\'' +
                 ", mdp='" + mdp + '\'' +
                 ", admin=" + admin +
+                ", réseaux accessibles : " + accede.size()  +
                 '}';
     }
+
+
+
+    // méthodes pour les associations:
+    protected void ajouterAccesReseau(ReseauCache r) {
+        if (r != null) {
+            this.accede.add(r);
+        }
+    }
+
+
 
     public static void main(String[] args) {
         // TESTS DE LA CLASSE "Utilisateur"
