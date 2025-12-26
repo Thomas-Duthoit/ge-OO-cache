@@ -1,4 +1,4 @@
-package tests;
+package testsUnitaire;
 
 
 import jakarta.persistence.EntityManager;
