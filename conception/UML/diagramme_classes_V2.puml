@@ -15,6 +15,7 @@ class ReseauCache{
 class Cache{
   - numero : int
   - descriptionTextuelle : String
+  - informationsGeolocalisation : String
   - descriptionTechnique : String 
   - rubriqueLibre : String
   - type : TypeCache
