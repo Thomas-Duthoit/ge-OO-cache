@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * classe Type
@@ -18,7 +19,7 @@ public class TypeCache {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_Type")
+    @Column(name = "ID_Type", unique = true, nullable = false)
     private int id; //"clé primaire" avec la contrainte d'unicité pour l'entité
 
     @Column(
@@ -47,8 +48,10 @@ public class TypeCache {
             this.texte = "Pas de précision sur le texte";
         }
     }
+
     /**
-     *              toString
+     * TOSTRING TypeCache
+     * @return la chaine de caractère représentant les informations du cache
      */
     @Override
     public String toString() {
@@ -59,7 +62,11 @@ public class TypeCache {
                 '}';
     }
 
-
+    /**
+     * TOSTRINGCACHE StatutCache
+     * @return la chaine de caractère représentant les informations du cache
+     * Utilisé dans l'appel toString de la Classe Cache pour éviter les erreurs de boucle
+     */
     public String toStringCache() {
         return "Statut{" +
                 "id=" + id +
@@ -68,9 +75,49 @@ public class TypeCache {
     }
 
     /**
-     *          GET et SETTER
+     *          GET et SETTER de TypeCache
      */
     public List<Cache> getCaches() {
         return caches;
     }
+
+    /**
+     *        EQUALS and HASHCODE de TypeCache
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        TypeCache typeCache = (TypeCache) o;
+        return id == typeCache.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+    /**
+     *          METHODES de la classe TYPECACHE
+     */
+
+    /**
+     * Méthode : addCacheToList
+     * ----------------------------
+     * Ajoute le cache dans le Type courant
+     * /!\ Comme le statut du cache n'est pas propriétaire de l'association, on doit faire la manipulation depuis l'instance du
+     *       cache et cette instance appelera cette méthode
+     * @param cache le cache à ajouter
+     * @return affectation réussie ou non (l'affectation peut ne pas réussir si le cache existe déjà dans la liste de caches)
+     */
+    public boolean addCacheToList(Cache cache){
+        if (cache != null) {
+            if (caches.contains(cache)) {
+                return false;
+            }
+            caches.add(cache);
+            return true;
+        }
+        return false;
+    }
+
+
 }

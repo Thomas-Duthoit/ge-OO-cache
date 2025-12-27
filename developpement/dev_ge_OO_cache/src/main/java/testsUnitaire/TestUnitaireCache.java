@@ -30,17 +30,17 @@ public class TestUnitaireCache {
                 Cache c2 = new Cache("test", "test", "test", "test");
                 Cache c3 = new Cache("essai", "essai", "essai", "essai");
                 c1.addTypeCache(t1);
-                c1.addStatutCache(s1);
+                c1.setStatutCache(s1);
 
                 c2.addTypeCache(t1);
-                c2.addStatutCache(s2);
+                c2.setStatutCache(s2);
 
-                c3.addStatutCache(s1);
+                c3.setStatutCache(s1);
                 c3.addTypeCache(t1);
                 System.out.println(c3);
                 c3.addTypeCache(t2);
                 System.out.println(c3);
-                c3.addStatutCache(s2);
+                c3.setStatutCache(s2);
                 System.out.println(c3);
                 em.persist(c1);
                 em.persist(c2);
