@@ -95,7 +95,7 @@ public class Utilisateur {
 
     /**
      *              METHODES ASSOCIATIONS Utilisateur
-     *
+     *.
      * (Utilisées pour gérer les associations entre plusieurs classes)
      */
 
