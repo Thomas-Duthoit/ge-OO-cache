@@ -70,8 +70,8 @@ public class ReseauCache {
     }
 
     /**
-     * TOSTRING Utilisateur
-     * @return la chaine de caractère représentant les informations de l'utilisateur
+     * TOSTRING ReseauCache
+     * @return la chaine de caractère représentant les informations du réseau
      */
     @Override
     public String toString() {
