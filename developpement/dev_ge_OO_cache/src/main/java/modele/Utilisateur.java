@@ -65,7 +65,7 @@ public class Utilisateur {
      * @param admin true=admin, false=utilisateur simple
      */
     public Utilisateur(String pseudo, String mdp, boolean admin) {
-        this();  // appel du constructeur par défaut pour l'initialisation des variables
+        this();  // appel du constructeur par défaut pour l'initialisation des variables par défaut
         if (pseudo != null) {
             this.pseudo = pseudo;
         }
