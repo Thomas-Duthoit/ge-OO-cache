@@ -23,7 +23,7 @@ public class ReseauCache {
     @Column(name = "ID_ReseauCache", unique = true)
     private int id;  // "clé primaire" avec la contrainte d'unicité pour l'entité
 
-    @Column(name = "nom", nullable = false, length = 20)  // non nulle, max 20 caractères
+    @Column(name = "nom", nullable = false, length = 100)  // non nulle, max 100 caractères
     private String nom;  // nom du réseau de cache
 
 
