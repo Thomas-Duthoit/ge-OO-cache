@@ -6,10 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-// TODO: Rajouter une longueur max pour les champs "string"
-// TODO: utiliser les noms de colonnes du MDP
-
-
 /**
  * classe Utilisateur
  * Contient toutes les informations relatives à un compte
