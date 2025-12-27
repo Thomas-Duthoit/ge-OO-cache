@@ -11,7 +11,7 @@ object Utilisateur{
 object ReseauCache{
   {static} id : int
   # <b>idProprietaire : int</b>
-  + nom : varchar(20)
+  + nom : varchar(100)
 }
 
 object Utilisateur_reseau{
@@ -22,10 +22,10 @@ object Utilisateur_reseau{
 object Cache{
   {static} numero : int
   # <b>idReseau : int</b>
-  + descriptionTextuelle : varchar(100)
+  + descriptionTextuelle : varchar(300)
   + informationsGeolocalisation : varchar(100) 
-  + descriptionTechnique : varchar(100) 
-  + rubriqueLibre : varchar(100)
+  + descriptionTechnique : varchar(300) 
+  + rubriqueLibre : varchar(300)
   # <b>idType : int</b>
   # <b>idStatut : int</b>
 }
@@ -34,7 +34,7 @@ object Log{
   {static} id : int
   # <b>idCache : int</b>
   # <b>idUtilisateur : int</b>
-  + commentaire : varchar(100)
+  + commentaire : varchar(300)
   + note : int
   + trouver : bool
   + date : DateTime
