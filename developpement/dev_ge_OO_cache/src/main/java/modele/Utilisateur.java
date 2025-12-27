@@ -6,43 +6,51 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-// TODO: Rajouter une longueur max pour les champs "string"
-// TODO: utiliser les noms de colonnes du MDP
-
-
-
+/**
+ * classe Utilisateur
+ * Contient toutes les informations relatives à un compte
+ */
 @Entity(name = "Utilisateur")
 @Table(
-        name = "UTILISATEUR"
+        name = "Utilisateur"
 )
 public class Utilisateur {
 
+    /**
+     *              ATTRIBUTS Utilisateur
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", unique = true)
+    @Column(name = "ID_Utilisateur", unique = true)
     private int id;  // "clé primaire" avec la contrainte d'unicité pour l'entité
 
-    @Column(name = "PSEUDO", nullable = false)  // non nulle
+    @Column(name = "PSEUDO", nullable = false, length = 20)  // non nulle, max 20 caractères
     private String pseudo;  // Pseudo d'un utilisateur
-    @Column(name = "MDP", nullable = false)  // non nulle
+
+    @Column(name = "MDP", nullable = false, length = 20)  // non nulle, max 20 caractères
     private String mdp;  // mot de passe de l'utilisateur
+
     private boolean admin;  // utilisateur administrateur ?
 
 
 
-    // Associations:
+    /**
+     *              ASSOCIATIONS Utilisateur
+     */
     @ManyToMany(mappedBy = "utilisateurs", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private List<ReseauCache> accede;
-
-
-    @OneToMany(mappedBy = "proprietaire", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private List<ReseauCache> possede;
+    private List<ReseauCache> accede;  // Association "accède" entre Utililsateur et ReseauCache
 
     @OneToMany(mappedBy = "proprietaire", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private List<Log> possedeLog;
+    private List<ReseauCache> possede;  // Association "possède" entre Utililsateur et ReseauCache
+
+    @OneToMany(mappedBy = "proprietaire", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<Log> possedeLog;  // Association "ppossède" entre Utililsateur et Log
 
 
-    public Utilisateur() {
+    /**
+     *              CONSTRUCTEURS Utilisateur
+     */
+    public Utilisateur() {  // Par défaut
         this.pseudo = "";
         this.mdp = "";
         this.accede = new ArrayList<>();
@@ -50,8 +58,14 @@ public class Utilisateur {
         this.possedeLog = new ArrayList<>();
     }
 
+    /**
+     * Constructeur par données pour l'Utilisateur
+     * @param pseudo pseudo de l'utilisateur
+     * @param mdp mot de passe de l'utilisateur
+     * @param admin true=admin, false=utilisateur simple
+     */
     public Utilisateur(String pseudo, String mdp, boolean admin) {
-        this();
+        this();  // appel du constructeur par défaut pour l'initialisation des variables par défaut
         if (pseudo != null) {
             this.pseudo = pseudo;
         }
@@ -61,6 +75,10 @@ public class Utilisateur {
         this.admin = admin;
     }
 
+    /**
+     * TOSTRING Utilisateur
+     * @return la chaine de caractère représentant les informations de l'utilisateur
+     */
     @Override
     public String toString() {
         return "Utilisateur{" +
@@ -75,85 +93,63 @@ public class Utilisateur {
     }
 
 
+    /**
+     *              METHODES ASSOCIATIONS Utilisateur
+     *.
+     * (Utilisées pour gérer les associations entre plusieurs classes)
+     */
 
-    // méthodes pour les associations:
-    protected void ajouterAccesReseau(ReseauCache r) {
-        if (r != null) {
-            this.accede.add(r);
-        }
-    }
-
-    protected void ajouterReseauPossede(ReseauCache r) {
-        if (r != null) {
-            this.possede.add(r);
-        }
-    }
-
-    protected boolean ajouterLogPossede(Log l) {
-        if (l != null) {
-            this.possedeLog.add(l);
+    /**
+     * méthode : ajouterAccesReseau
+     * ----------------------------
+     * Ajoute l'accès au réseau pour l'utilisateur courant
+     * /!\ Comme l'utilisateur n'est pas propriétaire de l'association, on doit faire la manipulation depuis l'instance du
+     *     reseau et cette instance appelera cette méthode
+     *
+     * @param reseauCache le réseau à accéder
+     * @return affectation réussie ou non
+     */
+    protected boolean ajouterAccesReseau(ReseauCache reseauCache) {
+        if (reseauCache != null) {
+            this.accede.add(reseauCache);
             return true;
         }
         return false;
     }
 
-
-
-    public static void main(String[] args) {
-        // TESTS DE LA CLASSE "Utilisateur"
-
-        // Tests avec contexte de persistance
-        try {
-
-            Utilisateur u1 = null, u2 = null;
-
-
-            System.out.println("-> Création du EMF");
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("ge_OO_cache_PU");
-            System.out.println("-> EMF Créé !");
-
-            System.out.println("-> Création du EM");
-            EntityManager em = emf.createEntityManager();
-            System.out.println("-> EM Créé !");
-
-            final EntityTransaction et = em.getTransaction();
-            try{
-                et.begin();
-
-                System.out.println("-> Persistace des Utilisateurs");
-                // Création d'utilisateurs
-                u1 = new Utilisateur("Alice", "1234", true);
-                em.persist(u1);
-
-                u2 = new Utilisateur("Bob", "5678", false);
-                em.persist(u2);
-
-                et.commit();
-
-                System.out.println("-> Persistace des Utilisateurs OK !");
-
-            } catch (Exception ex) {
-                System.out.println("exception: " + ex);
-                System.out.println("rollback");
-                et.rollback();
-            }
-
-
-            System.out.println(u1);
-            System.out.println(u2);
-
-            System.out.println("-> Recherche d'un utilisateur avec l'ID 1 : ");
-
-            System.out.println(em.find(Utilisateur.class, 1));
-
-            System.out.println("-> Suppression puis recherche de l'utilisateur avec l'ID 1 : ");
-
-            em.remove(em.find(Utilisateur.class, 1));
-            System.out.println("-> ... supprimé !");
-            System.out.println(em.find(Utilisateur.class, 1));
-
-        } catch (Exception e) {
-            System.out.println("Erreur : " + e);
+    /**
+     * méthode : ajouterReseauPossede
+     * ------------------------------
+     * Définit le réseau comme appartenant à l'utilisateur courant
+     * /!\ Comme l'utilisateur n'est pas propriétaire de l'association, on doit faire la manipulation depuis l'instance du
+     *     reseau et cette instance appelera cette méthode
+     *
+     * @param reseauCache le réseau qui nous appartient
+     * @return affectation réussie ou non
+     */
+    protected boolean ajouterReseauPossede(ReseauCache reseauCache) {
+        if (reseauCache != null) {
+            this.possede.add(reseauCache);
+            return true;
         }
+        return false;
+    }
+
+    /**
+     * méthode : ajouterLogPossede
+     * ---------------------------
+     * Définit le log comme appartenant à l'utilisateur courant
+     * /!\ Comme l'utilisateur n'est pas propriétaire de l'association, on doit faire la manipulation depuis l'instance du
+     *     log et cette instance appelera cette méthode
+     *
+     * @param log le réseau qui nous appartient
+     * @return affectation réussie ou non
+     */
+    protected boolean ajouterLogPossede(Log log) {
+        if (log != null) {
+            this.possedeLog.add(log);
+            return true;
+        }
+        return false;
     }
 }
