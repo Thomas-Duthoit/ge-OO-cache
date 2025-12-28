@@ -141,4 +141,14 @@ public class ReseauCache {
         }
         return false;
     }
+
+
+    /**
+     *              METHODES GETTERS/SETTERS ReseauCache
+     */
+
+
+    public int getId() {
+        return id;
+    }
 }
