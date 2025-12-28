@@ -2,6 +2,7 @@ package requete;
 
 import jakarta.persistence.*;
 import modele.*;
+import modele.Cache;
 
 import java.util.List;
 
@@ -250,6 +251,45 @@ public class RequeteGeOOCache {
      *              (Pour la classe Log)
      */
 
+    /**
+     * méthode: getLogs
+     * ----------------
+     * Récupère la liste des logs dont la cache concernée appartient à l'utilisateur propCache
+     *
+     * @param propCache propriétaire des caches concernées par les logs
+     * @param filtreReseau (possiblement null) filtre de réseau de cache pour les logs
+     * @param filtreCache (possiblement null) filtre de cache pour les logs
+     * @return la liste des logs dont la cache appartient à l'utilisateur, et qui correspondent au filtre
+     */
+    public List<Log> getLogs(Utilisateur propCache, ReseauCache filtreReseau, Cache filtreCache) {
+        EntityManager em = emFactory.createEntityManager();
+
+        propCache = em.merge(propCache);
+        filtreReseau = em.merge(filtreReseau);
+        filtreCache = em.merge(filtreCache);
+
+        String strQuery;
+        Query query;
+
+        if (filtreCache != null) {
+            strQuery = "SELECT l FROM Log l JOIN l.enregistrer c WHERE c = :filtreCache";
+            query = em.createQuery(strQuery);
+            query.setParameter("filtreCache", filtreCache);
+
+        } else if (filtreReseau != null) {
+            strQuery = "SELECT l FROM Log l JOIN l.enregistrer c JOIN c.appartient r WHERE r = :filtreReseau";
+            query = em.createQuery(strQuery);
+            query.setParameter("filtreReseau", filtreReseau);
+        } else {
+            strQuery = "SELECT l FROM Log l JOIN l.enregistrer c JOIN c.appartient u WHERE u = :propCache";
+            query = em.createQuery(strQuery);
+            query.setParameter("propCache", propCache);
+        }
+
+        List<Log> res = query.getResultList();
+        em.close();
+        return res;
+    }
 
 
     /**
