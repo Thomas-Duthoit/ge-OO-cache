@@ -101,6 +101,44 @@ public class RequeteGeOOCache {
         return res;
     }
 
+    /**
+     * méthode: creerReseau
+     * --------------------
+     * Crée un réseau avec un nom et un propriétaire donné
+     * @param nom
+     * @param proprietaire le propriétaire du réseau à créer
+     * @return ajout correctement effectué
+     */
+    public boolean creerReseau(String nom, Utilisateur proprietaire) {
+        EntityManager em = emFactory.createEntityManager();;
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+
+            proprietaire = em.merge(proprietaire);  // on réattache l'utilisateur à l'EM pour éviter les erreurs de LAZY init
+
+            ReseauCache reseauCache = new ReseauCache(nom);
+            em.persist(reseauCache);
+
+            if (!reseauCache.setProprietaire(proprietaire)) {
+                // echec du setProprietaire
+                et.rollback();
+                return false;
+            }
+
+            et.commit();  // application des MàJ
+
+        } catch (Exception e) {
+            et.rollback();
+            System.out.println("ERREUR creerReseau : " + e);
+            return false;
+        } finally {
+            em.close();
+        }
+
+        return true;  // on est arrivé là sans retourner false -> création effectuée
+    }
+
 
 
     /**

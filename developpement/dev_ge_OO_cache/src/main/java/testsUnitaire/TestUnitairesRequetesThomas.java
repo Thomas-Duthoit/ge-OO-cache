@@ -47,6 +47,11 @@ public class TestUnitairesRequetesThomas {
             List<ReseauCache> reseaux = req.getReseauxUtilisateur(u1);
             System.out.println(reseaux);
 
+            req.creerReseau("Réseau créé", u1);
+            System.out.println("Réseau de l'utilisateur connecté (après ajout) : ");
+            reseaux = req.getReseauxUtilisateur(u1);
+            System.out.println(reseaux);
+
 
 
 
