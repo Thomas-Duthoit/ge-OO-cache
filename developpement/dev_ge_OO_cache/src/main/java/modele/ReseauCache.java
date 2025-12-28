@@ -79,8 +79,6 @@ public class ReseauCache {
                 "id=" + id +
                 ", nom='" + nom + '\'' +
                 ", proprietaire='" + proprietaire + '\'' +
-                ", nombre d'utilisateurs : " + utilisateurs.size() +
-                ", nombre de caches : " + caches.size() +
                 '}';
     }
 
@@ -142,5 +140,15 @@ public class ReseauCache {
             return true;
         }
         return false;
+    }
+
+
+    /**
+     *              METHODES GETTERS/SETTERS ReseauCache
+     */
+
+
+    public int getId() {
+        return id;
     }
 }

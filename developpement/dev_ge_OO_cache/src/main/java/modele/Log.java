@@ -22,7 +22,7 @@ public class Log {
     @Column(name = "ID_Log", unique = true)
     private int id;  // "clé primaire" avec la contrainte d'unicité pour l'entité
 
-    @Column(name = "commentaire", nullable = false, length = 100)  // non nulle, max 100 caractères
+    @Column(name = "commentaire", nullable = false, length = 300)  // non nulle, max 300 caractères
     private String commentaire;
 
     private boolean trouver;  // l'utilisateur a trouvé ou non la cache

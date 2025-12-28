@@ -45,27 +45,367 @@ public class RequeteGeOOCache {
         return emFactory.createEntityManager();
     }
 
-        /**
-         *              METHODES RequeteGeOOCache
-         *              (Pour la classe Utilisateur)
-         */
+    /**
+     *              METHODES RequeteGeOOCache
+     *              (Pour la classe Utilisateur)
+     */
+
+    /**
+     * méthode: autoriserConnexionApp
+     * ------------------------------
+     * à utiliser pour tenter une connexion pour utiliser l'application
+     * si "-1" est renvoyée, la connexion est refusée
+     *
+     * @param pseudo le pseudo de l'utilisateur à connecter
+     * @param mdp le mot de passe de l'utilisateur à connecter
+     * @return -1 : connexion refusée, sinon l'id de l'utilisateur à connecter
+     */
+    public int autoriserConnexionApp(String pseudo, String mdp) {
+        EntityManager em = emFactory.createEntityManager();
+        String strQuery = "SELECT u FROM Utilisateur u WHERE u.pseudo = :pseudo AND u.mdp = :mdp";
+        Query query = em.createQuery(strQuery);
+        query.setParameter("pseudo", pseudo);
+        query.setParameter("mdp", mdp);
+        List<Utilisateur> res = query.getResultList();
+        em.close();
+
+        if (res.isEmpty()) {
+            return -1;  // pas de résultat -> on est pas connecté
+        } else if (res.getFirst().isAdmin()) {
+            return res.getFirst().getId();  // on a eu un résultat -> on peut autoriser la connection et pouvoir retrouver l'utilisateur avec un find
+        } else {
+            return -1;  // pas admin -> on esr pas connecté
+        }
+    }
+
+    /**
+     * méthode: creerUtilisateur
+     * -------------------------
+     * Crée un nouvel utilisateur
+     *
+     * @param pseudo pseudo de l'utilisateur à créer
+     * @param mdp mot de posse de l'utilisateur à créer
+     * @return ajout effectué
+     */
+    public boolean creerUtilisateur(String pseudo, String mdp) {
+        EntityManager em = emFactory.createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+
+            Utilisateur utilisateur = new Utilisateur(pseudo, mdp, false);
+            em.persist(utilisateur);
+
+            et.commit();  // application des MàJ
+
+        } catch (Exception e) {
+            et.rollback();
+            System.out.println("ERREUR creerUtilisateur : " + e);
+            return false;
+        } finally {
+            em.close();
+        }
+
+        return true;  // on est arrivé là sans retourner false -> création effectuée
+    }
+
+    /**
+     * méthode: getListeUtilisateurs
+     * -------------------------
+     *
+     * @return la liste des utilisateurs de l'application sauvegardés en BDD
+     */
+    public List<Utilisateur> getListeUtilisateurs() {
+        EntityManager em = emFactory.createEntityManager();
+        String strQuery = "SELECT u FROM Utilisateur u";
+        Query query = em.createQuery(strQuery);
+        List<Utilisateur> res = query.getResultList();
+        em.close();
+        return res;
+    }
+
+
+    /**
+     *              METHODES RequeteGeOOCache
+     *              (Pour la classe ReseauCache)
+     */
+
+    /**
+     * méthode: getReseauxUtilisateur
+     * ------------------------------
+     * Récupère la liste des réseaux qui appartiennent à l'utilisateur
+     *
+     * @param utilisateur l'utilisateur propriétaire des réseaux
+     * @return la liste des réseaux qui lui appartiennent
+     */
+    public List<ReseauCache> getReseauxUtilisateur(Utilisateur utilisateur) {
+        EntityManager em = emFactory.createEntityManager();
+        String strQuery = "SELECT r FROM ReseauCache r WHERE r.proprietaire = :utilisateur";
+        Query query = em.createQuery(strQuery);
+        query.setParameter("utilisateur", utilisateur);
+        List<ReseauCache> res = query.getResultList();
+        em.close();
+        return res;
+    }
+
+    /**
+     * méthode: creerReseau
+     * --------------------
+     * Crée un réseau avec un nom et un propriétaire donné
+     * @param nom
+     * @param proprietaire le propriétaire du réseau à créer
+     * @return ajout correctement effectué
+     */
+    public boolean creerReseau(String nom, Utilisateur proprietaire) {
+        EntityManager em = emFactory.createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+
+            proprietaire = em.merge(proprietaire);  // on réattache l'utilisateur à l'EM pour éviter les erreurs de LAZY init
+
+            ReseauCache reseauCache = new ReseauCache(nom);
+            em.persist(reseauCache);
+
+            if (!reseauCache.setProprietaire(proprietaire)) {
+                // echec du setProprietaire
+                et.rollback();
+                return false;
+            }
+
+            et.commit();  // application des MàJ
+
+        } catch (Exception e) {
+            et.rollback();
+            System.out.println("ERREUR creerReseau : " + e);
+            return false;
+        } finally {
+            em.close();
+        }
+
+        return true;  // on est arrivé là sans retourner false -> création effectuée
+    }
+
+    /**
+     * méthode: ajouterAccesReseau
+     * ---------------------------
+     * Permet à un utilisateur d'obtenir l'accès au réseau
+     *
+     * @param reseau le réseau concerné
+     * @param utilisateur l'utilisateur qui pourra accéder au réseau
+     * @return association effectuée
+     */
+    public boolean ajouterAccesReseau(ReseauCache reseau, Utilisateur utilisateur) {
+        EntityManager em = emFactory.createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+
+            utilisateur = em.merge(utilisateur);  // on réattache l'utilisateur à l'EM pour éviter les erreurs de LAZY init
+            reseau = em.merge(reseau);  // on réattache le réseau à l'EM pour éviter les erreurs de LAZY init
+
+            if (!reseau.ajouterAccesUtilisateur(utilisateur)) {
+                // echec du ajouterAccesUtilisateur
+                et.rollback();
+                return false;
+            }
+
+            et.commit();  // application des MàJ
+
+        } catch (Exception e) {
+            et.rollback();
+            System.out.println("ERREUR ajouterAccesReseau : " + e);
+            return false;
+        } finally {
+            em.close();
+        }
+
+        return true;  // on est arrivé là sans retourner false -> association effectuée
+    }
+
+    /**
+     * méthode: getReseauxAvecAccesUtilisateur
+     * ---------------------------------------
+     * Récupère la liste des réseaux qui dont l'utilisateur a accès
+     *
+     * @param utilisateur l'utilisateur qui accède aux réseaux
+     * @return la liste des réseaux auxquels il accède
+     */
+    public List<ReseauCache> getReseauxAvecAccesUtilisateur(Utilisateur utilisateur) {
+        EntityManager em = emFactory.createEntityManager();
+
+        String strQuery = "SELECT r FROM ReseauCache r JOIN r.utilisateurs u WHERE u = :utilisateur";
+
+        Query query = em.createQuery(strQuery);
+        query.setParameter("utilisateur", utilisateur);
+        List<ReseauCache> res = query.getResultList();
+        em.close();
+        return res;
+    }
+
+
+    /**
+     * méthode: getStatProprietaire
+     * ----------------------------
+     * Renvoie l'utilisateur propriétaire d'un réseau pour l'affichage des statistiques
+     *
+     * @param reseauCache le réseau dont on veut le propriétaire
+     * @return l'utilisateur propriétaire du réseau
+     */
+    public Utilisateur getStatProprietaire(ReseauCache reseauCache) {
+        EntityManager em = emFactory.createEntityManager();
+
+        String strQuery = "SELECT u FROM Utilisateur u JOIN u.possede r WHERE r = :reseau";
+
+        Query query = em.createQuery(strQuery);
+        query.setParameter("reseau", reseauCache);
+        List<Utilisateur> res = query.getResultList();
+        em.close();
+        return res.getFirst();
+    }
+
+    /**
+     * méthode: getStatNbCaches
+     * ----------------------------
+     * Renvoie le nombre de caches d'un réseau pour l'affichage des statistiques
+     *
+     * @param reseauCache le réseau dont on veut le nombre de caches
+     * @return le nombre de caches du réseau
+     */
+    public int getStatNbCaches(ReseauCache reseauCache) {
+        EntityManager em = emFactory.createEntityManager();
+
+        String strQuery = "SELECT COUNT(c) FROM Cache c JOIN c.appartient r WHERE r = :reseau";
+
+        Query query = em.createQuery(strQuery);
+        query.setParameter("reseau", reseauCache);
+        List<Integer> res = query.getResultList();
+        em.close();
+        return res.getFirst();
+    }
+
+    /**
+     * méthode: getStatNbLogs
+     * ----------------------------
+     * Renvoie le nombre de logs d'un réseau pour l'affichage des statistiques
+     *
+     * @param reseauCache le réseau dont on veut le nombre de logs
+     * @return le nombre de logs du réseau
+     */
+    public int getStatNbLogs(ReseauCache reseauCache) {
+        EntityManager em = emFactory.createEntityManager();
+
+        String strQuery = "SELECT COUNT(l) FROM Log l JOIN l.enregistrer c JOIN c.appartient r WHERE r = :reseau";
+
+        Query query = em.createQuery(strQuery);
+        query.setParameter("reseau", reseauCache);
+        List<Integer> res = query.getResultList();
+        em.close();
+        return res.getFirst();
+    }
+
+    /**
+     * méthode: getStatNbTrouve
+     * ----------------------------
+     * Renvoie le nombre de logs avec une cache trouvée d'un réseau pour l'affichage des statistiques
+     *
+     * @param reseauCache le réseau dont on veut le nombre de logs avec une cache trouvée
+     * @return le nombre de logs avec une cache trouvée du réseau
+     */
+    public int getStatNbTrouve(ReseauCache reseauCache) {
+        EntityManager em = emFactory.createEntityManager();
+
+        String strQuery = "SELECT COUNT(l) FROM Log l JOIN l.enregistrer c JOIN c.appartient r WHERE r = :reseau AND l.trouver = TRUE";
+
+        Query query = em.createQuery(strQuery);
+        query.setParameter("reseau", reseauCache);
+        List<Integer> res = query.getResultList();
+        em.close();
+        return res.getFirst();
+    }
+
+    /**
+     * méthode: getStatNbPasTrouve
+     * ----------------------------
+     * Renvoie le nombre de logs avec une cache non trouvée d'un réseau pour l'affichage des statistiques
+     *
+     * @param reseauCache le réseau dont on veut le nombre de logs avec une cache non trouvée
+     * @return le nombre de logs avec une cache non trouvée du réseau
+     */
+    public int getStatNbPasTrouve(ReseauCache reseauCache) {
+        EntityManager em = emFactory.createEntityManager();
+
+        String strQuery = "SELECT COUNT(l) FROM Log l JOIN l.enregistrer c JOIN c.appartient r WHERE r = :reseau AND l.trouver = FALSE";
+
+        Query query = em.createQuery(strQuery);
+        query.setParameter("reseau", reseauCache);
+        List<Integer> res = query.getResultList();
+        em.close();
+        return res.getFirst();
+    }
+
+    /**
+     * méthode: getStatPourcentageTrouve
+     * ----------------------------
+     * Renvoie le %age de logs dont la cache a été trouvée par rapport au nombre de logs total
+     *
+     * @param reseauCache le réseau dont on veut le %age de trouvaille
+     * @return le %age de trouvaille du réseau
+     */
+    public float getStatPourcentageTrouve(ReseauCache reseauCache) {
+        return (float) getStatNbTrouve(reseauCache) / getStatNbLogs(reseauCache);
+    }
 
 
 
-        /**
-         *              METHODES RequeteGeOOCache
-         *              (Pour la classe ReseauCache)
-         */
 
+    /**
+     *              METHODES RequeteGeOOCache
+     *              (Pour la classe Log)
+     */
 
+    /**
+     * méthode: getLogs
+     * ----------------
+     * Récupère la liste des logs dont la cache concernée appartient à l'utilisateur propCache
+     *
+     * @param propCache propriétaire des caches concernées par les logs
+     * @param filtreReseau (possiblement null) filtre de réseau de cache pour les logs
+     * @param filtreCache (possiblement null) filtre de cache pour les logs
+     * @return la liste des logs dont la cache appartient à l'utilisateur, et qui correspondent au filtre
+     */
+    public List<Log> getLogs(Utilisateur propCache, ReseauCache filtreReseau, Cache filtreCache) {
+        EntityManager em = emFactory.createEntityManager();
 
-        /**
-         *              METHODES RequeteGeOOCache
-         *              (Pour la classe Log)
-         */
+        propCache = em.merge(propCache);
+        filtreReseau = em.merge(filtreReseau);
+        filtreCache = em.merge(filtreCache);
 
+        String strQuery;
+        Query query;
 
+        if (filtreCache != null) {
+            strQuery = "SELECT l FROM Log l JOIN l.enregistrer c WHERE c = :filtreCache";
+            query = em.createQuery(strQuery);
+            query.setParameter("filtreCache", filtreCache);
 
+        } else if (filtreReseau != null) {
+            strQuery = "SELECT l FROM Log l JOIN l.enregistrer c JOIN c.appartient r WHERE r = :filtreReseau";
+            query = em.createQuery(strQuery);
+            query.setParameter("filtreReseau", filtreReseau);
+        } else {
+            strQuery = "SELECT l FROM Log l JOIN l.enregistrer c JOIN c.appartient u WHERE u = :propCache";
+            query = em.createQuery(strQuery);
+            query.setParameter("propCache", propCache);
+        }
+
+        List<Log> res = query.getResultList();
+        em.close();
+        return res;
+    } 
+
+  
+  
         /**
          *              METHODES RequeteGeOOCache
          *              (Pour la classe Cache)
