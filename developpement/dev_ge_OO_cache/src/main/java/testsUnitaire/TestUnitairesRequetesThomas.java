@@ -74,6 +74,7 @@ public class TestUnitairesRequetesThomas {
             System.out.println("Propriétaire : " + req.getStatProprietaire(r1));
 
             // TODO: tester l'affichage de stat pour le nombre de caches
+            // TODO: tester l'affichage de stat pour le nombre de logs
 
 
 

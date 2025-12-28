@@ -283,6 +283,27 @@ public class RequeteGeOOCache {
         return res.getFirst();
     }
 
+    /**
+     * méthode: getStatNbLogs
+     * ----------------------------
+     * Renvoie le nombre de logs d'un réseau pour l'affichage des statistiques
+     *
+     * @param reseauCache le réseau dont on veut le nombre de logs
+     * @return le nombre de logs du réseau
+     */
+    public int getStatNbLogs(ReseauCache reseauCache) {
+        EntityManager em = emFactory.createEntityManager();
+
+        String strQuery = "SELECT COUNT(l) FROM Log l JOIN l.enregistrer c JOIN c.appartient r WHERE r = :reseau";
+
+        Query query = em.createQuery(strQuery);
+        query.setParameter("reseau", reseauCache);
+        List<Integer> res = query.getResultList();
+        em.close();
+        return res.getFirst();
+    }
+
+
 
 
     /**
