@@ -83,6 +83,24 @@ public class RequeteGeOOCache {
      *              (Pour la classe ReseauCache)
      */
 
+    /**
+     * méthode: getReseauxUtilisateur
+     * ------------------------------
+     * Récupère la liste des réseaux qui appartiennent à l'utilisateur
+     *
+     * @param utilisateur l'utilisateur propriétaire des réseaux
+     * @return la liste des réseaux qui lui appartiennent
+     */
+    public List<ReseauCache> getReseauxUtilisateur(Utilisateur utilisateur) {
+        EntityManager em = emFactory.createEntityManager();
+        String strQuery = "SELECT r FROM ReseauCache r WHERE r.proprietaire = :utilisateur";
+        Query query = em.createQuery(strQuery);
+        query.setParameter("utilisateur", utilisateur);
+        List<ReseauCache> res = query.getResultList();
+        em.close();
+        return res;
+    }
+
 
 
     /**
