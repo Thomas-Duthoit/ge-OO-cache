@@ -75,6 +75,7 @@ public class TestUnitairesRequetesThomas {
 
             // TODO: tester l'affichage de stat pour le nombre de caches
             // TODO: tester l'affichage de stat pour le nombre de logs
+            // TODO: tester l'affichage de stat des nombres de trouvailles/non trouvailles/%age de trouvaille
 
 
 

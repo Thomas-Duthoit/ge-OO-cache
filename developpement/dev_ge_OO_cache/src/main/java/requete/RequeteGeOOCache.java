@@ -303,6 +303,58 @@ public class RequeteGeOOCache {
         return res.getFirst();
     }
 
+    /**
+     * méthode: getStatNbTrouve
+     * ----------------------------
+     * Renvoie le nombre de logs avec une cache trouvée d'un réseau pour l'affichage des statistiques
+     *
+     * @param reseauCache le réseau dont on veut le nombre de logs avec une cache trouvée
+     * @return le nombre de logs avec une cache trouvée du réseau
+     */
+    public int getStatNbTrouve(ReseauCache reseauCache) {
+        EntityManager em = emFactory.createEntityManager();
+
+        String strQuery = "SELECT COUNT(l) FROM Log l JOIN l.enregistrer c JOIN c.appartient r WHERE r = :reseau AND l.trouver = TRUE";
+
+        Query query = em.createQuery(strQuery);
+        query.setParameter("reseau", reseauCache);
+        List<Integer> res = query.getResultList();
+        em.close();
+        return res.getFirst();
+    }
+
+    /**
+     * méthode: getStatNbPasTrouve
+     * ----------------------------
+     * Renvoie le nombre de logs avec une cache non trouvée d'un réseau pour l'affichage des statistiques
+     *
+     * @param reseauCache le réseau dont on veut le nombre de logs avec une cache non trouvée
+     * @return le nombre de logs avec une cache non trouvée du réseau
+     */
+    public int getStatNbPasTrouve(ReseauCache reseauCache) {
+        EntityManager em = emFactory.createEntityManager();
+
+        String strQuery = "SELECT COUNT(l) FROM Log l JOIN l.enregistrer c JOIN c.appartient r WHERE r = :reseau AND l.trouver = FALSE";
+
+        Query query = em.createQuery(strQuery);
+        query.setParameter("reseau", reseauCache);
+        List<Integer> res = query.getResultList();
+        em.close();
+        return res.getFirst();
+    }
+
+    /**
+     * méthode: getStatPourcentageTrouve
+     * ----------------------------
+     * Renvoie le %age de logs dont la cache a été trouvée par rapport au nombre de logs total
+     *
+     * @param reseauCache le réseau dont on veut le %age de trouvaille
+     * @return le %age de trouvaille du réseau
+     */
+    public float getStatPourcentageTrouve(ReseauCache reseauCache) {
+        return (float) getStatNbTrouve(reseauCache) / getStatNbLogs(reseauCache);
+    }
+
 
 
 
