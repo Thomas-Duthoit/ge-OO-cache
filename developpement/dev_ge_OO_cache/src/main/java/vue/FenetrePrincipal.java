@@ -12,6 +12,7 @@ public class FenetrePrincipal extends JFrame {
     private CardLayout cl;
     private JPanel mainPanel;
     private RequeteGeOOCache requeteGeOOCache;
+    private DropdownTopChoix dropdownTopChoix;
 
     public FenetrePrincipal() throws SQLException {
         super();
@@ -26,7 +27,9 @@ public class FenetrePrincipal extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Création du dropdownTop qui restera fixe
-        DropdownTopChoix topBar = new DropdownTopChoix(this.requeteGeOOCache, mainPanel, cl);
+        this.dropdownTopChoix = new DropdownTopChoix(this.requeteGeOOCache, mainPanel, cl);
+        //Vue de connexion
+        mainPanel.add(new Login(this), "Login");
 
         //Les différentes vues possibles
         mainPanel.add(new Accueil(), "Choix de l'interface");
@@ -45,11 +48,17 @@ public class FenetrePrincipal extends JFrame {
 
         //Mise en page sur la fenêtre principale
         this.setLayout(new BorderLayout());
-        this.add(topBar, BorderLayout.NORTH); // Le menu reste toujours en haut
+        this.add(this.dropdownTopChoix, BorderLayout.NORTH); // Le menu reste toujours en haut
         this.add(mainPanel, BorderLayout.CENTER); // Le contenu change au milieu
-
+        this.dropdownTopChoix.setVisible(false);
         this.setVisible(true);
+    }
 
+    public void loginValider(){
+        this.dropdownTopChoix.setVisible(true);
+        this.cl.show(this.mainPanel, "Choix de l'interface");
+        this.revalidate();
+        this.repaint();
     }
 
     public static void main(String[] args) {
