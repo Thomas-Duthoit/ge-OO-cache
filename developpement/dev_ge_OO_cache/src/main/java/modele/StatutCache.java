@@ -21,7 +21,7 @@ public class StatutCache {
     @Column(name = "ID_Statut", unique = true, nullable = false)
     private int id; //"clé primaire" avec la contrainte d'unicité pour l'entité
 
-    @Column(name = "Texte", length = 50)
+    @Column(name = "Texte", length = 50, unique = true )
     private String texte; //Texte décrivant le statut
 
     @OneToMany(mappedBy = "statutCache", cascade={CascadeType.PERSIST, CascadeType.REMOVE })
@@ -78,6 +78,10 @@ public class StatutCache {
      */
     public List<Cache> getCaches() {
         return caches;
+    }
+
+    public int getId() {
+        return id;
     }
 
     /**
