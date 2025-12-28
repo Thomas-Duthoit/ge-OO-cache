@@ -66,6 +66,28 @@ public class Cache {
     }
 
     /**
+     * TOSTRING Cache
+     * @return la chaine de caractère représentant les informations du cache
+     */
+    @Override
+    public String toString() {
+        String texte = "Cache{" +
+                "numero=" + numero +
+                ", descriptionTextuelle='" + descriptionTextuelle + '\'' +
+                ", descriptionTechnique='" + descriptionTechnique + '\'' +
+                ", informationsGeolocalisation='" + informationsGeolocalisation + '\'' +
+                ", rubriqueLibre='" + rubriqueLibre + '\'';
+        if(this.typeCache != null)
+            texte += ", typeCache=" + typeCache.toStringCache();
+        if(this.statutCache != null)
+            texte += ", statutCache=" + statutCache.toStringCache();
+        if(this.logs != null)
+            texte += ", logs=" + logs.size();
+        texte += '}';
+        return texte;
+    }
+
+    /**
      * Constructeur par données du Cache
      * @param descriptionTextuelle une description textuelle du cache
      * @param descriptionTechnique une description technique du cache
@@ -104,28 +126,6 @@ public class Cache {
     }
 
     /**
-     * TOSTRING Cache
-     * @return la chaine de caractère représentant les informations du cache
-     */
-    @Override
-    public String toString() {
-        String texte = "Cache{" +
-                "numero=" + numero +
-                ", descriptionTextuelle='" + descriptionTextuelle + '\'' +
-                ", descriptionTechnique='" + descriptionTechnique + '\'' +
-                ", informationsGeolocalisation='" + informationsGeolocalisation + '\'' +
-                ", rubriqueLibre='" + rubriqueLibre + '\'';
-        if(this.typeCache != null)
-            texte += ", typeCache=" + typeCache.toStringCache();
-        if(this.statutCache != null)
-            texte += ", statutCache=" + statutCache.toStringCache();
-        if(this.logs != null)
-            texte += ", logs=" + logs.size();
-        texte += '}';
-        return texte;
-    }
-
-    /**
      *          GETTER et SETTER
      */
     public List<Log> getLogs() {
@@ -148,11 +148,9 @@ public class Cache {
      */
     public boolean setStatutCache(StatutCache statutCache) {
         if(statutCache != null) {
-            if(this.statutCache.equals(statutCache))
-                return false;
-
             if(this.statutCache != null)
                 this.statutCache.getCaches().remove(this);
+
             boolean result = statutCache.addCacheToList(this);
             if (result)
                 this.statutCache = statutCache;
@@ -171,9 +169,6 @@ public class Cache {
      */
     public boolean addTypeCache(TypeCache typeCache) {
         if(typeCache != null) {
-            if(this.typeCache.equals(typeCache))
-                return false;
-
             if(this.typeCache != null)
                 return false;
             boolean result = typeCache.addCacheToList(this);
