@@ -75,15 +75,15 @@ public class RequeteGeOOCache {
          * méthode : getCachesByReseauCacheId
          * ----------------------------
          * récupère la liste des différents caches selon l'id du reseau de cache
-         * @param id l'identifiant du réseau de cache
+         * @param reseau le réseau de cache
          * @return liste des Caches
          */
-        public List<Cache> getCachesByReseauCacheId(int id){
+        public List<Cache> getCachesByReseauCacheId(ReseauCache reseau){
             List<Cache> caches = new ArrayList<Cache>();
             final EntityManager em = this.getEm();
-            String strQuery = "Select c from Cache c where c.appartient.id = :id";
+            String strQuery = "Select c from Cache c where c.appartient = :reseau";
             Query query = em.createQuery(strQuery);
-            query.setParameter("id", id);
+            query.setParameter("reseau", reseau);
             caches = query.getResultList();
             return caches;
         }
@@ -196,10 +196,10 @@ public class RequeteGeOOCache {
          *             TESTS
          */
 
-        public static void main(String[] args) {
+        /*public static void main(String[] args) {
             RequeteGeOOCache r = new  RequeteGeOOCache();
             System.out.println("Début des tests");
-            List<Cache> caches = r.getCachesByReseauCacheId(10);
+            //List<Cache> caches = r.getCachesByReseauCacheId();
             System.out.println(caches);
             List<StatutCache> statuts = r.getStatutCache();
             System.out.println(statuts);
@@ -212,5 +212,5 @@ public class RequeteGeOOCache {
             System.out.println(c);
             System.out.println(result);
             System.out.println(caches);
-        }
+        }*/
 }
