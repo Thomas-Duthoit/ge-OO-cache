@@ -107,6 +107,21 @@ public class RequeteGeOOCache {
         return true;  // on est arrivé là sans retourner false -> création effectuée
     }
 
+    /**
+     * méthode: getListeUtilisateurs
+     * -------------------------
+     *
+     * @return la liste des utilisateurs de l'application sauvegardés en BDD
+     */
+    public List<Utilisateur> getListeUtilisateurs() {
+        EntityManager em = emFactory.createEntityManager();
+        String strQuery = "SELECT u FROM Utilisateur u";
+        Query query = em.createQuery(strQuery);
+        List<Utilisateur> res = query.getResultList();
+        em.close();
+        return res;
+    }
+
 
     /**
      *              METHODES RequeteGeOOCache
