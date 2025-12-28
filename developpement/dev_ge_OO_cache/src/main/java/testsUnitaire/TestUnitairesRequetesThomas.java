@@ -68,9 +68,12 @@ public class TestUnitairesRequetesThomas {
             req.ajouterAccesReseau(r3, u2);
             System.out.println(req.getReseauxAvecAccesUtilisateur(u2));
 
+            // TODO: tester filtrage et recherche de logs
 
             System.out.println("Statistiques de R1 : ");
             System.out.println("Propriétaire : " + req.getStatProprietaire(r1));
+
+            // TODO: tester l'affichage de stat pour le nombre de caches
 
 
 
