@@ -22,10 +22,7 @@ public class TypeCache {
     @Column(name = "ID_Type", unique = true, nullable = false)
     private int id; //"clé primaire" avec la contrainte d'unicité pour l'entité
 
-    @Column(
-            name = "Texte",
-            length = 50
-    )
+    @Column(name = "Texte", length = 50, unique = true )
     private String texte; //Texte décrivant le type
 
     @OneToMany(mappedBy = "typeCache", cascade={CascadeType.PERSIST, CascadeType.REMOVE })
