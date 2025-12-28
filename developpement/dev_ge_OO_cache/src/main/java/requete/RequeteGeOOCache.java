@@ -271,14 +271,14 @@ public class RequeteGeOOCache {
      * @param reseauCache le réseau dont on veut le nombre de caches
      * @return le nombre de caches du réseau
      */
-    public Utilisateur getStatNbCaches(ReseauCache reseauCache) {
+    public int getStatNbCaches(ReseauCache reseauCache) {
         EntityManager em = emFactory.createEntityManager();
 
         String strQuery = "SELECT COUNT(c) FROM Cache c JOIN c.appartient r WHERE r = :reseau";
 
         Query query = em.createQuery(strQuery);
         query.setParameter("reseau", reseauCache);
-        List<Utilisateur> res = query.getResultList();
+        List<Integer> res = query.getResultList();
         em.close();
         return res.getFirst();
     }
