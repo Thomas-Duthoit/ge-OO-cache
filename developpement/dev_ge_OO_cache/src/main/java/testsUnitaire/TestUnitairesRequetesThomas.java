@@ -59,6 +59,14 @@ public class TestUnitairesRequetesThomas {
             System.out.println("Liste des utilisateurs : ");
             System.out.println(req.getListeUtilisateurs());
 
+            System.out.println("Réseau de Charlie : ");
+            em = req.getEm();
+            u2 = em.find(Utilisateur.class, 3);
+            em.close();
+
+            System.out.println(u2);
+            req.ajouterAccesReseau(r3, u2);
+            System.out.println(req.getReseauxAvecAccesUtilisateur(u2));
 
 
 

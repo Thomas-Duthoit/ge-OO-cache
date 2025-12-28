@@ -184,6 +184,65 @@ public class RequeteGeOOCache {
         return true;  // on est arrivé là sans retourner false -> création effectuée
     }
 
+    /**
+     * méthode: ajouterAccesReseau
+     * ---------------------------
+     * Permet à un utilisateur d'obtenir l'accès au réseau
+     *
+     * @param reseau le réseau concerné
+     * @param utilisateur l'utilisateur qui pourra accéder au réseau
+     * @return association effectuée
+     */
+    public boolean ajouterAccesReseau(ReseauCache reseau, Utilisateur utilisateur) {
+        EntityManager em = emFactory.createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+
+            utilisateur = em.merge(utilisateur);  // on réattache l'utilisateur à l'EM pour éviter les erreurs de LAZY init
+            reseau = em.merge(reseau);  // on réattache le réseau à l'EM pour éviter les erreurs de LAZY init
+
+            if (!reseau.ajouterAccesUtilisateur(utilisateur)) {
+                // echec du ajouterAccesUtilisateur
+                et.rollback();
+                return false;
+            }
+
+            et.commit();  // application des MàJ
+
+        } catch (Exception e) {
+            et.rollback();
+            System.out.println("ERREUR ajouterAccesReseau : " + e);
+            return false;
+        } finally {
+            em.close();
+        }
+
+        return true;  // on est arrivé là sans retourner false -> association effectuée
+    }
+
+    /**
+     * méthode: getReseauxAvecAccesUtilisateur
+     * ---------------------------------------
+     * Récupère la liste des réseaux qui dont l'utilisateur a accès
+     *
+     * @param utilisateur l'utilisateur qui accède aux réseaux
+     * @return la liste des réseaux auxquels il accède
+     */
+    public List<ReseauCache> getReseauxAvecAccesUtilisateur(Utilisateur utilisateur) {
+        EntityManager em = emFactory.createEntityManager();
+
+        utilisateur = em.merge(utilisateur);
+
+        String strQuery = "SELECT r FROM ReseauCache r JOIN r.utilisateurs u WHERE u = :utilisateur";
+
+        Query query = em.createQuery(strQuery);
+        query.setParameter("utilisateur", utilisateur);
+        List<ReseauCache> res = query.getResultList();
+        em.close();
+        return res;
+    }
+
 
 
     /**
