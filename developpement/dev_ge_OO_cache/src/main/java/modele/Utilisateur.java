@@ -163,4 +163,8 @@ public class Utilisateur {
     public boolean isAdmin() {
         return admin;
     }
+
+    public String getPseudo() {
+        return pseudo;
+    }
 }
