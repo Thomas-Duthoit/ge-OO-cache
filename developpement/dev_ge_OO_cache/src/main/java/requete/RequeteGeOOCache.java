@@ -76,6 +76,36 @@ public class RequeteGeOOCache {
         }
     }
 
+    /**
+     * méthode: creerUtilisateur
+     * -------------------------
+     * Crée un nouvel utilisateur
+     *
+     * @param pseudo pseudo de l'utilisateur à créer
+     * @param mdp mot de posse de l'utilisateur à créer
+     * @return ajout effectué
+     */
+    public boolean creerUtilisateur(String pseudo, String mdp) {
+        EntityManager em = emFactory.createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+
+            Utilisateur utilisateur = new Utilisateur(pseudo, mdp, false);
+            em.persist(utilisateur);
+
+            et.commit();  // application des MàJ
+
+        } catch (Exception e) {
+            et.rollback();
+            System.out.println("ERREUR creerUtilisateur : " + e);
+            return false;
+        } finally {
+            em.close();
+        }
+
+        return true;  // on est arrivé là sans retourner false -> création effectuée
+    }
 
 
     /**
@@ -110,7 +140,7 @@ public class RequeteGeOOCache {
      * @return ajout correctement effectué
      */
     public boolean creerReseau(String nom, Utilisateur proprietaire) {
-        EntityManager em = emFactory.createEntityManager();;
+        EntityManager em = emFactory.createEntityManager();
         EntityTransaction et = em.getTransaction();
         try {
             et.begin();

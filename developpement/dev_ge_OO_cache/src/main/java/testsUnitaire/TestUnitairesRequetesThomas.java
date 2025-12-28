@@ -53,6 +53,10 @@ public class TestUnitairesRequetesThomas {
             System.out.println(reseaux);
 
 
+            System.out.println("création d'un utilisateur : 'Charlie', '1111'");
+            req.creerUtilisateur("Charlie", "1111");
+
+
 
 
 
