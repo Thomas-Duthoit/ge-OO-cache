@@ -233,8 +233,6 @@ public class RequeteGeOOCache {
     public List<ReseauCache> getReseauxAvecAccesUtilisateur(Utilisateur utilisateur) {
         EntityManager em = emFactory.createEntityManager();
 
-        utilisateur = em.merge(utilisateur);
-
         String strQuery = "SELECT r FROM ReseauCache r JOIN r.utilisateurs u WHERE u = :utilisateur";
 
         Query query = em.createQuery(strQuery);
@@ -242,6 +240,27 @@ public class RequeteGeOOCache {
         List<ReseauCache> res = query.getResultList();
         em.close();
         return res;
+    }
+
+
+    /**
+     * méthode: getStatProprietaire
+     * ----------------------------
+     * Renvoie l'utilisateur propriétaire d'un réseau pour l'affichage des statistiques
+     *
+     * @param reseauCache le réseau dont on veut le propriétaire
+     * @return l'utilisateur propriétaire du réseau
+     */
+    public Utilisateur getStatProprietaire(ReseauCache reseauCache) {
+        EntityManager em = emFactory.createEntityManager();
+
+        String strQuery = "SELECT u FROM Utilisateur u JOIN u.possede r WHERE r = :reseau";
+
+        Query query = em.createQuery(strQuery);
+        query.setParameter("reseau", reseauCache);
+        List<Utilisateur> res = query.getResultList();
+        em.close();
+        return res.getFirst();
     }
 
 

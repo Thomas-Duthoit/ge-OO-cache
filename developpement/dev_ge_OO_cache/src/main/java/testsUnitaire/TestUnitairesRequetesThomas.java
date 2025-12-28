@@ -69,6 +69,10 @@ public class TestUnitairesRequetesThomas {
             System.out.println(req.getReseauxAvecAccesUtilisateur(u2));
 
 
+            System.out.println("Statistiques de R1 : ");
+            System.out.println("Propriétaire : " + req.getStatProprietaire(r1));
+
+
 
 
 
