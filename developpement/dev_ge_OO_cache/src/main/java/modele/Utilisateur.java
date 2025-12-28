@@ -24,7 +24,7 @@ public class Utilisateur {
     @Column(name = "ID_Utilisateur", unique = true)
     private int id;  // "clé primaire" avec la contrainte d'unicité pour l'entité
 
-    @Column(name = "PSEUDO", nullable = false, length = 20)  // non nulle, max 20 caractères
+    @Column(name = "PSEUDO", nullable = false, length = 20, unique = true)  // non nulle, max 20 caractères, unique
     private String pseudo;  // Pseudo d'un utilisateur
 
     @Column(name = "MDP", nullable = false, length = 20)  // non nulle, max 20 caractères
@@ -86,9 +86,6 @@ public class Utilisateur {
                 ", pseudo='" + pseudo + '\'' +
                 ", mdp='" + mdp + '\'' +
                 ", admin=" + admin +
-                ", réseaux accessibles : " + accede.size() +
-                ", réseaux possédés : " + possede.size()  +
-                ", logs possédés : " + possedeLog.size()  +
                 '}';
     }
 
@@ -151,5 +148,19 @@ public class Utilisateur {
             return true;
         }
         return false;
+    }
+
+
+    /**
+     *              METHODES GETTERS/SETTERS Utilisateur
+     */
+
+
+    public int getId() {
+        return id;
+    }
+
+    public boolean isAdmin() {
+        return admin;
     }
 }

@@ -79,8 +79,6 @@ public class ReseauCache {
                 "id=" + id +
                 ", nom='" + nom + '\'' +
                 ", proprietaire='" + proprietaire + '\'' +
-                ", nombre d'utilisateurs : " + utilisateurs.size() +
-                ", nombre de caches : " + caches.size() +
                 '}';
     }
 

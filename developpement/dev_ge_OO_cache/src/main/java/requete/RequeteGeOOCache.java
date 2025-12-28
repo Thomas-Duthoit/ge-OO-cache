@@ -3,6 +3,8 @@ package requete;
 import jakarta.persistence.*;
 import modele.*;
 
+import java.util.List;
+
 /**
  * Classe RequeteGeOOCache
  * responsable de toutes les requêtes et de la persistance
@@ -45,6 +47,34 @@ public class RequeteGeOOCache {
      *              METHODES RequeteGeOOCache
      *              (Pour la classe Utilisateur)
      */
+
+    /**
+     * méthode: autoriserConnexionApp
+     * ------------------------------
+     * à utiliser pour tenter une connexion pour utiliser l'application
+     * si "-1" est renvoyée, la connexion est refusée
+     *
+     * @param pseudo le pseudo de l'utilisateur à connecter
+     * @param mdp le mot de passe de l'utilisateur à connecter
+     * @return -1 : connexion refusée, sinon l'id de l'utilisateur à connecter
+     */
+    public int autoriserConnexionApp(String pseudo, String mdp) {
+        EntityManager em = emFactory.createEntityManager();
+        String strQuery = "SELECT u FROM Utilisateur u WHERE u.pseudo = :pseudo AND u.mdp = :mdp";
+        Query query = em.createQuery(strQuery);
+        query.setParameter("pseudo", pseudo);
+        query.setParameter("mdp", mdp);
+        List<Utilisateur> res = query.getResultList();
+        em.close();
+
+        if (res.isEmpty()) {
+            return -1;  // pas de résultat -> on est pas connecté
+        } else if (res.getFirst().isAdmin()) {
+            return res.getFirst().getId();  // on a eu un résultat -> on peut autoriser la connection et pouvoir retrouver l'utilisateur avec un find
+        } else {
+            return -1;  // pas admin -> on esr pas connecté
+        }
+    }
 
 
 
