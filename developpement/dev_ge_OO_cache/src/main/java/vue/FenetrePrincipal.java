@@ -41,7 +41,7 @@ public class FenetrePrincipal extends JFrame {
         mainPanel.add(new ShowLoggings(), "Afficher les loggins");
         mainPanel.add(new ShowLoggingDetails(), "Afficher les logging détails");
         mainPanel.add(new CreateCache() , "Créer une cache");
-        mainPanel.add(new CreateUser(), "Créer un utilisateur");
+        mainPanel.add(new CreateUser(requeteGeOOCache), "Créer un utilisateur");
         mainPanel.add(new UpdateStatutCache(), "Modifier le statut d'une cache");
         mainPanel.add(new ShowListCache(), "Liste des caches");
         mainPanel.add(new CreateType(), "Créer un type");
