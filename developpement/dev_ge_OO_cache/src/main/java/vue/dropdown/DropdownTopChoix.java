@@ -1,5 +1,6 @@
 package vue.dropdown;
 
+import modele.Utilisateur;
 import requete.RequeteGeOOCache;
 
 import javax.swing.*;
@@ -14,13 +15,16 @@ public class DropdownTopChoix extends JPanel {
     private JPanel dynamicArea;
     private RequeteGeOOCache requeteGeOOCache;
     private JComboBox<String> cb;
+    private Utilisateur user;
 
-    public DropdownTopChoix(RequeteGeOOCache requeteGeOOCache, JPanel mainPanel, CardLayout cl) throws SQLException {
+    public DropdownTopChoix(RequeteGeOOCache requeteGeOOCache, JPanel mainPanel, CardLayout cl, Utilisateur user) throws SQLException {
         super();
+
         //Initialisation des attributs
         this.requeteGeOOCache = requeteGeOOCache;
         this.cl = cl;
         this.mainPanel = mainPanel;
+        this.user = user;
 
         //Mise en forme
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -87,7 +91,7 @@ public class DropdownTopChoix extends JPanel {
                     dynamicArea.add(new DropdownUtilisateur(this.requeteGeOOCache, this.mainPanel, this.cl, choixSelectionne));
                 }
                 if ("Afficher les statistiques".equals(choixSelectionne) ||"Affichage de la liste des caches".equals(choixSelectionne) || "Créer une cache".equals(choixSelectionne) || "Modifier le statut d'une cache".equals(choixSelectionne)) {
-                    dynamicArea.add(new DropdownReseau(this.requeteGeOOCache, this.mainPanel, this.cl, choixSelectionne));
+                    dynamicArea.add(new DropdownReseau(this.requeteGeOOCache, this.mainPanel, this.cl, choixSelectionne, user));
                 }
                 if("Afficher les loggins".equals(choixSelectionne)) {
                     dynamicArea.add(new DropdownLoggings(this.requeteGeOOCache, this.mainPanel, this.cl, choixSelectionne));

@@ -74,7 +74,7 @@ public class RequeteGeOOCache {
         } else if (res.getFirst().isAdmin()) {
             return res.getFirst().getId();  // on a eu un résultat -> on peut autoriser la connection et pouvoir retrouver l'utilisateur avec un find
         } else {
-            return -1;  // pas admin -> on esr pas connecté
+            return -1;  // pas admin -> on est pas connecté
         }
     }
 
@@ -123,7 +123,6 @@ public class RequeteGeOOCache {
         em.close();
         return res;
     }
-
 
     /**
      *              METHODES RequeteGeOOCache

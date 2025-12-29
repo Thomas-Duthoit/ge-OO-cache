@@ -1,5 +1,6 @@
 package vue;
 
+import modele.Utilisateur;
 import requete.RequeteGeOOCache;
 import vue.dropdown.DropdownTopChoix;
 import vue.page.*;
@@ -13,9 +14,12 @@ public class FenetrePrincipal extends JFrame {
     private JPanel mainPanel;
     private RequeteGeOOCache requeteGeOOCache;
     private DropdownTopChoix dropdownTopChoix;
+    private Utilisateur user;
 
     public FenetrePrincipal() throws SQLException {
         super();
+
+        this.user = null;
         //Initialisation des attributs
         this.cl = new CardLayout();
         this.mainPanel = new JPanel(this.cl);
@@ -26,8 +30,7 @@ public class FenetrePrincipal extends JFrame {
         this.setSize(800,600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //Création du dropdownTop qui restera fixe
-        this.dropdownTopChoix = new DropdownTopChoix(this.requeteGeOOCache, mainPanel, cl);
+
         //Vue de connexion
         mainPanel.add(new Login(this), "Login");
 
@@ -48,17 +51,35 @@ public class FenetrePrincipal extends JFrame {
 
         //Mise en page sur la fenêtre principale
         this.setLayout(new BorderLayout());
-        this.add(this.dropdownTopChoix, BorderLayout.NORTH); // Le menu reste toujours en haut
         this.add(mainPanel, BorderLayout.CENTER); // Le contenu change au milieu
-        this.dropdownTopChoix.setVisible(false);
         this.setVisible(true);
     }
 
-    public void loginValider(){
+    /**
+     * méthode : loginValide
+     * ---------------------
+     * permet de changer la page si le login de connexion a été validé dans la classe longin
+     */
+    public void loginValider(Utilisateur user) {
+        //Enregistrement de l'utilisateur connecté
+        this.user = user;
+
+        //Création du dropdownTop qui restera fixe
+        //Besoin de la mettre ici pour avoir un user fixe
+        try{
+            this.dropdownTopChoix = new DropdownTopChoix(this.requeteGeOOCache, mainPanel, cl, this.user);
+        }catch (SQLException e){
+            System.out.println("Erreur de créer de la dropDown à la connexion");
+        }
         this.dropdownTopChoix.setVisible(true);
+        this.add(this.dropdownTopChoix, BorderLayout.NORTH); // Le menu reste toujours en haut
         this.cl.show(this.mainPanel, "Choix de l'interface");
         this.revalidate();
         this.repaint();
+    }
+
+    public RequeteGeOOCache getRequeteGeOOCache() {
+        return requeteGeOOCache;
     }
 
     public static void main(String[] args) {
@@ -70,5 +91,7 @@ public class FenetrePrincipal extends JFrame {
         }
 
     }
+
+
 
 }

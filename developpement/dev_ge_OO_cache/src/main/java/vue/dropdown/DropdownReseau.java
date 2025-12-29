@@ -1,6 +1,7 @@
 package vue.dropdown;
 
 import modele.ReseauCache;
+import modele.Utilisateur;
 import requete.RequeteGeOOCache;
 
 import javax.swing.*;
@@ -8,31 +9,42 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class DropdownReseau extends JPanel {
     private RequeteGeOOCache requeteGeOOCache;
     private CardLayout cl;
     private JPanel dynamicArea;
     private JPanel mainPanel;
-    private JComboBox<String> cb;
+    private JComboBox<Object> cb;
     private String actionPrec;
+    private Utilisateur user;
 
-    public DropdownReseau(RequeteGeOOCache requeteGeOOCache, JPanel mainPanel, CardLayout cl, String actionPrec) throws SQLException {
+    public DropdownReseau(RequeteGeOOCache requeteGeOOCache, JPanel mainPanel, CardLayout cl, String actionPrec, Utilisateur user) throws SQLException {
         this.requeteGeOOCache = requeteGeOOCache;
         this.mainPanel = mainPanel;
         this.cl = cl;
         this.actionPrec = actionPrec;
+        this.user = user;
+        System.out.println(this.user);
 
         //Mise en forme
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         //Les différentes valeurs a attribué pour le dropdown
-        String[] choix = {
-                "Choix d'un réseau",
-                "Reseau X"
-        };
+        List<ReseauCache> reseauxCache = this.requeteGeOOCache.getReseauxUtilisateur(this.user);
+        System.out.println(reseauxCache);
+        DefaultComboBoxModel<Object> cbModel = new DefaultComboBoxModel<>();
+        cbModel.addElement("Choix d'un réseau");
+
+        for (ReseauCache rc : reseauxCache){
+            cbModel.addElement(rc);
+        }
 
         //Création du dropdown
-        this.cb = new JComboBox<>(choix);
+        this.cb = new JComboBox<>(cbModel);
+
         cb.setSelectedIndex(0); //Valeur par défaut au niveau des choix
         cb.setBackground(Color.LIGHT_GRAY);
 
@@ -63,15 +75,14 @@ public class DropdownReseau extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            JComboBox<String> cb = (JComboBox<String>) e.getSource();
-            String choixSelectionne = cb.getSelectedItem().toString();
+            Object choixSelectionne = cb.getSelectedItem();
             System.out.println("Action selectionné : " + choixSelectionne);
 
             //Ajout d'autres dropdowns si nécessaire selon le choix
             dynamicArea.removeAll();
 
             try {
-                if (!choixSelectionne.equals("Choix d'un réseau")) {
+                if (choixSelectionne instanceof ReseauCache) {
                     if("Modifier le statut d'une cache".equals(actionPrec) || "Affichage de la liste des caches".equals(actionPrec)){
                         dynamicArea.add(new DropdownCache(this.requeteGeOOCache, this.mainPanel, this.cl, actionPrec));
                     }
