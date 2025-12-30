@@ -1,5 +1,6 @@
 package vue;
 
+import modele.ReseauCache;
 import modele.Utilisateur;
 import requete.RequeteGeOOCache;
 import vue.dropdown.DropdownTopChoix;
@@ -15,15 +16,17 @@ public class FenetrePrincipal extends JFrame {
     private RequeteGeOOCache requeteGeOOCache;
     private DropdownTopChoix dropdownTopChoix;
     private Utilisateur user;
+    private SelectionDropdown selectionDropdown;
 
     public FenetrePrincipal() throws SQLException {
         super();
 
-        this.user = null;
         //Initialisation des attributs
         this.cl = new CardLayout();
         this.mainPanel = new JPanel(this.cl);
         this.requeteGeOOCache = new RequeteGeOOCache();
+        this.user = null;
+        this.selectionDropdown = new SelectionDropdown(this);
 
         //Configuration de la fenêtre
         this.setTitle("gé-OO-cache");
@@ -33,21 +36,6 @@ public class FenetrePrincipal extends JFrame {
 
         //Vue de connexion
         mainPanel.add(new Login(this), "Login");
-
-        //Les différentes vues possibles
-        mainPanel.add(new Accueil(), "Choix de l'interface");
-        mainPanel.add(new CreateReseau(), "Créer un réseau");
-        mainPanel.add(new ShowReseau(), "Affichage des réseaux");
-        mainPanel.add(new AssociateUser(), "Associer un utilisateur");
-        mainPanel.add(new ShowCaches(), "Affichage de la liste des caches");
-        mainPanel.add(new ShowStatistic(), "Afficher les statistiques");
-        mainPanel.add(new ShowLoggings(), "Afficher les loggins");
-        mainPanel.add(new ShowLoggingDetails(), "Afficher les logging détails");
-        mainPanel.add(new CreateCache() , "Créer une cache");
-        mainPanel.add(new CreateUser(), "Créer un utilisateur");
-        mainPanel.add(new UpdateStatutCache(), "Modifier le statut d'une cache");
-        mainPanel.add(new ShowListCache(), "Liste des caches");
-        mainPanel.add(new CreateType(), "Créer un type");
 
         //Mise en page sur la fenêtre principale
         this.setLayout(new BorderLayout());
@@ -67,7 +55,22 @@ public class FenetrePrincipal extends JFrame {
         //Création du dropdownTop qui restera fixe
         //Besoin de la mettre ici pour avoir un user fixe
         try{
-            this.dropdownTopChoix = new DropdownTopChoix(this.requeteGeOOCache, mainPanel, cl, this.user);
+            this.dropdownTopChoix = new DropdownTopChoix(this.requeteGeOOCache, mainPanel, cl, this.user, this.selectionDropdown);
+
+            //Les différentes vues possibles
+            mainPanel.add(new Accueil(), "Choix de l'interface");
+            mainPanel.add(new CreateReseau(this.requeteGeOOCache, this.user), "Créer un réseau");
+            mainPanel.add(new ShowReseau(), "Affichage des réseaux");
+            mainPanel.add(new AssociateUser(), "Associer un utilisateur");
+            mainPanel.add(new ShowCaches(), "Affichage de la liste des caches");
+            mainPanel.add(new ShowStatistic(), "Afficher les statistiques");
+            mainPanel.add(new ShowLoggings(), "Afficher les loggins");
+            mainPanel.add(new ShowLoggingDetails(), "Afficher les logging détails");
+            mainPanel.add(new CreateCache() , "Créer une cache");
+            mainPanel.add(new CreateUser(), "Créer un utilisateur");
+            mainPanel.add(new UpdateStatutCache(), "Modifier le statut d'une cache");
+            mainPanel.add(new ShowListCache(), "Liste des caches");
+            mainPanel.add(new CreateType(), "Créer un type");
         }catch (SQLException e){
             System.out.println("Erreur de créer de la dropDown à la connexion");
         }
@@ -89,7 +92,12 @@ public class FenetrePrincipal extends JFrame {
             JOptionPane.showMessageDialog(null,"Erreur de connexion à la base de données");
             System.out.println(e.getMessage());
         }
+    }
 
+    //Méthode pour refresh la vue courante
+    public void refreshMainPanel() {
+        this.mainPanel.revalidate();
+        this.mainPanel.repaint();
     }
 
 

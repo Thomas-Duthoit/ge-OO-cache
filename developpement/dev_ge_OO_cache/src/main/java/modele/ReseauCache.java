@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * classe ReseauCache
@@ -73,6 +74,7 @@ public class ReseauCache {
      * TOSTRING ReseauCache
      * @return la chaine de caractère représentant les informations du réseau
      */
+    /*
     @Override
     public String toString() {
         return "ReseauCache{" +
@@ -80,7 +82,12 @@ public class ReseauCache {
                 ", nom='" + nom + '\'' +
                 ", proprietaire='" + proprietaire + '\'' +
                 '}';
+    }*/
+    @Override
+    public String toString() {
+        return nom;
     }
+
 
 
 
@@ -150,5 +157,20 @@ public class ReseauCache {
 
     public int getId() {
         return id;
+    }
+
+    /**
+     *              METHODES EQUALS / HASHCODE
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        ReseauCache that = (ReseauCache) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

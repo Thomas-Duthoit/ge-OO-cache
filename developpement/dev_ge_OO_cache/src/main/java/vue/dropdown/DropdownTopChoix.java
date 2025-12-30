@@ -1,7 +1,9 @@
 package vue.dropdown;
 
+import modele.ReseauCache;
 import modele.Utilisateur;
 import requete.RequeteGeOOCache;
+import vue.SelectionDropdown;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +18,9 @@ public class DropdownTopChoix extends JPanel {
     private RequeteGeOOCache requeteGeOOCache;
     private JComboBox<String> cb;
     private Utilisateur user;
+    private SelectionDropdown selectionDropdown;
 
-    public DropdownTopChoix(RequeteGeOOCache requeteGeOOCache, JPanel mainPanel, CardLayout cl, Utilisateur user) throws SQLException {
+    public DropdownTopChoix(RequeteGeOOCache requeteGeOOCache, JPanel mainPanel, CardLayout cl, Utilisateur user, SelectionDropdown selectionDropdown) throws SQLException {
         super();
 
         //Initialisation des attributs
@@ -25,6 +28,7 @@ public class DropdownTopChoix extends JPanel {
         this.cl = cl;
         this.mainPanel = mainPanel;
         this.user = user;
+        this.selectionDropdown = selectionDropdown;
 
         //Mise en forme
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -86,26 +90,32 @@ public class DropdownTopChoix extends JPanel {
             //Ajout d'autres dropdowns si nécessaire selon le choix
             dynamicArea.removeAll();
 
-            try {
-                if ("Associer un utilisateur".equals(choixSelectionne)) {
-                    dynamicArea.add(new DropdownUtilisateur(this.requeteGeOOCache, this.mainPanel, this.cl, choixSelectionne));
-                }
-                if ("Afficher les statistiques".equals(choixSelectionne) ||"Affichage de la liste des caches".equals(choixSelectionne) || "Créer une cache".equals(choixSelectionne) || "Modifier le statut d'une cache".equals(choixSelectionne)) {
-                    dynamicArea.add(new DropdownReseau(this.requeteGeOOCache, this.mainPanel, this.cl, choixSelectionne, user));
-                }
-                if("Afficher les loggins".equals(choixSelectionne)) {
-                    dynamicArea.add(new DropdownLoggings(this.requeteGeOOCache, this.mainPanel, this.cl, choixSelectionne));
-                }
-            }catch (SQLException ex) {
-                System.out.println("ERREUR : Dropdown : " + ex.getMessage());
-            }
-            refresh();
-
-            if("Affichage de la liste des caches".equals(choixSelectionne) || "Créer une cache".equals(choixSelectionne) || "Modifier le statut d'une cache".equals(choixSelectionne) || "Associer un utilisateur".equals(choixSelectionne) || "Afficher les statistiques".equals(choixSelectionne)) {
-                System.out.println("Pas de changement de page à effectuer pour le moment");
+            if ("Choix de l'interface".equals(choixSelectionne)) {
+                selectionDropdown.supprAllElementSelect();
                 cl.show(mainPanel, "Choix de l'interface");
             }else {
-                cl.show(mainPanel, choixSelectionne);
+                selectionDropdown.addElementSelect("Action", choixSelectionne);
+                try {
+                    if ("Associer un utilisateur".equals(choixSelectionne)) {
+                        dynamicArea.add(new DropdownUtilisateur(this.requeteGeOOCache, this.mainPanel, this.cl, choixSelectionne, selectionDropdown));
+                    }
+                    if ("Afficher les statistiques".equals(choixSelectionne) || "Affichage de la liste des caches".equals(choixSelectionne) || "Créer une cache".equals(choixSelectionne) || "Modifier le statut d'une cache".equals(choixSelectionne)) {
+                        dynamicArea.add(new DropdownReseau(this.requeteGeOOCache, this.mainPanel, this.cl, choixSelectionne, user, selectionDropdown));
+                    }
+                    if ("Afficher les loggins".equals(choixSelectionne)) {
+                        dynamicArea.add(new DropdownLoggings(this.requeteGeOOCache, this.mainPanel, this.cl, choixSelectionne, user, selectionDropdown));
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("ERREUR : Dropdown : " + ex.getMessage());
+                }
+                refresh();
+
+                if ("Affichage de la liste des caches".equals(choixSelectionne) || "Créer une cache".equals(choixSelectionne) || "Modifier le statut d'une cache".equals(choixSelectionne) || "Associer un utilisateur".equals(choixSelectionne) || "Afficher les statistiques".equals(choixSelectionne)) {
+                    System.out.println("Pas de changement de page à effectuer pour le moment");
+                    cl.show(mainPanel, "Choix de l'interface");
+                } else {
+                    cl.show(mainPanel, choixSelectionne);
+                }
             }
         }
     }

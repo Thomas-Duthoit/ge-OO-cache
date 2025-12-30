@@ -26,8 +26,8 @@ import java.sql.SQLException;
 
 public class Login extends JPanel{
     private FenetrePrincipal fenetrePrincipal;
-    private String username;
-    private String password;
+    private JTextField username;
+    private JPasswordField password;
     private JLabel errorLabel;
 
     public Login(FenetrePrincipal fenetrePrincipal) throws SQLException {
@@ -48,8 +48,8 @@ public class Login extends JPanel{
         loginPanel.setLayout(new BoxLayout(loginPanel, BoxLayout.Y_AXIS));
         loginPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
-        JTextField username = createTextField("Nom d'utilisateur");
-        JPasswordField password = createPasswordField("Mot de passe");
+        this.username = createTextField("Nom d'utilisateur");
+        this.password = createPasswordField("Mot de passe");
         JButton loginButton = createButton();
 
         //LABEL pour le texte d'erreur
@@ -78,14 +78,18 @@ public class Login extends JPanel{
     //Vérifie puis effectue une réaction selon le résultat
     public class  MyButtonListener implements ActionListener{
         private JPanel panel;
+        private JTextField username;
+        private JPasswordField password;
 
-        public MyButtonListener(JPanel panel, String username, String password) {
+        public MyButtonListener(JPanel panel, JTextField username, JPasswordField password) {
             this.panel = panel;
+            this.username = username;
+            this.password = password;
         }
 
         public void actionPerformed(ActionEvent e){
             RequeteGeOOCache requeteGeOOCache = fenetrePrincipal.getRequeteGeOOCache();
-            int id = requeteGeOOCache.autoriserConnexionApp(username, password);
+            int id = requeteGeOOCache.autoriserConnexionApp(this.username.getText(), new String(this.password.getPassword()));
             if (id == -1){
                 System.out.println("Erreur de connexion");
                 errorLabel.setVisible(true);
@@ -134,8 +138,6 @@ public class Login extends JPanel{
             public void focusLost(FocusEvent e) {
                 if(field.getText().isEmpty()){
                     field.setText(placeholder);
-                }else{
-                    username = field.getText();
                 }
             }
         });
@@ -165,9 +167,6 @@ public class Login extends JPanel{
             public void focusLost(FocusEvent e) {
                 if(field.getText().isEmpty()){
                     field.setText(placeholder);
-                }
-                else{
-                    password = field.getText();
                 }
             }
         });

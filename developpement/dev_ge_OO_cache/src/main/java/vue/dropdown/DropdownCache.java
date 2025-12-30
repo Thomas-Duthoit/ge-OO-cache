@@ -1,36 +1,52 @@
 package vue.dropdown;
 
+import modele.Cache;
+import modele.ReseauCache;
 import requete.RequeteGeOOCache;
+import vue.SelectionDropdown;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.List;
 
 public class DropdownCache extends JPanel{
     private RequeteGeOOCache requeteGeOOCache;
     private CardLayout cl;
     private JPanel mainPanel;
-    private JComboBox<String> cb;
+    private JComboBox<Object> cb;
     private String actionPrec;
+    private SelectionDropdown selectionDropdown;
 
-    public DropdownCache(RequeteGeOOCache requeteGeOOCache, JPanel mainPanel, CardLayout cl, String actionPrec) throws SQLException {
+    public DropdownCache(RequeteGeOOCache requeteGeOOCache, JPanel mainPanel, CardLayout cl, String actionPrec, ReseauCache reseauCache, SelectionDropdown selectionDropdown) throws SQLException {
         this.requeteGeOOCache = requeteGeOOCache;
         this.mainPanel = mainPanel;
         this.cl = cl;
         this.actionPrec = actionPrec;
+        this.selectionDropdown = selectionDropdown;
 
         //Mise en forme
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
-        //Les différentes valeurs a attribué pour le dropdown
-        String[] choix = {
-                "Choix des caches",
-                "Cache X"
-        };
 
         //Création du dropdown
-        this.cb = new JComboBox<>(choix);
+        this.cb = new JComboBox<>();
+
+        //Les différentes valeurs a attribué pour le dropdown
+        //Récupère la liste des caches selon le reseauCache
+        List<Cache> caches = this.requeteGeOOCache.getCachesByReseauCache(reseauCache);
+
+        //Crée le modèle pour le JComboBoc
+        DefaultComboBoxModel<Object> model = new DefaultComboBoxModel<>();
+
+        model.addElement("Choix des caches");
+
+        for (Cache cache : caches) {
+            model.addElement(cache);
+        }
+        this.cb.setModel(model);
+
         cb.setSelectedIndex(0); //Valeur par défaut au niveau des choix
         cb.setBackground(Color.LIGHT_GRAY);
         cb.addActionListener(new ChoixActionListener(this.mainPanel, this.cl, this.requeteGeOOCache));
@@ -60,16 +76,18 @@ public class DropdownCache extends JPanel{
         public void actionPerformed(ActionEvent e) {
             JComboBox<String> cb = (JComboBox<String>) e.getSource();
             String choixSelectionne = cb.getSelectedItem().toString();
-            System.out.println("Cache");
-            System.out.println("Action selectionné : " + choixSelectionne);
+
             if (!"Choix des caches".equals(choixSelectionne)) {
+                selectionDropdown.addElementSelect("Cache", cb.getSelectedItem());
                 System.out.println("Choix des caches : " + choixSelectionne);
                 System.out.println(actionPrec);
                 cl.show(mainPanel, actionPrec);
             }else{
+                selectionDropdown.supprElementSelect("Cache");
                 cl.show(mainPanel, "Choix de l'interface");
             }
             refresh();
         }
     }
+
 }

@@ -79,6 +79,7 @@ public class Utilisateur {
      * TOSTRING Utilisateur
      * @return la chaine de caractère représentant les informations de l'utilisateur
      */
+    /*
     @Override
     public String toString() {
         return "Utilisateur{" +
@@ -87,8 +88,11 @@ public class Utilisateur {
                 ", mdp='" + mdp + '\'' +
                 ", admin=" + admin +
                 '}';
+    }*/
+    @Override
+    public String toString() {
+        return pseudo;
     }
-
 
     /**
      *              METHODES ASSOCIATIONS Utilisateur

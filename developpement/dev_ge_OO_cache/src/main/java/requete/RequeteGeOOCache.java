@@ -376,9 +376,15 @@ public class RequeteGeOOCache {
     public List<Log> getLogs(Utilisateur propCache, ReseauCache filtreReseau, Cache filtreCache) {
         EntityManager em = emFactory.createEntityManager();
 
-        propCache = em.merge(propCache);
-        filtreReseau = em.merge(filtreReseau);
-        filtreCache = em.merge(filtreCache);
+        if(propCache != null){
+            propCache = em.merge(propCache);
+        }
+        if(filtreReseau != null) {
+            filtreReseau = em.merge(filtreReseau);
+        }
+        if(filtreCache != null) {
+            filtreCache = em.merge(filtreCache);
+        }
 
         String strQuery;
         Query query;
@@ -393,7 +399,7 @@ public class RequeteGeOOCache {
             query = em.createQuery(strQuery);
             query.setParameter("filtreReseau", filtreReseau);
         } else {
-            strQuery = "SELECT l FROM Log l JOIN l.enregistrer c JOIN c.appartient u WHERE u = :propCache";
+            strQuery = "SELECT l FROM Log l JOIN l.enregistrer c JOIN c.appartient r JOIN r.proprietaire u WHERE u = :propCache";
             query = em.createQuery(strQuery);
             query.setParameter("propCache", propCache);
         }
@@ -413,11 +419,11 @@ public class RequeteGeOOCache {
         /**
          * méthode : getCachesByReseauCacheId
          * ----------------------------
-         * récupère la liste des différents caches selon l'id du reseau de cache
+         * récupère la liste des différents caches selon le réseau de cache
          * @param reseau le réseau de cache
          * @return liste des Caches
          */
-        public List<Cache> getCachesByReseauCacheId(ReseauCache reseau){
+        public List<Cache> getCachesByReseauCache(ReseauCache reseau){
             List<Cache> caches = new ArrayList<Cache>();
             final EntityManager em = this.getEm();
             String strQuery = "Select c from Cache c where c.appartient = :reseau";

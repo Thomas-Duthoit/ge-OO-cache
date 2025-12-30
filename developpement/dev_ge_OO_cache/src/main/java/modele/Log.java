@@ -82,7 +82,7 @@ public class Log {
      * TOSTRING Log
      * @return la chaine de caractère représentant les informations du log
      */
-    @Override
+    /*@Override
     public String toString() {
         return "Log{" +
                 "id=" + id +
@@ -93,6 +93,10 @@ public class Log {
                 ", proprietaire='" + proprietaire + '\'' +
                 ", cache='" + enregistrer + '\'' +
                 '}';
+    }*/
+    @Override
+    public String toString() {
+        return "Log " + id;
     }
 
 
