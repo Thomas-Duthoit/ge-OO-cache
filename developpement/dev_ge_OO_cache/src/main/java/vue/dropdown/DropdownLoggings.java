@@ -3,6 +3,7 @@ package vue.dropdown;
 import modele.Log;
 import modele.Utilisateur;
 import requete.RequeteGeOOCache;
+import vue.Refreshable;
 import vue.SelectionDropdown;
 
 import javax.swing.*;
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 public class DropdownLoggings extends JPanel {
@@ -85,11 +87,27 @@ public class DropdownLoggings extends JPanel {
                 selectionDropdown.addElementSelect("Log", cb.getSelectedItem());
                 System.out.println("test");
                 cl.show(mainPanel, "Afficher les logging détails");
+
+                refreshDataView();
             }else {
                 selectionDropdown.supprElementSelect("Log");
                 cl.show(mainPanel, "Choix de l'interface");
             }
             refresh();
+        }
+    }
+
+    //Cette méthode a été proposé par l'IA
+    public void refreshDataView(){
+        //On refresh les valeurs pour la vue courante
+        //Dans le cas où il s'agit d'une vue nécessitant des valeurs dans les dropdowns
+        Component c = Arrays.stream(mainPanel.getComponents())
+                .filter(comp -> comp.isVisible())
+                .findFirst()
+                .orElse(null);
+
+        if (c instanceof Refreshable) {
+            ((Refreshable) c).refreshData();
         }
     }
 }

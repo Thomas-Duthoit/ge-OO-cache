@@ -3,6 +3,7 @@ package vue.dropdown;
 import modele.ReseauCache;
 import modele.Utilisateur;
 import requete.RequeteGeOOCache;
+import vue.Refreshable;
 import vue.SelectionDropdown;
 
 import javax.print.attribute.standard.JobKOctets;
@@ -11,6 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 public class DropdownUtilisateur extends JPanel {
@@ -22,7 +24,7 @@ public class DropdownUtilisateur extends JPanel {
     private String actionPrec;
     private SelectionDropdown selectionDropdown;
 
-    public DropdownUtilisateur(RequeteGeOOCache requeteGeOOCache, JPanel mainPanel, CardLayout cl, String actionPrec, SelectionDropdown selectionDropdown) throws SQLException {
+    public DropdownUtilisateur(RequeteGeOOCache requeteGeOOCache, JPanel mainPanel, CardLayout cl, String actionPrec, SelectionDropdown selectionDropdown, Utilisateur user) throws SQLException {
         this.requeteGeOOCache = requeteGeOOCache;
         this.mainPanel = mainPanel;
         this.cl = cl;
@@ -42,7 +44,9 @@ public class DropdownUtilisateur extends JPanel {
         //Récupère dans une requête de la liste des Utilisateurs
         List<Utilisateur> utilisateurs = this.requeteGeOOCache.getListeUtilisateurs();
         for(Utilisateur utilisateur : utilisateurs){
-            cbModel.addElement(utilisateur);
+            if(!(user.equals(utilisateur))) {
+                cbModel.addElement(utilisateur);
+            }
         }
         this.cb.setModel(cbModel);
 
@@ -67,7 +71,6 @@ public class DropdownUtilisateur extends JPanel {
         private JPanel mainPanel;
         private CardLayout cl;
         private RequeteGeOOCache requeteGeOOCache;
-        private SelectionDropdown selectionDropdown;
 
         public ChoixActionListener(JPanel mainPanel, CardLayout cl, RequeteGeOOCache requeteGeOOCache) {
             this.mainPanel = mainPanel;
@@ -79,23 +82,33 @@ public class DropdownUtilisateur extends JPanel {
         public void actionPerformed(ActionEvent e) {
             JComboBox<String> cb = (JComboBox<String>) e.getSource();
             String choixSelectionne = cb.getSelectedItem().toString();
-            System.out.println("Action selectionné : " + choixSelectionne);
 
             //Ajout d'autres dropdowns si nécessaire selon le choix
             dynamicArea.removeAll();
 
-            refresh();
-            if (!choixSelectionne.equals("Choix d'un utilisateur")){
-                selectionDropdown.addElementSelect("Utilisateur", cb.getSelectedItem());
-                cl.show(mainPanel, actionPrec);
-            }else{
+            if("Choix de l'utilisateur".equals(choixSelectionne)){
                 selectionDropdown.supprElementSelect("Utilisateur");
                 cl.show(mainPanel, "Choix de l'interface");
+            }else{
+                selectionDropdown.addElementSelect("Utilisateur", cb.getSelectedItem());
+                cl.show(mainPanel, actionPrec);
+                refreshDataView();
             }
+            refresh();
         }
     }
 
-    public Utilisateur getUtilisateurSelectionne(){
-        return (Utilisateur) cb.getSelectedItem();
+    //Cette méthode a été proposé par l'IA
+    public void refreshDataView(){
+        //On refresh les valeurs pour la vue courante
+        //Dans le cas où il s'agit d'une vue nécessitant des valeurs dans les dropdowns
+        Component c = Arrays.stream(mainPanel.getComponents())
+                .filter(comp -> comp.isVisible())
+                .findFirst()
+                .orElse(null);
+
+        if (c instanceof Refreshable) {
+            ((Refreshable) c).refreshData();
+        }
     }
 }

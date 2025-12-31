@@ -159,6 +159,10 @@ public class ReseauCache {
         return id;
     }
 
+    public String getNom() {
+        return nom;
+    }
+
     /**
      *              METHODES EQUALS / HASHCODE
      */

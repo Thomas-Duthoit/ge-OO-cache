@@ -90,14 +90,14 @@ public class DropdownTopChoix extends JPanel {
             //Ajout d'autres dropdowns si nécessaire selon le choix
             dynamicArea.removeAll();
 
+            selectionDropdown.supprAllElementSelect();
             if ("Choix de l'interface".equals(choixSelectionne)) {
-                selectionDropdown.supprAllElementSelect();
                 cl.show(mainPanel, "Choix de l'interface");
             }else {
                 selectionDropdown.addElementSelect("Action", choixSelectionne);
                 try {
                     if ("Associer un utilisateur".equals(choixSelectionne)) {
-                        dynamicArea.add(new DropdownUtilisateur(this.requeteGeOOCache, this.mainPanel, this.cl, choixSelectionne, selectionDropdown));
+                        dynamicArea.add(new DropdownUtilisateur(this.requeteGeOOCache, this.mainPanel, this.cl, choixSelectionne, selectionDropdown, user));
                     }
                     if ("Afficher les statistiques".equals(choixSelectionne) || "Affichage de la liste des caches".equals(choixSelectionne) || "Créer une cache".equals(choixSelectionne) || "Modifier le statut d'une cache".equals(choixSelectionne)) {
                         dynamicArea.add(new DropdownReseau(this.requeteGeOOCache, this.mainPanel, this.cl, choixSelectionne, user, selectionDropdown));

@@ -57,4 +57,11 @@ public class SelectionDropdown {
         return this.elementsSelec.get(key);
     }
 
+    @Override
+    public String toString() {
+        return "SelectionDropdown{" +
+                "elementsSelec=" + elementsSelec +
+                ", fenetrePrincipal=" + fenetrePrincipal +
+                '}';
+    }
 }

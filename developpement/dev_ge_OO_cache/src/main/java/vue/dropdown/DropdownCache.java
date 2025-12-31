@@ -3,6 +3,7 @@ package vue.dropdown;
 import modele.Cache;
 import modele.ReseauCache;
 import requete.RequeteGeOOCache;
+import vue.Refreshable;
 import vue.SelectionDropdown;
 
 import javax.swing.*;
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 public class DropdownCache extends JPanel{
@@ -82,11 +84,27 @@ public class DropdownCache extends JPanel{
                 System.out.println("Choix des caches : " + choixSelectionne);
                 System.out.println(actionPrec);
                 cl.show(mainPanel, actionPrec);
+                refreshDataView();
+
             }else{
                 selectionDropdown.supprElementSelect("Cache");
                 cl.show(mainPanel, "Choix de l'interface");
             }
             refresh();
+        }
+    }
+
+    //Cette méthode a été proposé par l'IA
+    public void refreshDataView(){
+        //On refresh les valeurs pour la vue courante
+        //Dans le cas où il s'agit d'une vue nécessitant des valeurs dans les dropdowns
+        Component c = Arrays.stream(mainPanel.getComponents())
+                .filter(comp -> comp.isVisible())
+                .findFirst()
+                .orElse(null);
+
+        if (c instanceof Refreshable) {
+            ((Refreshable) c).refreshData();
         }
     }
 

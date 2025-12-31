@@ -6,9 +6,11 @@ import requete.RequeteGeOOCache;
 import vue.dropdown.DropdownTopChoix;
 import vue.page.*;
 
+import vue.Refreshable;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 public class FenetrePrincipal extends JFrame {
     private CardLayout cl;
@@ -51,17 +53,15 @@ public class FenetrePrincipal extends JFrame {
     public void loginValider(Utilisateur user) {
         //Enregistrement de l'utilisateur connecté
         this.user = user;
-
         //Création du dropdownTop qui restera fixe
         //Besoin de la mettre ici pour avoir un user fixe
         try{
             this.dropdownTopChoix = new DropdownTopChoix(this.requeteGeOOCache, mainPanel, cl, this.user, this.selectionDropdown);
-
             //Les différentes vues possibles
             mainPanel.add(new Accueil(), "Choix de l'interface");
             mainPanel.add(new CreateReseau(this.requeteGeOOCache, this.user), "Créer un réseau");
-            mainPanel.add(new ShowReseau(), "Affichage des réseaux");
-            mainPanel.add(new AssociateUser(), "Associer un utilisateur");
+            mainPanel.add(new ShowReseau(this.requeteGeOOCache, this.user, this.mainPanel, this.cl, this.selectionDropdown), "Affichage des réseaux");
+            mainPanel.add(new AssociateUser(this.requeteGeOOCache, this.user, this.selectionDropdown), "Associer un utilisateur");
             mainPanel.add(new ShowCaches(), "Affichage de la liste des caches");
             mainPanel.add(new ShowStatistic(), "Afficher les statistiques");
             mainPanel.add(new ShowLoggings(), "Afficher les loggins");
@@ -94,12 +94,9 @@ public class FenetrePrincipal extends JFrame {
         }
     }
 
-    //Méthode pour refresh la vue courante
+    //Méthode pour refresh la vue
     public void refreshMainPanel() {
         this.mainPanel.revalidate();
         this.mainPanel.repaint();
     }
-
-
-
 }
