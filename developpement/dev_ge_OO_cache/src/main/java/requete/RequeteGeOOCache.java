@@ -186,6 +186,54 @@ public class RequeteGeOOCache {
     }
 
     /**
+     * méthode: getReseauAvecProprietaireEtNom
+     * ---------------------------------------
+     * Récupère le reseau dont l'utilisateur est le propriétaire et le nom correspond
+     *
+     * @param utilisateur le propriétaire du réseau
+     * @param nom le nom du réseau
+     * @return le reseauCache recherché
+     */
+    public ReseauCache getReseauAvecProprietaireEtNom(Utilisateur utilisateur, String nom) {
+        EntityManager em = emFactory.createEntityManager();
+
+        String strQuery = "SELECT r FROM ReseauCache r JOIN r.proprietaire u WHERE u = :utilisateur and r.nom = :nom";
+
+        Query query = em.createQuery(strQuery);
+        query.setParameter("utilisateur", utilisateur);
+        query.setParameter("nom", nom);
+        ReseauCache res = (ReseauCache) query.getSingleResult();
+        em.close();
+        return res;
+    }
+
+    /**
+     * méthode: checkAssociationReseauUtilisateurExist
+     * ---------------------------------------
+     * vérifie que l'association reseau_utilisateur existe ou non
+     *
+     * @param utilisateur l'utilisateur cible de l'association
+     * @param reseauCache le reseau cible de l'association
+     * @return boolean : l'association existe ou non
+     */
+    public boolean checkAssociationReseauUtilisateurExist(Utilisateur utilisateur, ReseauCache reseauCache) {
+        EntityManager em = emFactory.createEntityManager();
+
+        String strQuery = "SELECT r FROM ReseauCache r JOIN r.utilisateurs u WHERE u = :utilisateur and r = :reseauCache";
+
+        Query query = em.createQuery(strQuery);
+        query.setParameter("utilisateur", utilisateur);
+        query.setParameter("reseauCache", reseauCache );
+        List<ReseauCache> res =  query.getResultList();
+        em.close();
+        if(res.isEmpty()){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    /**
      * méthode: ajouterAccesReseau
      * ---------------------------
      * Permet à un utilisateur d'obtenir l'accès au réseau

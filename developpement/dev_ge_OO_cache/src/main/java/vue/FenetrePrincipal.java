@@ -62,15 +62,15 @@ public class FenetrePrincipal extends JFrame {
             mainPanel.add(new CreateReseau(this.requeteGeOOCache, this.user), "Créer un réseau");
             mainPanel.add(new ShowReseau(this.requeteGeOOCache, this.user, this.mainPanel, this.cl, this.selectionDropdown), "Affichage des réseaux");
             mainPanel.add(new AssociateUser(this.requeteGeOOCache, this.user, this.selectionDropdown), "Associer un utilisateur");
-            mainPanel.add(new ShowCaches(), "Affichage de la liste des caches");
-            mainPanel.add(new ShowStatistic(), "Afficher les statistiques");
-            mainPanel.add(new ShowLoggings(), "Afficher les loggins");
-            mainPanel.add(new ShowLoggingDetails(), "Afficher les logging détails");
-            mainPanel.add(new CreateCache() , "Créer une cache");
-            mainPanel.add(new CreateUser(), "Créer un utilisateur");
-            mainPanel.add(new UpdateStatutCache(), "Modifier le statut d'une cache");
-            mainPanel.add(new ShowListCache(), "Liste des caches");
-            mainPanel.add(new CreateType(), "Créer un type");
+            mainPanel.add(new ShowCaches(this.requeteGeOOCache, this.selectionDropdown), "Affichage de la liste des caches");
+            mainPanel.add(new ShowStatistic(this.requeteGeOOCache, this.selectionDropdown), "Afficher les statistiques");
+            mainPanel.add(new ShowLoggings(this.requeteGeOOCache, this.selectionDropdown), "Afficher les loggins");
+            mainPanel.add(new ShowLoggingDetails(this.requeteGeOOCache, this.selectionDropdown), "Afficher les logging détails");
+            mainPanel.add(new CreateCache(this.requeteGeOOCache, this.selectionDropdown) , "Créer une cache");
+            mainPanel.add(new CreateUser(this.requeteGeOOCache), "Créer un utilisateur");
+            mainPanel.add(new UpdateStatutCache(this.requeteGeOOCache, this.selectionDropdown), "Modifier le statut d'une cache");
+            mainPanel.add(new ShowListCache(this.requeteGeOOCache, this.selectionDropdown), "Liste des caches");
+            mainPanel.add(new CreateType(this.requeteGeOOCache), "Créer un type");
         }catch (SQLException e){
             System.out.println("Erreur de créer de la dropDown à la connexion");
         }

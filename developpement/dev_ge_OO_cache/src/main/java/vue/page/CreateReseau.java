@@ -1,6 +1,7 @@
 package vue.page;
 
 import jdk.jshell.execution.Util;
+import modele.ReseauCache;
 import modele.Utilisateur;
 import requete.RequeteGeOOCache;
 
@@ -107,6 +108,11 @@ public class CreateReseau extends JPanel {
             System.out.println("Création du réseau : " + inputNameReseau.getText());
             if (req.creerReseau(inputNameReseau.getText(), utilisateur)) {
                 System.out.println("Création réussie");
+
+                // On associe l'utilisateur propriétaire au réseau
+                ReseauCache reseau = req.getReseauAvecProprietaireEtNom(utilisateur, inputNameReseau.getText());
+                req.ajouterAccesReseau(reseau, utilisateur);
+
                 // vide les inputs
                 inputNameReseau.setText("");
             } else {

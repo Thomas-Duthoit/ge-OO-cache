@@ -167,7 +167,16 @@ public class AssociateUser extends JPanel implements Refreshable {
             if (comboBoxReseau.getSelectedItem() instanceof ReseauCache) {
                 ReseauCache r = (ReseauCache) comboBoxReseau.getSelectedItem();
                 Utilisateur u = (Utilisateur) comboBoxUtilisateur.getSelectedItem();
-                boolean result = requeteGeOOCache.ajouterAccesReseau(r, u);
+
+                //Avant de créer l'association on vérifie qu'elle n'existe pas déjà
+                boolean exist = requeteGeOOCache.checkAssociationReseauUtilisateurExist(u, r);
+                boolean result;
+                if(exist){
+                    result = false;
+                }else{
+                    result = requeteGeOOCache.ajouterAccesReseau(r, u);
+                }
+
                 if (result){
                     echec.setVisible(false);
                     reussite.setVisible(true);
