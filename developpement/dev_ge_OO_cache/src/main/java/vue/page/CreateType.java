@@ -1,12 +1,14 @@
 package vue.page;
 
+import requete.RequeteGeOOCache;
+
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 
 public class CreateType extends JPanel {
 
-    public CreateType() throws SQLException {
+    public CreateType(RequeteGeOOCache requeteGeOOCache) throws SQLException {
         super();
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);

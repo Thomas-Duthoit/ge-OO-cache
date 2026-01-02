@@ -6,6 +6,7 @@ import modele.ReseauCache;
 import modele.Utilisateur;
 import requete.RequeteGeOOCache;
 import vue.dropdown.DropdownReseau;
+import vue.SelectionDropdown;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -15,28 +16,18 @@ import java.sql.SQLException;
 public class CreateCache extends JPanel {
 
     private RequeteGeOOCache req;
-    private Utilisateur connecte;  // utilisateur connecté à l'application
-    private ReseauCache reseauSelectionne;  // TODO: passer par le dropdown
 
     // champs pour les informations de la cache:
     private JTextArea descriptionTextuelle;
     private JTextArea descriptionTechnique;
     private JTextArea rubriqueLibre;
 
-    public CreateCache(RequeteGeOOCache requeteGeOOCache, Utilisateur connecte) throws SQLException {
+    public CreateCache(RequeteGeOOCache requeteGeOOCache, SelectionDropdown selectionDropdown) throws SQLException {
         super();
 
 
         this.req = requeteGeOOCache;
 
-        if (connecte == null) {
-            this.connecte = new Utilisateur("TEST", "TEST", true);  // utilisé pour les tests
-            EntityManager em = req.getEm();
-            EntityTransaction et = em.getTransaction();
-            et.begin();
-            em.persist(this.connecte);
-            et.commit();
-        }
 
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);

@@ -74,7 +74,7 @@ public class RequeteGeOOCache {
         } else if (res.getFirst().isAdmin()) {
             return res.getFirst().getId();  // on a eu un résultat -> on peut autoriser la connection et pouvoir retrouver l'utilisateur avec un find
         } else {
-            return -1;  // pas admin -> on esr pas connecté
+            return -1;  // pas admin -> on est pas connecté
         }
     }
 
@@ -123,7 +123,6 @@ public class RequeteGeOOCache {
         em.close();
         return res;
     }
-
 
     /**
      *              METHODES RequeteGeOOCache
@@ -184,6 +183,54 @@ public class RequeteGeOOCache {
         }
 
         return true;  // on est arrivé là sans retourner false -> création effectuée
+    }
+
+    /**
+     * méthode: getReseauAvecProprietaireEtNom
+     * ---------------------------------------
+     * Récupère le reseau dont l'utilisateur est le propriétaire et le nom correspond
+     *
+     * @param utilisateur le propriétaire du réseau
+     * @param nom le nom du réseau
+     * @return le reseauCache recherché
+     */
+    public ReseauCache getReseauAvecProprietaireEtNom(Utilisateur utilisateur, String nom) {
+        EntityManager em = emFactory.createEntityManager();
+
+        String strQuery = "SELECT r FROM ReseauCache r JOIN r.proprietaire u WHERE u = :utilisateur and r.nom = :nom";
+
+        Query query = em.createQuery(strQuery);
+        query.setParameter("utilisateur", utilisateur);
+        query.setParameter("nom", nom);
+        ReseauCache res = (ReseauCache) query.getSingleResult();
+        em.close();
+        return res;
+    }
+
+    /**
+     * méthode: checkAssociationReseauUtilisateurExist
+     * ---------------------------------------
+     * vérifie que l'association reseau_utilisateur existe ou non
+     *
+     * @param utilisateur l'utilisateur cible de l'association
+     * @param reseauCache le reseau cible de l'association
+     * @return boolean : l'association existe ou non
+     */
+    public boolean checkAssociationReseauUtilisateurExist(Utilisateur utilisateur, ReseauCache reseauCache) {
+        EntityManager em = emFactory.createEntityManager();
+
+        String strQuery = "SELECT r FROM ReseauCache r JOIN r.utilisateurs u WHERE u = :utilisateur and r = :reseauCache";
+
+        Query query = em.createQuery(strQuery);
+        query.setParameter("utilisateur", utilisateur);
+        query.setParameter("reseauCache", reseauCache );
+        List<ReseauCache> res =  query.getResultList();
+        em.close();
+        if(res.isEmpty()){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     /**
@@ -377,9 +424,15 @@ public class RequeteGeOOCache {
     public List<Log> getLogs(Utilisateur propCache, ReseauCache filtreReseau, Cache filtreCache) {
         EntityManager em = emFactory.createEntityManager();
 
-        propCache = em.merge(propCache);
-        filtreReseau = em.merge(filtreReseau);
-        filtreCache = em.merge(filtreCache);
+        if(propCache != null){
+            propCache = em.merge(propCache);
+        }
+        if(filtreReseau != null) {
+            filtreReseau = em.merge(filtreReseau);
+        }
+        if(filtreCache != null) {
+            filtreCache = em.merge(filtreCache);
+        }
 
         String strQuery;
         Query query;
@@ -394,7 +447,7 @@ public class RequeteGeOOCache {
             query = em.createQuery(strQuery);
             query.setParameter("filtreReseau", filtreReseau);
         } else {
-            strQuery = "SELECT l FROM Log l JOIN l.enregistrer c JOIN c.appartient u WHERE u = :propCache";
+            strQuery = "SELECT l FROM Log l JOIN l.enregistrer c JOIN c.appartient r JOIN r.proprietaire u WHERE u = :propCache";
             query = em.createQuery(strQuery);
             query.setParameter("propCache", propCache);
         }
@@ -414,11 +467,11 @@ public class RequeteGeOOCache {
         /**
          * méthode : getCachesByReseauCacheId
          * ----------------------------
-         * récupère la liste des différents caches selon l'id du reseau de cache
+         * récupère la liste des différents caches selon le réseau de cache
          * @param reseau le réseau de cache
          * @return liste des Caches
          */
-        public List<Cache> getCachesByReseauCacheId(ReseauCache reseau){
+        public List<Cache> getCachesByReseauCache(ReseauCache reseau){
             List<Cache> caches = new ArrayList<Cache>();
             final EntityManager em = this.getEm();
             String strQuery = "Select c from Cache c where c.appartient = :reseau";

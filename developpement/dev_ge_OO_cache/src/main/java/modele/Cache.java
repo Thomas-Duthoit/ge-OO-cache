@@ -69,6 +69,7 @@ public class Cache {
      * TOSTRING Cache
      * @return la chaine de caractère représentant les informations du cache
      */
+    /*
     @Override
     public String toString() {
         String texte = "Cache{" +
@@ -85,6 +86,11 @@ public class Cache {
             texte += ", logs=" + logs.size();
         texte += '}';
         return texte;
+    }*/
+
+    @Override
+    public String toString() {
+        return "Cache " + numero;
     }
 
     /**
