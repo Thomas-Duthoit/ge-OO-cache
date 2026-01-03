@@ -1,17 +1,20 @@
 package vue.page;
 
+import modele.Cache;
 import modele.StatutCache;
 import requete.RequeteGeOOCache;
 import vue.SelectionDropdown;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 public class UpdateStatutCache extends JPanel {
 
-    RequeteGeOOCache requeteGeOOCache;
-    SelectionDropdown selectionDropdown;
+    private RequeteGeOOCache requeteGeOOCache;
+    private SelectionDropdown selectionDropdown;
 
     private JComboBox<StatutCache> statutCacheCombo;
     private JLabel nomCache;
@@ -20,6 +23,9 @@ public class UpdateStatutCache extends JPanel {
         super();
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
+
+        this.requeteGeOOCache = requeteGeOOCache;
+        this.selectionDropdown = selectionDropdown;
 
         JPanel panelModif = new JPanel();
         panelModif.setLayout(new BoxLayout(panelModif, BoxLayout.Y_AXIS));
@@ -64,6 +70,7 @@ public class UpdateStatutCache extends JPanel {
 
         JButton btnCreer = new JButton("> Modifier");
         btnCreer.setBackground(Color.decode("#c8d400"));
+        btnCreer.addActionListener(new UpdateStatutActionListener(requeteGeOOCache, statutCacheCombo, selectionDropdown));
 
         JPanel panelBtn = new JPanel();
         panelBtn.setLayout(new BorderLayout());
@@ -79,5 +86,29 @@ public class UpdateStatutCache extends JPanel {
         this.setVisible(true);
     }
 
+
+    // classe interne à la vue car elle y est spécifique
+    class UpdateStatutActionListener implements ActionListener {
+
+        private SelectionDropdown sel;
+        private JComboBox<StatutCache> statut;
+        private RequeteGeOOCache req;
+
+        public UpdateStatutActionListener(RequeteGeOOCache req, JComboBox<StatutCache> statut, SelectionDropdown sel) {
+            this.req = req;  // on récupère l'instance pour les requêtes
+            this.sel = sel;
+            this.statut = statut;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("Cache : " + sel.getElementSelect("Cache"));
+            System.out.println("Statut : " + statut.getSelectedItem());
+
+            req.updateStatutCache(
+                    ((Cache) sel.getElementSelect("Cache")).getNumero(),
+                    ((StatutCache) statut.getSelectedItem()).getId());
+        }
+    }
 }
 
