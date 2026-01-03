@@ -320,14 +320,34 @@ public class RequeteGeOOCache {
      * @param reseauCache le réseau dont on veut le nombre de caches
      * @return le nombre de caches du réseau
      */
-    public int getStatNbCaches(ReseauCache reseauCache) {
+    public Long getStatNbCaches(ReseauCache reseauCache) {
         EntityManager em = emFactory.createEntityManager();
 
         String strQuery = "SELECT COUNT(c) FROM Cache c JOIN c.appartient r WHERE r = :reseau";
 
         Query query = em.createQuery(strQuery);
         query.setParameter("reseau", reseauCache);
-        List<Integer> res = query.getResultList();
+        List<Long> res = query.getResultList();
+        em.close();
+        return res.getFirst();
+    }
+
+    /**
+     * méthode: getStatNbCaches
+     * ----------------------------
+     * Renvoie le nombre d'utilisateurs qui accèdent au réseau pour l'affichage des statistiques
+     *
+     * @param reseauCache le réseau dont on veut le nombre d'utilisateurs
+     * @return le nombre de caches du réseau
+     */
+    public Long getStatNbUtilisateurs(ReseauCache reseauCache) {
+        EntityManager em = emFactory.createEntityManager();
+
+        String strQuery = "SELECT COUNT(u) FROM Utilisateur u JOIN u.accede r WHERE r = :reseau";
+
+        Query query = em.createQuery(strQuery);
+        query.setParameter("reseau", reseauCache);
+        List<Long> res = query.getResultList();
         em.close();
         return res.getFirst();
     }
@@ -340,14 +360,14 @@ public class RequeteGeOOCache {
      * @param reseauCache le réseau dont on veut le nombre de logs
      * @return le nombre de logs du réseau
      */
-    public int getStatNbLogs(ReseauCache reseauCache) {
+    public Long getStatNbLogs(ReseauCache reseauCache) {
         EntityManager em = emFactory.createEntityManager();
 
         String strQuery = "SELECT COUNT(l) FROM Log l JOIN l.enregistrer c JOIN c.appartient r WHERE r = :reseau";
 
         Query query = em.createQuery(strQuery);
         query.setParameter("reseau", reseauCache);
-        List<Integer> res = query.getResultList();
+        List<Long> res = query.getResultList();
         em.close();
         return res.getFirst();
     }
@@ -360,14 +380,14 @@ public class RequeteGeOOCache {
      * @param reseauCache le réseau dont on veut le nombre de logs avec une cache trouvée
      * @return le nombre de logs avec une cache trouvée du réseau
      */
-    public int getStatNbTrouve(ReseauCache reseauCache) {
+    public Long getStatNbTrouve(ReseauCache reseauCache) {
         EntityManager em = emFactory.createEntityManager();
 
         String strQuery = "SELECT COUNT(l) FROM Log l JOIN l.enregistrer c JOIN c.appartient r WHERE r = :reseau AND l.trouver = TRUE";
 
         Query query = em.createQuery(strQuery);
         query.setParameter("reseau", reseauCache);
-        List<Integer> res = query.getResultList();
+        List<Long> res = query.getResultList();
         em.close();
         return res.getFirst();
     }
@@ -380,14 +400,14 @@ public class RequeteGeOOCache {
      * @param reseauCache le réseau dont on veut le nombre de logs avec une cache non trouvée
      * @return le nombre de logs avec une cache non trouvée du réseau
      */
-    public int getStatNbPasTrouve(ReseauCache reseauCache) {
+    public Long getStatNbPasTrouve(ReseauCache reseauCache) {
         EntityManager em = emFactory.createEntityManager();
 
         String strQuery = "SELECT COUNT(l) FROM Log l JOIN l.enregistrer c JOIN c.appartient r WHERE r = :reseau AND l.trouver = FALSE";
 
         Query query = em.createQuery(strQuery);
         query.setParameter("reseau", reseauCache);
-        List<Integer> res = query.getResultList();
+        List<Long> res = query.getResultList();
         em.close();
         return res.getFirst();
     }

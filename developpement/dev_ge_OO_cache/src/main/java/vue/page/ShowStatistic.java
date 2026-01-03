@@ -69,30 +69,44 @@ public class ShowStatistic extends JPanel implements Refreshable {
         proprietaire = new JLabel("- Porprietaire : PROPRIETAIRE");
         proprietaire.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelStats.add(proprietaire);
+        panelStats.add(Box.createVerticalStrut(10));
 
         nbCache = new JLabel("- Nombre de caches : nnn");
         nbCache.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelStats.add(nbCache);
+        panelStats.add(Box.createVerticalStrut(10));
 
         nbUtilisateurs = new JLabel("- Nombre d'utilisateurs associés : nnn");
         nbUtilisateurs.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelStats.add(nbUtilisateurs);
+        panelStats.add(Box.createVerticalStrut(10));
 
         nbLogs = new JLabel("- Nombre de visites/logs : nnn");
         nbLogs.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelStats.add(nbLogs);
+        panelStats.add(Box.createVerticalStrut(10));
 
         nbTrouve = new JLabel("- Nombre de trouvailles : nnn");
         nbTrouve.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelStats.add(nbTrouve);
+        panelStats.add(Box.createVerticalStrut(10));
 
         nbNonTrouve = new JLabel("- Nombre d'échec de trouvaille : nnn");
         nbNonTrouve.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelStats.add(nbNonTrouve);
+        panelStats.add(Box.createVerticalStrut(10));
 
         pourcentage = new JLabel("- Pourcentage de trouvaille : ppp%");
         pourcentage.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelStats.add(pourcentage);
+
+        proprietaire.setFont(new Font(null, Font.PLAIN, 15));
+        nbCache.setFont(new Font(null, Font.PLAIN, 15));
+        nbUtilisateurs.setFont(new Font(null, Font.PLAIN, 15));
+        nbLogs.setFont(new Font(null, Font.PLAIN, 15));
+        nbTrouve.setFont(new Font(null, Font.PLAIN, 15));
+        nbNonTrouve.setFont(new Font(null, Font.PLAIN, 15));
+        pourcentage.setFont(new Font(null, Font.PLAIN, 15));
 
         frame.add(panelStats, BorderLayout.CENTER);
 
@@ -109,6 +123,16 @@ public class ShowStatistic extends JPanel implements Refreshable {
             frame.setVisible(true);
 
             // TODO : update les textes
+            proprietaire.setText("- Propriétaire : " + requeteGeOOCache.getStatProprietaire(reseauCache).getPseudo());
+            nbCache.setText("- Nombre de caches : " + requeteGeOOCache.getStatNbCaches(reseauCache));
+            nbUtilisateurs.setText("- Nombre d'utilisateurs associés : " + requeteGeOOCache.getStatNbUtilisateurs(reseauCache));
+            nbLogs.setText("- Nombre de visites/logs : " + requeteGeOOCache.getStatNbLogs(reseauCache));
+            nbTrouve.setText("- Nombre de trouvailles : " + requeteGeOOCache.getStatNbTrouve(reseauCache));
+            nbNonTrouve.setText("- Nombre d'échec de trouvaille : " + requeteGeOOCache.getStatNbPasTrouve(reseauCache));
+            pourcentage.setText("- Pourcentage de trouvaille : "
+                    + Math.round(requeteGeOOCache.getStatPourcentageTrouve(reseauCache) * 100)
+                    + "%"
+            );
 
         } else {
             frame.setVisible(false);
