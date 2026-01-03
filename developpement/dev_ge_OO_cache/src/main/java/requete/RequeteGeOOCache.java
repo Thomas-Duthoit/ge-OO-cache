@@ -455,9 +455,7 @@ public class RequeteGeOOCache {
         List<Log> res = query.getResultList();
         em.close();
         return res;
-    } 
-
-  
+    }
   
         /**
          *              METHODES RequeteGeOOCache

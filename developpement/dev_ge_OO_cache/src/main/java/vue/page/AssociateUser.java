@@ -1,10 +1,12 @@
 package vue.page;
 
+import jdk.jshell.execution.Util;
 import modele.ReseauCache;
 import modele.Utilisateur;
 import requete.RequeteGeOOCache;
 import vue.Refreshable;
 import vue.SelectionDropdown;
+import vue.dropdown.ComboBoxGeneral;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,37 +15,60 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Classe AssociateUser
+ * Une classe correspondant à une page de l'application
+ * Elle permet l'affichage de la page sur l'association d'un utilisateur à une vue
+ */
 public class AssociateUser extends JPanel implements Refreshable {
+    //Attributs
     private RequeteGeOOCache requeteGeOOCache;
-    private Utilisateur utilisateur;
     private JComboBox<Utilisateur> comboBoxUtilisateur;
     private JComboBox<Object> comboBoxReseau;
     private SelectionDropdown selectionDropdown;
+    private ComboBoxGeneral comboBoxGeneral;
     private JLabel reussite;
     private JLabel echec;
 
-    public AssociateUser(RequeteGeOOCache requeteGeOOCache, Utilisateur utilisateur, SelectionDropdown selectionDropdown) throws SQLException {
+    //Constructeur par données
+    public AssociateUser(RequeteGeOOCache requeteGeOOCache, Utilisateur utilisateur, SelectionDropdown selectionDropdown, ComboBoxGeneral comboBoxGeneral) throws SQLException {
         super();
         //Attribution des variables
         this.requeteGeOOCache = requeteGeOOCache;
-        this.utilisateur = utilisateur;
         this.selectionDropdown = selectionDropdown;
+        this.comboBoxGeneral = comboBoxGeneral;
         System.out.println("test");
         System.out.println(selectionDropdown);
 
         //DONNEES
+        //Création des JComboBox pour les réseaux et les utilisateurs
+        this.comboBoxReseau = getComboBoxReseau(utilisateur);
+        this.comboBoxUtilisateur = getComboBoxUtilisateur(utilisateur);
 
-        //Création des dropdowns pour les réseaux et les utilisateurs
-        //Récupération des valeurs
-        //Récupération de la liste des réseauxCache dont l'utilisateur est propriétaire
+        //DESIGN
+        //Mise en forme
+        this.setLayout(new BorderLayout());
+        this.setBackground(Color.WHITE);
+
+        this.add(createTextTop("Attribution d'accès à un réseau"), BorderLayout.NORTH);
+        this.add(createCenterPanel(), BorderLayout.CENTER);
+        this.add(createButtonValidate("> OUI !"), BorderLayout.SOUTH);  // le panel du bouton est en bas
+        this.setVisible(true);
+    }
+
+    /**
+     *              METHODES : creation des différents éléments
+     */
+
+    /**
+     * Méthode getComboBoxReseau
+     * -------
+     * permet de créer la comboBox pour la partie ReseauCache
+     * @return JComboBox<Object> correspondant à la partie ReseauCache des utilisateurs du reseau
+     */
+    public JComboBox<Object> getComboBoxReseau(Utilisateur utilisateur) {
         List<ReseauCache> reseauxCacheProp = this.requeteGeOOCache.getReseauxUtilisateur(utilisateur);
-
-        //Récupération de la liste des utilisateurs
-        List<Utilisateur> utilisateurs = this.requeteGeOOCache.getListeUtilisateurs();
-
-        //Création des dropdowns
-        //Création de la dropdown : ReseauCache
-        comboBoxReseau = new JComboBox<>();
+        JComboBox<Object> comboBoxReseau = new JComboBox<>();
         DefaultComboBoxModel<Object> comboBoxReseauModel = new DefaultComboBoxModel<>();
         comboBoxReseauModel.addElement("Choix du réseau");
         for(ReseauCache rc : reseauxCacheProp){
@@ -51,62 +76,69 @@ public class AssociateUser extends JPanel implements Refreshable {
         }
 
         comboBoxReseau.setModel(comboBoxReseauModel);
+        comboBoxReseau.setMaximumSize(new Dimension(200, 50));
+        return comboBoxReseau;
+    }
 
-        //Création de la dropdown : Utilisateur
-        comboBoxUtilisateur = new JComboBox<>();
+    /**
+     * Méthode getComboBoxUtilisateur
+     * -------
+     * permet de créer la comboBox pour la partie Utilisateur
+     * @return JComboBox<Object> correspondant à la partie Utilisateur (hors utilisateur courant)
+     */
+    public JComboBox<Utilisateur> getComboBoxUtilisateur(Utilisateur utilisateur) {
+        List<Utilisateur> utilisateurs = this.requeteGeOOCache.getListeUtilisateurs();
+        JComboBox<Utilisateur> comboBoxUtilisateur = new JComboBox<>();
         DefaultComboBoxModel<Utilisateur> comboBoxUtilisateurModel = new DefaultComboBoxModel<>();
         for(Utilisateur u : utilisateurs){
-            if(!(u.equals(this.utilisateur))) { //TODO : vérifier qu'il n'y a pas besoin de pouvoir s'associer soit même
+            if(!(u.equals(utilisateur))) {
                 comboBoxUtilisateurModel.addElement(u);
             }
         }
 
         comboBoxUtilisateur.setModel(comboBoxUtilisateurModel);
+        comboBoxUtilisateur.setMaximumSize(new Dimension(200, 50));
 
-        //DESIGN
+        comboBoxUtilisateur.addActionListener(new ActionChangeListener());
 
-        //Mise en forme
-        this.setLayout(new BorderLayout());
-        this.setBackground(Color.WHITE);
+        return comboBoxUtilisateur;
+    }
 
-        //Texte en haut de la page
+    /**
+     * Méthode createTextTop
+     * -------
+     * permet de créer la JPanel de la partie haute de l'affichage
+     * @param texte : le texte à attribuer à la partie haute
+     * @return JPanel correspondant à l'affichage de la partie haute
+     */
+    public JPanel createTextTop(String texte){
         JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BorderLayout());
         topPanel.setBackground(Color.WHITE);
 
-        JPanel topTextPanel = createChampWithoutTextField("Attribution d'accès à un réseau");
+        //Création du champ avec le texte
+        JPanel topTextPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        topTextPanel.setBackground(new Color(230, 230, 230));
+        // padding gauche / droite / haut / bas
+        topTextPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
+        JLabel label = new JLabel(texte);
+        topTextPanel.add(label);
+
         topPanel.add(topTextPanel, BorderLayout.CENTER);
+        topPanel.add(Box.createRigidArea(new Dimension(200, 0)), BorderLayout.EAST);
+        topPanel.add(Box.createRigidArea(new Dimension(200, 0)), BorderLayout.WEST);
+        topPanel.add(Box.createRigidArea(new Dimension(0, 100)), BorderLayout.NORTH);
 
-        this.add(topPanel, BorderLayout.NORTH);
+        return topPanel;
+    }
 
-        ///Création du panel pour le design
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-        panel.setBackground(Color.WHITE);
-
-        comboBoxUtilisateur.setMaximumSize(new Dimension(200, 50));
-        panel.add(comboBoxUtilisateur);
-        JLabel texte = new JLabel(" aura accès à ");
-        texte.setHorizontalAlignment(SwingConstants.CENTER);
-        panel.add(texte);
-        comboBoxReseau.setMaximumSize(new Dimension(200, 50));
-        panel.add(comboBoxReseau);
-        panel.setBorder(BorderFactory.createEmptyBorder(0, 100, 0, 100)); // 50px à gauche et droite
-
-        this.add(panel, BorderLayout.CENTER);
-
-        //Création du bouton
-        JButton btnCreer = new JButton("> Oui !");
-        btnCreer.setBackground(Color.decode("#c8d400"));
-        btnCreer.addActionListener(new ActionAssociateButtonListener());
-
-        //Design du bouton
-        JPanel panelBtn = new JPanel();
-        panelBtn.setLayout(new BorderLayout());
-        panelBtn.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 30));  // bordure en bas et à droite
-        panelBtn.setBackground(Color.WHITE);
-        panelBtn.add(btnCreer, BorderLayout.EAST);  // à droite
-        this.add(panelBtn, BorderLayout.SOUTH);  // le panel du bouton est en bas
-
+    /**
+     * Méthode createMessagePanel
+     * -------
+     * permet de créer la JPanel correspondant au message d'erreur et de réussite
+     * @return JPanel correspondant au message d'erreur et de réussite
+     */
+    public JPanel createMessagePanel(){
         //Message de réussite
         this.reussite = new JLabel("Association réussie");
         this.reussite.setForeground(Color.BLUE);
@@ -120,37 +152,83 @@ public class AssociateUser extends JPanel implements Refreshable {
 
         JPanel messagePanel = new JPanel();
         messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.Y_AXIS));
+        messagePanel.setBackground(Color.WHITE);
 
         messagePanel.add(this.reussite);
         messagePanel.add(this.echec);
+        return messagePanel;
+    }
+
+    /**
+     * Méthode createButtonValidate
+     * -------
+     * permet de créer le JButton permettant de valider l'association
+     * @param texte : le texte à attribuer au bouton
+     * @return JButton de validation
+     */
+    public JPanel createButtonValidate(String texte){
+        //Création du bouton
+        JButton btnCreer = new JButton(texte);
+        btnCreer.setBackground(Color.decode("#c8d400"));
+        btnCreer.addActionListener(new ActionAssociateButtonListener());
+
+        //Design du bouton
+        JPanel panelBtn = new JPanel();
+        panelBtn.setLayout(new BorderLayout());
+        panelBtn.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 30));  // bordure en bas et à droite
+        panelBtn.setBackground(Color.WHITE);
+        panelBtn.add(btnCreer, BorderLayout.EAST);  // à droite
+        return panelBtn;
+    }
+
+    /**
+     * Méthode createCenterPanel
+     * -------
+     * permet de créer le JPanel du centre avec le choix de l'utilisateur et du reseauCache + message
+     * @return JPanel de l'affichage du centre
+     */
+    public JPanel createCenterPanel(){
+        ///Création du panel pour le design
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.setBackground(Color.WHITE);
+
+        //Création du texte
+        JLabel texte = new JLabel(" aura accès à ");
+        texte.setHorizontalAlignment(SwingConstants.CENTER);
+
+        //Rassemblement de la ligne
+        panel.add(this.comboBoxUtilisateur);
+        panel.add(Box.createRigidArea(new Dimension(20, 0)));
+        panel.add(texte);
+        panel.add(Box.createRigidArea(new Dimension(20, 0)));
+        panel.add(this.comboBoxReseau);
+
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 100, 0, 100)); // 50px à gauche et droite
 
         JPanel center = new JPanel();
         center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
         center.setBackground(Color.WHITE);
 
+        //Ajout des messages d'erreur
         center.add(Box.createVerticalStrut(100));
-        center.add(messagePanel);
+        center.add(createMessagePanel());
         center.add(Box.createVerticalStrut(20));
         center.add(panel);
 
-        this.add(topTextPanel, BorderLayout.NORTH);
-        this.add(center, BorderLayout.CENTER);
-        this.setVisible(true);
+        return center;
     }
 
-    public JPanel createChampWithoutTextField(String texteLabel) {
-        JPanel champ = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        champ.setBackground(new Color(230, 230, 230));
+    /**
+     *          REFRESHDATA
+     */
 
-        // padding gauche / droite / haut / bas
-        champ.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
-
-        JLabel label = new JLabel(texteLabel);
-        champ.add(label);
-
-        return champ;
-    }
-
+    /**
+     * Methode : RefreshData
+     * -------
+     * Permet de refresh les données quand on revient sur cette vue ou quand l'utilisateur est modifié dans la dropdown
+     * Modifie la comboBox avec l'utilisateur choisit
+     */
     @Override
     public void refreshData() {
         //Récupère l'utilisateur sélectionné dans la dropdown
@@ -161,6 +239,12 @@ public class AssociateUser extends JPanel implements Refreshable {
         repaint();
     }
 
+    /**
+     *         LISTENER
+     */
+
+    // classe interne à la vue car elle y est spécifique
+    // Permet de réagir au bouton : vient créer l'association si c'est possible
     public class ActionAssociateButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -177,9 +261,11 @@ public class AssociateUser extends JPanel implements Refreshable {
                     result = requeteGeOOCache.ajouterAccesReseau(r, u);
                 }
 
+                //Création de l'association
                 if (result){
                     echec.setVisible(false);
                     reussite.setVisible(true);
+                    comboBoxUtilisateur.setSelectedItem(0);
                 }else{
                     echec.setVisible(true);
                     reussite.setVisible(false);
@@ -190,6 +276,14 @@ public class AssociateUser extends JPanel implements Refreshable {
                 reussite.setVisible(false);
                 return;
             };
+        }
+    }
+
+    public class ActionChangeListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            selectionDropdown.addElementSelect("Utilisateur", comboBoxUtilisateur.getSelectedItem());
+            comboBoxGeneral.refreshComboBoxUtilisateur();
         }
     }
 }

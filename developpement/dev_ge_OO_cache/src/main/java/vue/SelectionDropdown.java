@@ -12,7 +12,7 @@ import java.util.Map;
 
 //L'idée de la création d'une "mémoire partagée" a été présenté par l'IA
 public class SelectionDropdown {
-    //Variables
+    //Attributs
     private final Map<String, Object> elementsSelec;
     //Mettre la variable en final permet d'éviter de la mettre en paramètres de chaque création d'instances
     //En effet la référence restera la même pour chaque class créant une instance de la class SelectionDropdown
@@ -24,7 +24,17 @@ public class SelectionDropdown {
         this.fenetrePrincipal = fenetrePrincipal;
     }
 
-    //Méthodes d'ajout de valeur dans la Map
+    /**
+     *              METHODES
+     */
+
+    /**
+     * Méthode : addElementSelect
+     * -------
+     * ajouter une valeur dans la Map
+     * @param key : clé de la valeur à ajouter
+     * @param value : valeur à ajouter
+     */
     public void addElementSelect(String key, Object value){
         if (key != null && value != null) {
             this.elementsSelec.remove(key); //Si la clé existe déjà dans la liste
@@ -33,7 +43,12 @@ public class SelectionDropdown {
         }
     }
 
-    //Méthodes de suppression de valeur dans la Map dans le cas où la dropdown passe à "Choix de ..."
+    /**
+     * Méthode : supprElementSelect
+     * ------
+     * supprimer une valeur dans la Map selon l'élément selectionné
+     * @param key : clé de la valeur a supprimé
+     */
     public void supprElementSelect(String key){
         if(key != null){
             this.elementsSelec.remove(key);
@@ -41,21 +56,38 @@ public class SelectionDropdown {
         }
     }
 
-    //Méthodes de suppression de toutes les valeurs dans la Map dans la première dropdown change
+    /**
+     * Méthode : supprAllElementSelect
+     * -----
+     * permet de supprimer tous les éléments sélectionné de la Map
+     */
     public void supprAllElementSelect(){
         this.elementsSelec.clear();
         this.fenetrePrincipal.refreshMainPanel();
     }
 
-    //Méthodes de récupération de la Map
+    /**
+     * Méthode : getAllElementsSelect
+     * -----
+     * permet de récupérer tous les éléments de la Map
+     */
     public Map<String, Object> getAllElementsSelec() {
         return this.elementsSelec;
     }
 
-    //Méthode de récupération d'un unique élément de la Map
+    /**
+     * Méthode : getElementsSelect
+     * -----
+     * permet de récupérer une valeur d'un élément spécifique
+     * @param key : clé correspondant à l'élément à récupérer
+     */
     public Object getElementSelect(String key){
         return this.elementsSelec.get(key);
     }
+
+    /**
+     *              TOSTRING
+     */
 
     @Override
     public String toString() {

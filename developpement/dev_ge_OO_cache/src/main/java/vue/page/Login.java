@@ -23,13 +23,14 @@ import java.sql.SQLException;
  * Première vue afficher lors de l'ouverture de l'application
  * Permet de se connecter à l'application
  */
-
 public class Login extends JPanel{
+    //Attributs
     private FenetrePrincipal fenetrePrincipal;
     private JTextField username;
     private JPasswordField password;
     private JLabel errorLabel;
 
+    //Constructeurs par données
     public Login(FenetrePrincipal fenetrePrincipal) throws SQLException {
         super();
         this.fenetrePrincipal = fenetrePrincipal;
@@ -37,7 +38,6 @@ public class Login extends JPanel{
         this.setBackground(Color.WHITE);
 
         //Interface de connexion
-
         //Img : LOGO
         JLabel logoLabel = createLogo();
         this.add(logoLabel, BorderLayout.NORTH);
@@ -46,7 +46,6 @@ public class Login extends JPanel{
         JPanel loginPanel = new JPanel();
         loginPanel.setBackground(Color.WHITE);
         loginPanel.setLayout(new BoxLayout(loginPanel, BoxLayout.Y_AXIS));
-        loginPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
         this.username = createTextField("Nom d'utilisateur");
         this.password = createPasswordField("Mot de passe");
@@ -57,8 +56,6 @@ public class Login extends JPanel{
         errorLabel.setForeground(Color.RED);
         errorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         errorLabel.setVisible(false);
-
-
 
         loginButton.addActionListener(new MyButtonListener(loginPanel, this.username, this.password));
 
@@ -74,6 +71,130 @@ public class Login extends JPanel{
         this.setVisible(true);
     }
 
+    /**
+     *          METHODES : création des différents éléments à afficher
+     */
+
+    /**
+     * Méthode : createLogo
+     * ------
+     * permet de récupérer l'image dans les fichiers et de l'afficher correctement
+     * @return JLabel contenant l'image
+     */
+
+    //méthode pour récupérer l'image et créer le design autour de celle ci
+    public JLabel createLogo(){
+        try {
+            BufferedImage img = ImageIO.read(getClass().getResourceAsStream("/logo.png")); // Récupère l'image à sa position
+            Image scaledImg = img.getScaledInstance(600, 300, Image.SCALE_SMOOTH); // Rajoute une dimension à l'image
+            JLabel imageLabel = new JLabel(new ImageIcon(scaledImg)); // Crée le label avec l'image
+            imageLabel.setHorizontalAlignment(JLabel.CENTER);
+            return imageLabel;
+        } catch (IOException e) {
+            //Dans le cas où l'image est introuvable
+            return new JLabel("Ge-OO-cache", JLabel.CENTER);
+        }
+    }
+
+    /**
+     * Méthode : createTextField
+     * -------
+     * Le design a été réalisé à l'aide de l'IA générative afin de comprendre le fonctionnement d'un design plus précis sur un TextField
+     * ------
+     * permet de créer un JTextField selon une valeur de placeholder
+     * @param placeholder : texte qui sera afficher par défaut sur le JTextField
+     * @return JTextField pour l'input d'utilisateur
+     */
+    public JTextField createTextField(String placeholder){
+        JTextField field = new JTextField(placeholder);
+
+        //Ce listener permet d'ajouter l'effet de placeholder dans le JTextField
+        //Permet également d'enregistrer la nouvelle valeur dans un attribut
+        field.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if(field.getText().equals(placeholder)){
+                    field.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if(field.getText().isEmpty()){
+                    field.setText(placeholder);
+                }
+            }
+        });
+
+        field.setMaximumSize(new Dimension(350, 45));
+        field.setHorizontalAlignment(JTextField.CENTER);
+        field.setFont(new Font("Arial", Font.PLAIN, 14));
+        field.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2, true));
+        return field;
+    }
+
+    /**
+     * Méthode : createPasswordField
+     * -------
+     * Le design a été réalisé à l'aide de l'IA générative afin de comprendre le fonctionnement d'un design plus précis sur un TextField
+     * ------
+     * permet de créer un JPasswordField selon une valeur de placeholder
+     * @param placeholder : texte qui sera afficher par défaut sur le JPasswordField
+     * @return JPasswordField pour l'input de mot de passe
+     */
+    //méthode pour créer le passwordField (input de password)
+    private JPasswordField createPasswordField(String placeholder) {
+        JPasswordField field = new JPasswordField(placeholder);
+
+        //Ce listener permet d'ajouter l'effet de placeholder dans le JPasswordField
+        //Permet également d'enregistrer la nouvelle valeur dans un attribut
+        field.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if(field.getText().equals(placeholder)){
+                    field.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if(field.getText().isEmpty()){
+                    field.setText(placeholder);
+                }
+            }
+        });
+
+        field.setMaximumSize(new Dimension(350, 45));
+        field.setHorizontalAlignment(JTextField.CENTER);
+        field.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true));
+        return field;
+    }
+
+    /**
+     * Méthode : createButton
+     * -------
+     * Le design a été réalisé à l'aide de l'IA générative afin de comprendre le fonctionnement d'un design plus précis sur un TextField
+     * ------
+     * permet de créer un Button avec le design approprié
+     * @return JButton le bouton créer
+     */
+    private JButton createButton() {
+        JButton button = new JButton("> Connexion");
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setBackground(Color.decode("#c8d400"));
+        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setPreferredSize(new Dimension(180, 45));
+        button.setMaximumSize(new Dimension(180, 45));
+        button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+
+        return button;
+    }
+
+    /**
+     *              LISTENER
+     */
+
+    // classe interne à la vue car elle y est spécifique
     //Listener qui s'activer au click sur le bouton connexion.
     //Vérifie puis effectue une réaction selon le résultat
     public class  MyButtonListener implements ActionListener{
@@ -104,90 +225,5 @@ public class Login extends JPanel{
             System.out.println("Résultat de la demande de connection : '" + id + "'  -  utilisateur : " + u1);
             fenetrePrincipal.loginValider(u1);
         }
-    }
-
-    //méthode pour récupérer l'image et créer le design autour de celle ci
-    public JLabel createLogo(){
-        try {
-            BufferedImage img = ImageIO.read(getClass().getResourceAsStream("/logo.png"));
-            Image scaledImg = img.getScaledInstance(600, 300, Image.SCALE_SMOOTH);
-            JLabel imageLabel = new JLabel(new ImageIcon(scaledImg));
-            imageLabel.setHorizontalAlignment(JLabel.CENTER);
-            return imageLabel;
-        } catch (IOException e) {
-            return new JLabel("Ge-OO-cache", JLabel.CENTER);
-        }
-    }
-
-    //méthode pour créer le TextField (input de texte)
-    // le design a été réalisé à l'aide de l'IA générative afin de comprend le fonctionnement d'un design plus précis sur un TextField
-    public JTextField createTextField(String placeholder){
-        JTextField field = new JTextField(placeholder);
-
-        //Ajoute un listener pour ajouter l'effet de placeholder
-        // + récupère l'information sur le nom d'utilisateur
-        field.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if(field.getText().equals(placeholder)){
-                    field.setText("");
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                if(field.getText().isEmpty()){
-                    field.setText(placeholder);
-                }
-            }
-        });
-
-        field.setMaximumSize(new Dimension(350, 45));
-        field.setPreferredSize(new Dimension(350, 45));
-        field.setHorizontalAlignment(JTextField.CENTER);
-        field.setFont(new Font("Arial", Font.PLAIN, 14));
-        field.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true));
-        return field;
-    }
-
-    //méthode pour créer le passwordField (input de password)
-    private JPasswordField createPasswordField(String placeholder) {
-        JPasswordField field = new JPasswordField(placeholder);
-
-        //Récupère l'information sur le password quand perd focus
-        field.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if(field.getText().equals(placeholder)){
-                    field.setText("");
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                if(field.getText().isEmpty()){
-                    field.setText(placeholder);
-                }
-            }
-        });
-
-        field.setMaximumSize(new Dimension(350, 45));
-        field.setHorizontalAlignment(JTextField.CENTER);
-        field.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true));
-        return field;
-    }
-
-    //Méthode pour créer le design du Button
-    // le design a été réalisé à l'aide de l'IA générative afin de comprend le fonctionnement d'un design plus précis sur un TextField
-    private JButton createButton() {
-        JButton button = new JButton("> Connexion");
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setBackground(new Color(200, 220, 0)); // vert-jaune
-        button.setFont(new Font("Arial", Font.BOLD, 14));
-        button.setPreferredSize(new Dimension(180, 45));
-        button.setMaximumSize(new Dimension(180, 45));
-        button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-
-        return button;
     }
 }

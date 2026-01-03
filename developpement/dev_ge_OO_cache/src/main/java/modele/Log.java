@@ -138,4 +138,27 @@ public class Log {
         }
         return false;
     }
+
+    /**
+     *          GETTER et SETTER
+     */
+    public int getId() {
+        return id;
+    }
+
+    public boolean isTrouver() {
+        return trouver;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public int getNote() {
+        return note;
+    }
+
+    public String getCommentaire() {
+        return commentaire;
+    }
 }

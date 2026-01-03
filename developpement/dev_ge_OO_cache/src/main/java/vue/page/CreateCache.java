@@ -1,11 +1,6 @@
 package vue.page;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-import modele.ReseauCache;
-import modele.Utilisateur;
 import requete.RequeteGeOOCache;
-import vue.dropdown.DropdownReseau;
 import vue.SelectionDropdown;
 
 import javax.swing.*;
