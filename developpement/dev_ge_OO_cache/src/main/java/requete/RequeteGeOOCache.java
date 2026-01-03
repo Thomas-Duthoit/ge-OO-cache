@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import modele.*;
 import modele.Cache;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -527,6 +528,63 @@ public class RequeteGeOOCache {
 
         }
 
+    /**
+     * méthode : creerCache
+     * ----------------------------
+     * crée une cache
+     *
+     * @param text description textuelle
+     * @param tech description technique
+     * @param libre rubrique libre
+     * @param loc localisation GPS
+     * @param type type de la cache
+     * @param statut statut de la cache
+     * @param reseau réseau de la cache
+     * @return création effectuée
+     */
+    public boolean creerCache(String text, String tech, String libre, String loc, TypeCache type, StatutCache statut, ReseauCache reseau) {
+        EntityManager em = emFactory.createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+
+            type = em.merge(type);  // on réattache à l'EM pour éviter les erreurs de LAZY init
+            statut = em.merge(statut);  // on réattache à l'EM pour éviter les erreurs de LAZY init
+            reseau = em.merge(reseau);  // on réattache à l'EM pour éviter les erreurs de LAZY init
+
+            Cache cache = new Cache(text, tech, loc, libre);
+
+            em.persist(cache);
+
+            if (!cache.addTypeCache(type)) {
+                // echec du addTypeCache
+                et.rollback();
+                return false;
+            }
+            if (!cache.setStatutCache(statut)) {
+                // echec du setStatutCache
+                et.rollback();
+                return false;
+            }
+            if (!cache.setReseau(reseau)) {
+                // echec du setReseau
+                et.rollback();
+                return false;
+            }
+
+            et.commit();  // application des MàJ
+
+        } catch (Exception e) {
+            et.rollback();
+            System.out.println("ERREUR creerCache : " + e);
+            return false;
+        } finally {
+            em.close();
+        }
+
+        return true;  // on est arrivé là sans retourner false -> création effectuée
+    }
+
 
         /**
          *              METHODES RequeteGeOOCache
@@ -579,7 +637,7 @@ public class RequeteGeOOCache {
         public List<TypeCache> getTypeCache(){
             List<TypeCache> types = new ArrayList<TypeCache>();
             final EntityManager em = this.getEm();
-            String strQuery = "Select s from StatutCache s";
+            String strQuery = "Select t from TypeCache t";
             Query query = em.createQuery(strQuery);
             types = query.getResultList();
             return types;
