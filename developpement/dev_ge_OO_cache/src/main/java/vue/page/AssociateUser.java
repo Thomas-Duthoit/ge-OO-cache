@@ -22,6 +22,7 @@ import java.util.List;
  */
 public class AssociateUser extends JPanel implements Refreshable {
     //Attributs
+    private Utilisateur utilisateurConnecte;
     private RequeteGeOOCache requeteGeOOCache;
     private JComboBox<Utilisateur> comboBoxUtilisateur;
     private JComboBox<Object> comboBoxReseau;
@@ -37,12 +38,14 @@ public class AssociateUser extends JPanel implements Refreshable {
         this.requeteGeOOCache = requeteGeOOCache;
         this.selectionDropdown = selectionDropdown;
         this.comboBoxGeneral = comboBoxGeneral;
-        System.out.println("test");
-        System.out.println(selectionDropdown);
+        this.utilisateurConnecte = utilisateur;
 
         //DONNEES
         //Création des JComboBox pour les réseaux et les utilisateurs
-        this.comboBoxReseau = getComboBoxReseau(utilisateur);
+        this.comboBoxReseau = new JComboBox<>();
+        this.comboBoxReseau.setModel(getDefaultComboBoxModelReseau(utilisateur, null));
+        this.comboBoxReseau.setMaximumSize(new Dimension(200, 50));
+
         this.comboBoxUtilisateur = getComboBoxUtilisateur(utilisateur);
 
         //DESIGN
@@ -66,18 +69,21 @@ public class AssociateUser extends JPanel implements Refreshable {
      * permet de créer la comboBox pour la partie ReseauCache
      * @return JComboBox<Object> correspondant à la partie ReseauCache des utilisateurs du reseau
      */
-    public JComboBox<Object> getComboBoxReseau(Utilisateur utilisateur) {
-        List<ReseauCache> reseauxCacheProp = this.requeteGeOOCache.getReseauxUtilisateur(utilisateur);
+    public DefaultComboBoxModel<Object> getDefaultComboBoxModelReseau(Utilisateur utilisateurProprietaire, Utilisateur utilisateurChoisi) {
+        // Liste des réseaux du propriétaire
+        List<ReseauCache> reseauxCacheProp = this.requeteGeOOCache.getReseauxUtilisateur(utilisateurProprietaire);
+        // Liste des réseaux où l'utilisateur est déjà associé
+        List<ReseauCache> reseauCachesAssocie = this.requeteGeOOCache.getReseauxAvecAccesUtilisateur(utilisateurChoisi);
+
         JComboBox<Object> comboBoxReseau = new JComboBox<>();
         DefaultComboBoxModel<Object> comboBoxReseauModel = new DefaultComboBoxModel<>();
         comboBoxReseauModel.addElement("Choix du réseau");
         for(ReseauCache rc : reseauxCacheProp){
-            comboBoxReseauModel.addElement(rc);
+            if(!(reseauCachesAssocie.contains(rc))){
+                comboBoxReseauModel.addElement(rc);
+            }
         }
-
-        comboBoxReseau.setModel(comboBoxReseauModel);
-        comboBoxReseau.setMaximumSize(new Dimension(200, 50));
-        return comboBoxReseau;
+        return comboBoxReseauModel;
     }
 
     /**
@@ -233,8 +239,10 @@ public class AssociateUser extends JPanel implements Refreshable {
     public void refreshData() {
         //Récupère l'utilisateur sélectionné dans la dropdown
         Utilisateur user = (Utilisateur) selectionDropdown.getElementSelect("Utilisateur");
-        if(user != null)
+        if(user != null) {
             comboBoxUtilisateur.setSelectedItem(user);
+            comboBoxReseau.setModel(getDefaultComboBoxModelReseau(utilisateurConnecte, user));
+        }
         revalidate();
         repaint();
     }
@@ -265,7 +273,8 @@ public class AssociateUser extends JPanel implements Refreshable {
                 if (result){
                     echec.setVisible(false);
                     reussite.setVisible(true);
-                    comboBoxUtilisateur.setSelectedItem(0);
+                    //comboBoxUtilisateur.setSelectedItem(0);
+                    comboBoxReseau.setModel(getDefaultComboBoxModelReseau(utilisateurConnecte, u));
                 }else{
                     echec.setVisible(true);
                     reussite.setVisible(false);
@@ -279,6 +288,8 @@ public class AssociateUser extends JPanel implements Refreshable {
         }
     }
 
+    // classe interne à la vue car elle y est spécifique
+    // Permet de changer la comboBox utilisateur en haut selon la valeur choisie dans la comboBox de la vue
     public class ActionChangeListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {

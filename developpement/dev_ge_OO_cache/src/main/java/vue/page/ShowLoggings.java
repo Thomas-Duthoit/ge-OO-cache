@@ -7,6 +7,7 @@ import modele.Utilisateur;
 import requete.RequeteGeOOCache;
 import vue.Refreshable;
 import vue.SelectionDropdown;
+import vue.dropdown.ComboBoxGeneral;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,14 +41,16 @@ public class ShowLoggings extends JPanel implements Refreshable {
     //Pour modifier la vue
     private CardLayout cl;
     private JPanel mainPanel;
+    private ComboBoxGeneral comboBoxGeneral;
 
     //Constructeur par données
-    public ShowLoggings(RequeteGeOOCache requeteGeOOCache, Utilisateur utilisateur, SelectionDropdown selectionDropdown, CardLayout cl, JPanel mainPanel) throws SQLException {
+    public ShowLoggings(RequeteGeOOCache requeteGeOOCache, Utilisateur utilisateur, SelectionDropdown selectionDropdown, CardLayout cl, JPanel mainPanel, ComboBoxGeneral comboBoxGeneral) throws SQLException {
         super();
         this.requeteGeOOCache = requeteGeOOCache;
         this.utilisateur = utilisateur;
         this.cl = cl;
         this.mainPanel = mainPanel;
+        this.comboBoxGeneral = comboBoxGeneral;
 
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
@@ -248,6 +251,74 @@ public class ShowLoggings extends JPanel implements Refreshable {
     }
 
     /**
+     *          REFRESHDATA
+     */
+
+    /**
+     * Methode : RefreshData
+     * -------
+     * Permet de refresh les données quand on revient sur cette vue
+     * Crée la JList initiale (quand aucun filtre) + réinitialise les filtres + cache le filtre de cache
+     */
+    @Override
+    public void refreshData() {
+        //Récupère l'utilisateur sélectionné dans la dropdown
+        this.comboBoxFiltreReseau.setSelectedIndex(0);
+
+        this.comboBoxFiltreReseau.setVisible(true);
+        this.comboBoxFiltreCache.setVisible(false);
+
+        this.listeLogs.setModel(createModelJListLog(this.utilisateur, null, null));
+        revalidate();
+        repaint();
+    }
+
+    /**
+     * Methode : RefreshDataView
+     * -------
+     * Cette méthode a été proposé par l'IA
+     * -------
+     * permet de trouver quelle vue est actuellement la vue courante du cardLayout et d'activer la méthode refreshData si implémentée dans la classe
+     */
+    public void refreshDataView(){
+        //On refresh les valeurs pour la vue courante
+        //Dans le cas où il s'agit d'une vue nécessitant des valeurs dans les dropdowns
+        Component c = Arrays.stream(mainPanel.getComponents())
+                .filter(comp -> comp.isVisible())
+                .findFirst()
+                .orElse(null);
+
+        if (c instanceof Refreshable) {
+            ((Refreshable) c).refreshData();
+        }
+    }
+
+    /**
+     *              RENDERER
+     */
+
+    // classe interne à la vue car elle y est spécifique
+    // Permet de modifier le rendu de la JList selon si l'élément subit le focus ou non
+    public class rendererJListLogs implements ListCellRenderer<Log>{
+        @Override
+        public Component getListCellRendererComponent(JList<? extends Log> list, Log value, int index, boolean isSelected, boolean cellHasFocus) {
+            JLabel label = new JLabel();
+            label.setText("Log " + value.getId());
+
+            if (cellHasFocus) {
+                label.setForeground(Color.BLACK);
+                label.setOpaque(true);
+                label.setBackground(Color.decode("#dbdbd8"));
+            } else {
+                label.setForeground(Color.BLACK);
+            }
+            label.setFont(new Font("consolas", Font.BOLD, 30));
+
+            return label;
+        }
+    }
+
+    /**
      *              LISTENER
      */
 
@@ -345,10 +416,15 @@ public class ShowLoggings extends JPanel implements Refreshable {
                 System.out.println("Affichage des détails d'un login");
                 JList log = (JList) e.getSource();
                 Log selected =  (Log) log.getSelectedValue();
+                System.out.println(selected);
                 this.selectionDropdown.addElementSelect("Log", selected);
-                System.out.println(selectionDropdown.getElementSelect("Log"));
+
+                System.out.println(this.selectionDropdown.getElementSelect("Log"));
+
                 cl.show(mainPanel, "Afficher les logging détails");
                 refreshDataView(); //Permet d'activer la méthode refreshData de la vue d'affichage des détails d'un log
+
+                comboBoxGeneral.refreshComboBoxLog();
             }
         }
 
@@ -370,74 +446,6 @@ public class ShowLoggings extends JPanel implements Refreshable {
         @Override
         public void mouseExited(MouseEvent e) {
             //Non utilisé
-        }
-    }
-
-    /**
-     *          REFRESHDATA
-     */
-
-    /**
-     * Methode : RefreshData
-     * -------
-     * Permet de refresh les données quand on revient sur cette vue
-     * Crée la JList initiale (quand aucun filtre) + réinitialise les filtres + cache le filtre de cache
-     */
-    @Override
-    public void refreshData() {
-        //Récupère l'utilisateur sélectionné dans la dropdown
-        this.comboBoxFiltreReseau.setSelectedIndex(0);
-
-        this.comboBoxFiltreReseau.setVisible(true);
-        this.comboBoxFiltreCache.setVisible(false);
-
-        this.listeLogs.setModel(createModelJListLog(this.utilisateur, null, null));
-        revalidate();
-        repaint();
-    }
-
-    /**
-     * Methode : RefreshDataView
-     * -------
-     * Cette méthode a été proposé par l'IA
-     * -------
-     * permet de trouver quelle vue est actuellement la vue courante du cardLayout et d'activer la méthode refreshData si implémentée dans la classe
-     */
-    public void refreshDataView(){
-        //On refresh les valeurs pour la vue courante
-        //Dans le cas où il s'agit d'une vue nécessitant des valeurs dans les dropdowns
-        Component c = Arrays.stream(mainPanel.getComponents())
-                .filter(comp -> comp.isVisible())
-                .findFirst()
-                .orElse(null);
-
-        if (c instanceof Refreshable) {
-            ((Refreshable) c).refreshData();
-        }
-    }
-
-    /**
-     *              RENDERER
-     */
-
-    // classe interne à la vue car elle y est spécifique
-    // Permet de modifier le rendu de la JList selon si l'élément subit le focus ou non
-    public class rendererJListLogs implements ListCellRenderer<Log>{
-        @Override
-        public Component getListCellRendererComponent(JList<? extends Log> list, Log value, int index, boolean isSelected, boolean cellHasFocus) {
-            JLabel label = new JLabel();
-            label.setText("Log " + value.getId());
-
-            if (cellHasFocus) {
-                label.setForeground(Color.BLACK);
-                label.setOpaque(true);
-                label.setBackground(Color.decode("#dbdbd8"));
-            } else {
-                label.setForeground(Color.BLACK);
-            }
-            label.setFont(new Font("consolas", Font.BOLD, 30));
-
-            return label;
         }
     }
 }

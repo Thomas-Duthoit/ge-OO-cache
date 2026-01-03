@@ -146,7 +146,6 @@ public class ShowReseau extends JPanel {
                 refreshDataView(); //Permet d'activer la méthode refreshData de la vue d'affichage de la liste des caches
                 comboBoxGeneral.refreshComboBoxReseau();
                 comboBoxGeneral.refreshComboBoxAction();
-                comboBoxGeneral.getComboBoxCache().setVisible(true);
             }
         }
 

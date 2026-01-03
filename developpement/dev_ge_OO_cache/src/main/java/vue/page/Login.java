@@ -166,7 +166,7 @@ public class Login extends JPanel{
 
         field.setMaximumSize(new Dimension(350, 45));
         field.setHorizontalAlignment(JTextField.CENTER);
-        field.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true));
+        field.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2, true));
         return field;
     }
 

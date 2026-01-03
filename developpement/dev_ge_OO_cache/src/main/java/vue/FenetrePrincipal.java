@@ -63,6 +63,7 @@ public class FenetrePrincipal extends JFrame {
         //Besoin de la mettre ici pour avoir un user fixe
         try{
             this.comboBoxGeneral = new ComboBoxGeneral(this.requeteGeOOCache, mainPanel, cl, this.user, this.selectionDropdown);
+            this.comboBoxGeneral.setVisible(true);
             addAllView();
         }catch (SQLException e){
             System.out.println("Erreur de créer de la dropDown à la connexion");
@@ -81,13 +82,13 @@ public class FenetrePrincipal extends JFrame {
      */
     public void addAllView(){
         try {
-            mainPanel.add(new Accueil(), "Choix de l'interface");
+            mainPanel.add(new Accueil(this), "Choix de l'interface");
             mainPanel.add(new CreateReseau(this.requeteGeOOCache, this.user), "Créer un réseau");
             mainPanel.add(new ShowReseau(this.requeteGeOOCache, this.user, this.mainPanel, this.cl, this.selectionDropdown, this.comboBoxGeneral), "Affichage des réseaux");
             mainPanel.add(new AssociateUser(this.requeteGeOOCache, this.user, this.selectionDropdown, this.comboBoxGeneral), "Associer un utilisateur");
             mainPanel.add(new ShowCaches(this.requeteGeOOCache, this.selectionDropdown), "Affichage de la liste des caches");
             mainPanel.add(new ShowStatistic(this.requeteGeOOCache, this.selectionDropdown), "Afficher les statistiques");
-            mainPanel.add(new ShowLoggings(this.requeteGeOOCache, this.user, this.selectionDropdown, this.cl, this.mainPanel), "Afficher les loggins");
+            mainPanel.add(new ShowLoggings(this.requeteGeOOCache, this.user, this.selectionDropdown, this.cl, this.mainPanel, this.comboBoxGeneral), "Afficher les loggins");
             mainPanel.add(new ShowLoggingDetails(this.selectionDropdown, this.cl, this.mainPanel), "Afficher les logging détails");
             mainPanel.add(new CreateCache(this.requeteGeOOCache, this.selectionDropdown), "Créer une cache");
             mainPanel.add(new CreateUser(this.requeteGeOOCache), "Créer un utilisateur");
@@ -96,6 +97,24 @@ public class FenetrePrincipal extends JFrame {
             mainPanel.add(new CreateType(this.requeteGeOOCache), "Créer un type");
         }catch(SQLException e){
             System.out.println("Erreur d'ajout des vues de l'application");
+        }
+    }
+
+    /**
+     * Méthode : deconnexionMainPanel
+     * -----
+     * permet de déconnecter un utilisateur du mainPanel
+     */
+    public void deconnexionMainPanel() {
+        this.mainPanel.removeAll();
+        this.comboBoxGeneral.setVisible(false);
+        this.add(this.mainPanel, BorderLayout.CENTER);
+        this.user = null;
+        try {
+            //Vue de connexion
+            this.mainPanel.add(new Login(this), "Login");
+        }catch (SQLException e){
+            System.out.println("Problème au niveau de la déconnexion " + e.getMessage());
         }
     }
 
@@ -119,6 +138,10 @@ public class FenetrePrincipal extends JFrame {
     public RequeteGeOOCache getRequeteGeOOCache() {
         return requeteGeOOCache;
     }
+
+    /**
+     *                 PSVM
+     */
 
     public static void main(String[] args) {
         try{

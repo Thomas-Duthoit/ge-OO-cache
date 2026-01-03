@@ -3,6 +3,7 @@ package modele;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * classe Log
@@ -160,5 +161,20 @@ public class Log {
 
     public String getCommentaire() {
         return commentaire;
+    }
+
+    /**
+     *              HASHCODE ET EQUALS
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Log log = (Log) o;
+        return id == log.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

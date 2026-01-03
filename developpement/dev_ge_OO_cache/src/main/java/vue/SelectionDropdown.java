@@ -8,7 +8,7 @@ import java.util.Map;
  * Class selectionDropdown
  * Cette classe va permettre de rassembler (dans une classe partagé par toutes les vues) les informations sélectionnées dans chaque dropdown disponible
  */
-//Dans la suite, le paramètre key représente le niveau de la dropdown soit "Actions", "ReseauCache", "Cache", "Log" et "Utilisateur"
+//Dans la suite, le paramètre key représente le niveau de la dropdown soit "Actions", "Reseau", "Cache", "Log" et "Utilisateur"
 
 //L'idée de la création d'une "mémoire partagée" a été présenté par l'IA
 public class SelectionDropdown {
