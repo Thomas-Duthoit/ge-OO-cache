@@ -29,7 +29,7 @@ public class ComboBoxGeneral extends JPanel {
     private Utilisateur user;
     private SelectionDropdown selectionDropdown;
 
-    private int modifVue;
+    private int modifVue; //Permet d'indiquer au comBox Action si c'est une modification de vue par une page ou non
 
     //Les différents comboBox pour l'affichage
     private JComboBox<String> comboBoxAction;
