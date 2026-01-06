@@ -52,13 +52,17 @@ public class StatutCache {
      * TOSTRING StatutCache
      * @return la chaine de caractère représentant les informations du cache
      */
-    @Override
+    /*@Override
     public String toString() {
         return "StatutCache{" +
                 "id=" + id +
                 ", texte='" + texte + '\'' +
                 ", caches=" + caches +
                 '}';
+    }*/
+    @Override  // nouvelle version pour l'affichage dans les combobox
+    public String toString() {
+        return texte;
     }
 
     /**
