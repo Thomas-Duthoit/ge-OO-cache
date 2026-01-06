@@ -81,6 +81,7 @@ public class ComboBoxGeneral extends JPanel {
 
         this.comboBoxCache = new JComboBox<>();
         this.comboBoxCache.setBackground(Color.LIGHT_GRAY);
+        this.comboBoxCache.addActionListener(new ChoixCacheListener());
         this.comboBoxCache.setVisible(false);
 
         this.add(this.comboBoxAction);
@@ -480,6 +481,6 @@ public class ComboBoxGeneral extends JPanel {
      * setter qui vient modifier l'élément selectionné Cache selon l'élément dans la mémoire partagée
      */
     public void refreshComboBoxCache(){
-        comboBoxLog.setSelectedItem(selectionDropdown.getElementSelect("Cache"));
+        comboBoxCache.setSelectedItem(selectionDropdown.getElementSelect("Cache"));
     }
 }
