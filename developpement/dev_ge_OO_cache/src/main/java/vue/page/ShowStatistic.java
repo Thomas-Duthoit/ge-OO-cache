@@ -41,7 +41,7 @@ public class ShowStatistic extends JPanel implements Refreshable {
         this.setBorder(new EmptyBorder(50, 100, 50, 100));
 
         frame = new JPanel();
-        frame.setLayout(new BorderLayout());  // solution trouvée sur internet pour avoir un FlowLayout vertical
+        frame.setLayout(new BorderLayout());
         frame.setBorder(new EmptyBorder(10, 10, 10 ,10));
 
         JPanel panelTitre = new JPanel();
@@ -61,7 +61,7 @@ public class ShowStatistic extends JPanel implements Refreshable {
         frame.add(panelTitre, BorderLayout.NORTH);
 
         JPanel panelStats = new JPanel();
-        panelStats.setLayout(new BoxLayout(panelStats, BoxLayout.Y_AXIS));
+        panelStats.setLayout(new BoxLayout(panelStats, BoxLayout.Y_AXIS));  // solution trouvée sur internet pour avoir un FlowLayout vertical
         panelStats.setAlignmentX(Component.LEFT_ALIGNMENT);  // pour que tout soit collé à gauche dans le panel
         panelStats.setBorder(new EmptyBorder(10, 10, 10 ,10));  // un peu depadding
         panelStats.setBackground(Color.WHITE);
