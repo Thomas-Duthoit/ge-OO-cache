@@ -20,16 +20,26 @@ class Cache{
   - rubriqueLibre : String
   - type : TypeCache
   - statut : StatutCache
+
+  + boolean setStatutCache()
+  + boolean addTypeCache() 
+  + boolean setReseau() 
+  + boolean ajouterLog() 
+
 }
 
 class TypeCache{
   - id : int 
   - texte : String
+
+  + boolean addCacheToList()
 }
 
 class StatutCache{
   - id : int 
   - texte : String
+
+  + boolean addCacheToList()
 }
 
 
@@ -52,6 +62,192 @@ Utilisateur::id "1" -- "0..*" Log::id : possède
 ReseauCache::listCaches "1" -- "0..*" Cache : appartient
 
 Log "0..*" -- "1" Cache : enregister
+}
+
+
+package "requete" #EEEEEE{
+class RequeteGeOOCache{
+  - emFactory : EntityManagerFactory
+
+  + EntityManager getEm()
+  + int autoriserConnexionApp()
+  + boolean creerUtilisateur()
+  + List<Utilisateur> getListeUtilisateurs()
+  + List<ReseauCache> getReseauxUtilisateur() 
+  + boolean creerReseau()
+  + ReseauCache getReseauAvecProprietaireEtNom()
+  + boolean checkAssociationReseauUtilisateurExist()
+  + boolean ajouterAccessReseau()
+  + List<ReseauCache> getReseauxAvecAccessUtilisateur()
+  + Utilisateur getStatProprietaire()
+  + int getStatNbCaches()
+  + int getStatNbLogs()
+  + int getStatNbTrouve()
+  + int getStatNbPasTrouve()
+  + float getStatPourcentageTrouve()
+  + List<Log> getLogs()
+  + List<Cache> getCachesByReseauCache()
+  + Cache getDataCachesById()
+  + boolean updateStatutCache()
+  + List<StatutCache> getStatutCache()
+  + StatutCache getStatutCacheById()
+  + List<TypeCache> getTypeCache()
+}
+
+}
+
+package "vue" #EEEEEE{
+
+package "dropdown" #EEEEEE{
+class ComboBoxGeneral{
+  - cl : CardLayout
+  - mainPanel : JPanel
+  - requeteGeOOCache : RequeteGeOOCache
+  - user : Utilisateur
+  - selectionDropdown : selectionDropdown
+  - modifVue : int
+  - comboBoxAction : JComboBox<String>
+  - comboBoxReseauCache : JComboBox<Object>
+  - comboBoxCache : JComboBox<Object>
+  - comboBoxUtilisateur : JComboBox<Object>
+  - comboBoxLog : JComboBox<Object>
+
+  + JComboBox<String> getComboBoxAction()
+  + JComboBox<Object> getComboBoxUtilisateur()
+  + JComboBox<Object> getComboBoxReseauCache()
+  + JComboBox<Object> getComboBoxLog()
+  + DefaultComboBoxModel<Object> getDefaultComboBoxModelCache()
+  + void refresh()
+  + void refreshDataView()
+  + void refreshComboBoxUtilisateur()
+  + void refreshComboBoxReseau()
+  + void refreshComboBoxAction()
+  + void refreshComboBoxLog()
+  + void refreshComboBoxCache()
+}
+}
+
+package "page" #EEEEEE{
+class Accueil{
+  - fenetrePrincipal : FenetrePrincipal
+
+  + JPanel createButtonDeconnexion()
+}
+
+class AssociateUser{
+  - utilisateurConnecte : Utilisateur
+  - requeteGeOOCache : RequeteGeOOCache
+  - comboBoxUtilisateur : JComboBox<Utilisateur>
+  - comboBoxReseau : JComboBox<Object>
+  - selectionDropdown : SelectionDropdown 
+  - comboBoxGeneral : ComboBoxGeneral
+  - reussite : JLabel
+  - echec : JLabel
+
+  + DefaultComboBoxModel<Object> getDefaultComboBoxModelReseau()
+  + JComboBox<Utilisateur> getComboBoxUtilisateur()
+  + JPanel createTextTop() 
+  + JPanel createMessagePanel()
+  + JPanel createButtonValidate()
+  + JPanel createCenterPanel()
+  + void refreshData()
+  + 
+}
+
+class CreateReseau{
+  - requeteGeOOCache : RequeteGeOOCache
+  - inputNameReseau : JTextField
+  - utilisateur : Utilisateur 
+
+  + JPanel creerChamp() 
+}
+
+class Login{
+  - fenetrePrincipal : FenetrePrincipal
+  - username : JTextField 
+  - password : JPasswordField
+  - errorLabel : JLabel
+
+  + JLabel createLogo()
+  + JTextField createTextField()
+  + JPasswordField createPasswordField() 
+  + JButton createButton()
+}
+
+class ShowLoggingDetails{
+  - selectionDropdown : SelectionDropdown 
+  - cardLayout : CardLayout
+  - panelFenetre : JPanel
+  
+  + JPanel createPanel()
+  + JLabel createLabel()
+  + JLabel createLabelTrouve()
+  + JPanel createButtonBack()
+  + void refreshData()
+}
+
+class ShowLoggings{
+  - requeteGeOOCache : RequeteGeOOCache
+  - utilisateur : Utilisateur
+  - listeLogs : JList<Log> 
+  - comboBoxFiltreReseau : JComboBox<Object> 
+  - comboBoxFiltreCache : JComboBox<Object> 
+  - cl : CardLayout
+  - mainPanel : JPanel
+  - comboBoxGeneral : ComboBoxGeneral
+ 
+  + DefaultListModel<Log> createModelJListLog()
+  + DefaultComboBoxModel<Object> createModelJComboBoxReseau()
+  + DefaultComboBoxModel<Object> createModelJComboBoxCache()
+  + JPanel createFilterPanel()
+  + void refreshData()
+  + void refreshDataView()
+}
+
+class ShowReseau{
+  - requeteGeOOCache : requeteGeOOCache
+  - utilisateur : Utilisateur 
+  - mainPanel : JPanel
+  - cardLayout : CardLayout
+  - selectionDropdown : SelectionDropdown 
+  - comboBoxGeneral : ComboBoxGeneral
+
+  + JPanel getMainPanel()
+  + JList<ReseauCache> createListReseauCache()
+  + void refreshDataView()
+}
+
+}
+
+class FenetrePrincipal{
+  - cl : CardLayout 
+  - mainPanel : JPanel 
+  - requeteGeOOCache : RequeteGeOOCache
+  - user : Utilisateur 
+  - selectionDropdown : SelectionDropdown 
+  - comboBoxGeneral : ComboBoxGeneral 
+
+  + void loginValider()
+  + void addAllView()
+  + void deconnexionMainPanel()
+  + void refreshMainPanel()
+  + RequeteGeOOCache getRequeteGeOOCache()
+}
+
+interface Refreshable{
+  + void refreshData()
+}
+
+class SelectionDropdown{
+  - elementsSelec : Map<String, Object>
+  - fenetrePrincipal : FenetrePrincipal
+
+  + void addElementSelect()
+  + void supprElementSelect()
+  + void supprAllElementSelect()
+  + Map<String, Object> getAllElementsSelec()
+  + Object getElementSelect(String key)
+}
 }
 
 @enduml

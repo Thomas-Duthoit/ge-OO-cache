@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Classe Cache :
@@ -67,27 +68,8 @@ public class Cache {
 
     /**
      * TOSTRING Cache
-     * @return la chaine de caractère représentant les informations du cache
+     * @return la chaine de caractère représentant le texte affiché par les JList et les JComboBox
      */
-    /*
-    @Override
-    public String toString() {
-        String texte = "Cache{" +
-                "numero=" + numero +
-                ", descriptionTextuelle='" + descriptionTextuelle + '\'' +
-                ", descriptionTechnique='" + descriptionTechnique + '\'' +
-                ", informationsGeolocalisation='" + informationsGeolocalisation + '\'' +
-                ", rubriqueLibre='" + rubriqueLibre + '\'';
-        if(this.typeCache != null)
-            texte += ", typeCache=" + typeCache.toStringCache();
-        if(this.statutCache != null)
-            texte += ", statutCache=" + statutCache.toStringCache();
-        if(this.logs != null)
-            texte += ", logs=" + logs.size();
-        texte += '}';
-        return texte;
-    }*/
-
     @Override
     public String toString() {
         return "Cache " + numero;
@@ -221,6 +203,20 @@ public class Cache {
 
     public int getNumero() {
         return numero;
+    /**
+     *              HASHCODE et EQUALS
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Cache cache = (Cache) o;
+        return numero == cache.numero;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(numero);
     }
 }
+
 

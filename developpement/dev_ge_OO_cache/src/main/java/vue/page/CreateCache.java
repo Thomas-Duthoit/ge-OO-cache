@@ -9,6 +9,7 @@ import modele.Utilisateur;
 import requete.RequeteGeOOCache;
 import vue.Refreshable;
 import vue.dropdown.DropdownReseau;
+import requete.RequeteGeOOCache;
 import vue.SelectionDropdown;
 
 import javax.swing.*;
