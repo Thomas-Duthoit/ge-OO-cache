@@ -129,7 +129,6 @@ public class ShowLoggings extends JPanel implements Refreshable {
         List<Log> listeLogs = this.requeteGeOOCache.getLogs(utilisateur, filtreReseau, filtreCache);
 
         //Etape 2
-        JList<Log> logsJList = new JList<>();
         DefaultListModel<Log> listeLogsModel = new DefaultListModel<>();
         for(Log log : listeLogs){
             listeLogsModel.addElement(log);
@@ -155,7 +154,6 @@ public class ShowLoggings extends JPanel implements Refreshable {
         List<ReseauCache> listeReseauxCache = this.requeteGeOOCache.getReseauxUtilisateur(utilisateur);
 
         //Etape 2
-        JComboBox<Object> comboBoxReseau = new JComboBox<>();
         DefaultComboBoxModel<Object> comboBoxReseauModel = new DefaultComboBoxModel<>();
         comboBoxReseauModel.addElement("Filtrer par Réseau");
         for(ReseauCache reseauCache : listeReseauxCache){
