@@ -8,6 +8,7 @@ import vue.page.*;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 /**
  * Classe FenetrePrincipal
@@ -70,7 +71,7 @@ public class FenetrePrincipal extends JFrame {
         }
 
         this.add(this.comboBoxGeneral, BorderLayout.NORTH);
-        this.cl.show(this.mainPanel, "Choix de l'interface");
+        this.cl.show(this.mainPanel, "Accueil");
         this.revalidate();
         this.repaint();
     }
@@ -82,7 +83,7 @@ public class FenetrePrincipal extends JFrame {
      */
     public void addAllView(){
         try {
-            mainPanel.add(new Accueil(this), "Choix de l'interface");
+            mainPanel.add(new Accueil(this), "Accueil");
             mainPanel.add(new CreateReseau(this.requeteGeOOCache, this.user), "Créer un réseau");
             mainPanel.add(new ShowReseau(this.requeteGeOOCache, this.user, this.mainPanel, this.cl, this.selectionDropdown, this.comboBoxGeneral), "Affichage des réseaux");
             mainPanel.add(new AssociateUser(this.requeteGeOOCache, this.user, this.selectionDropdown, this.comboBoxGeneral), "Associer un utilisateur");
@@ -98,6 +99,7 @@ public class FenetrePrincipal extends JFrame {
         } catch(SQLException e){
             System.out.println("Erreur d'ajout des vues de l'application");
         }
+        refreshDataView();
     }
 
     /**
@@ -129,6 +131,26 @@ public class FenetrePrincipal extends JFrame {
     public void refreshMainPanel() {
         this.mainPanel.revalidate();
         this.mainPanel.repaint();
+    }
+
+    /**
+     * Methode : RefreshDataView
+     * -------
+     * Cette méthode a été proposé par l'IA
+     * -------
+     * permet de trouver quelle vue est actuellement la vue courante du cardLayout et d'activer la méthode refreshData si implémentée dans la classe
+     */
+    public void refreshDataView(){
+        //On refresh les valeurs pour la vue courante
+        //Dans le cas où il s'agit d'une vue nécessitant des valeurs dans les dropdowns
+        Component c = Arrays.stream(mainPanel.getComponents())
+                .filter(comp -> comp.isVisible())
+                .findFirst()
+                .orElse(null);
+
+        if (c instanceof Refreshable) {
+            ((Refreshable) c).refreshData();
+        }
     }
 
     /**

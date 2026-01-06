@@ -21,13 +21,14 @@ import java.util.List;
  * Une classe correspondant à une page de l'application
  * Elle permet l'affichage de la liste des reseaux de cache dont l'utilisateur est propriétaire ou associé à
  */
-public class ShowReseau extends JPanel {
+public class ShowReseau extends JPanel implements Refreshable{
     //Attributs
     private RequeteGeOOCache requeteGeOOCache;
     private Utilisateur utilisateur;
     private JPanel mainPanel;
     private CardLayout cardLayout;
     private SelectionDropdown selectionDropdown;
+    private JList<ReseauCache> listReseaux;
     private ComboBoxGeneral comboBoxGeneral;
 
     //Constructeurs par défaut
@@ -40,6 +41,7 @@ public class ShowReseau extends JPanel {
         this.cardLayout = cl;
         this.selectionDropdown = selectionDropdown;
         this.comboBoxGeneral = comboBoxGeneral;
+        this.listReseaux = new JList<>();
 
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
@@ -65,8 +67,14 @@ public class ShowReseau extends JPanel {
      */
     public JPanel getMainPanel() {
         //Creation de la JList
-        JList<ReseauCache> listReseaux = createListReseauCache();
-        JScrollPane scrollPaneListReseaux = new JScrollPane(listReseaux);
+        this.listReseaux = new JList<>();
+        this.listReseaux.addMouseListener(new MouseReseauListener());
+
+        //Design JList
+        this.listReseaux.setFont(new Font("consolas", Font.BOLD, 15));
+        this.listReseaux.setCellRenderer(new listReseauRenderer());
+
+        JScrollPane scrollPaneListReseaux = new JScrollPane(this.listReseaux);
         scrollPaneListReseaux.setFont(new Font("consolas", Font.BOLD, 20));
 
         //Design
@@ -86,7 +94,7 @@ public class ShowReseau extends JPanel {
      * permet de créer la JList des réseaux de cache
      * @return JList<ReseauCache> une jList de réseau de cache
      */
-    public JList<ReseauCache> createListReseauCache(){
+    public DefaultListModel<ReseauCache> createDefaultModelListReseauCache(){
         //Récupération des valeurs pour la liste
         List<ReseauCache> reseaux = this.requeteGeOOCache.getReseauxUtilisateur(utilisateur);
         System.out.println(reseaux);
@@ -97,15 +105,7 @@ public class ShowReseau extends JPanel {
         for (ReseauCache reseau : reseaux){
             listReseauxModel.addElement(reseau);
         }
-        listReseaux.setModel(listReseauxModel);
-
-        listReseaux.addMouseListener(new MouseReseauListener());
-
-        //Design JList
-        listReseaux.setFont(new Font("consolas", Font.BOLD, 15));
-        listReseaux.setCellRenderer(new listReseauRenderer());
-
-        return listReseaux;
+        return listReseauxModel;
     }
 
     /**
@@ -192,5 +192,19 @@ public class ShowReseau extends JPanel {
         if (c instanceof Refreshable) {
             ((Refreshable) c).refreshData();
         }
+    }
+
+    /**
+     * Methode : RefreshData
+     * -------
+     * Permet de refresh les données quand on revient sur cette vue ou quand l'utilisateur est modifié dans la dropdown
+     * Modifie la comboBox avec l'utilisateur choisit
+     */
+    @Override
+    public void refreshData() {
+        //Récupère l'utilisateur sélectionné dans la dropdown
+        this.listReseaux.setModel(createDefaultModelListReseauCache());
+        revalidate();
+        repaint();
     }
 }
