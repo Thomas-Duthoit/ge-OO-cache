@@ -30,6 +30,7 @@ public class AssociateUser extends JPanel implements Refreshable {
     private ComboBoxGeneral comboBoxGeneral;
     private JLabel reussite;
     private JLabel echec;
+    private Utilisateur utilisateur;
 
     //Constructeur par données
     public AssociateUser(RequeteGeOOCache requeteGeOOCache, Utilisateur utilisateur, SelectionDropdown selectionDropdown, ComboBoxGeneral comboBoxGeneral) throws SQLException {
@@ -43,10 +44,11 @@ public class AssociateUser extends JPanel implements Refreshable {
         //DONNEES
         //Création des JComboBox pour les réseaux et les utilisateurs
         this.comboBoxReseau = new JComboBox<>();
-        this.comboBoxReseau.setModel(getDefaultComboBoxModelReseau(utilisateur, null));
         this.comboBoxReseau.setMaximumSize(new Dimension(200, 50));
 
-        this.comboBoxUtilisateur = getComboBoxUtilisateur(utilisateur);
+        this.comboBoxUtilisateur = new JComboBox<>();
+        this.comboBoxUtilisateur.setMaximumSize(new Dimension(200, 50));
+        this.comboBoxUtilisateur.addActionListener(new ActionChangeListener());
 
         //DESIGN
         //Mise en forme
@@ -90,9 +92,9 @@ public class AssociateUser extends JPanel implements Refreshable {
      * Méthode getComboBoxUtilisateur
      * -------
      * permet de créer la comboBox pour la partie Utilisateur
-     * @return JComboBox<Object> correspondant à la partie Utilisateur (hors utilisateur courant)
+     * @return JComboBox<Object> correspondant à la partie Utilisateur (hors utilisateur courant/connecté)
      */
-    public JComboBox<Utilisateur> getComboBoxUtilisateur(Utilisateur utilisateur) {
+    public DefaultComboBoxModel<Utilisateur> getDefaultModelComboBoxUtilisateur(Utilisateur utilisateur) {
         List<Utilisateur> utilisateurs = this.requeteGeOOCache.getListeUtilisateurs();
         JComboBox<Utilisateur> comboBoxUtilisateur = new JComboBox<>();
         DefaultComboBoxModel<Utilisateur> comboBoxUtilisateurModel = new DefaultComboBoxModel<>();
@@ -101,13 +103,7 @@ public class AssociateUser extends JPanel implements Refreshable {
                 comboBoxUtilisateurModel.addElement(u);
             }
         }
-
-        comboBoxUtilisateur.setModel(comboBoxUtilisateurModel);
-        comboBoxUtilisateur.setMaximumSize(new Dimension(200, 50));
-
-        comboBoxUtilisateur.addActionListener(new ActionChangeListener());
-
-        return comboBoxUtilisateur;
+        return comboBoxUtilisateurModel;
     }
 
     /**
@@ -240,6 +236,7 @@ public class AssociateUser extends JPanel implements Refreshable {
         //Récupère l'utilisateur sélectionné dans la dropdown
         Utilisateur user = (Utilisateur) selectionDropdown.getElementSelect("Utilisateur");
         if(user != null) {
+            comboBoxUtilisateur.setModel(getDefaultModelComboBoxUtilisateur(utilisateurConnecte));
             comboBoxUtilisateur.setSelectedItem(user);
             comboBoxReseau.setModel(getDefaultComboBoxModelReseau(utilisateurConnecte, user));
         }
@@ -273,7 +270,6 @@ public class AssociateUser extends JPanel implements Refreshable {
                 if (result){
                     echec.setVisible(false);
                     reussite.setVisible(true);
-                    //comboBoxUtilisateur.setSelectedItem(0);
                     comboBoxReseau.setModel(getDefaultComboBoxModelReseau(utilisateurConnecte, u));
                 }else{
                     echec.setVisible(true);

@@ -57,7 +57,6 @@ public class ShowLoggings extends JPanel implements Refreshable {
 
         // Par défaut les filtres des reseaux et des caches sont vides
         this.listeLogs = new JList<>();
-        this.listeLogs.setModel(createModelJListLog(utilisateur, null, null));
 
         //Ajout d'un listener pour afficher le log quand on clique dessus
         this.listeLogs.addMouseListener(new MouseLogListener(selectionDropdown));
@@ -75,7 +74,6 @@ public class ShowLoggings extends JPanel implements Refreshable {
         //Création de la partie filtre
         //1. Partie filtre Reseau
         this.comboBoxFiltreReseau = new JComboBox<>();
-        this.comboBoxFiltreReseau.setModel(createModelJComboBoxReseau(utilisateur));
         //Ajout d'un listener pour l'écoute de la modification du choix de la comboBox
         this.comboBoxFiltreReseau.addActionListener(new ActionComboBoxReseauListener());
 
@@ -263,6 +261,10 @@ public class ShowLoggings extends JPanel implements Refreshable {
     @Override
     public void refreshData() {
         //Récupère l'utilisateur sélectionné dans la dropdown
+
+        this.comboBoxFiltreReseau.setModel(createModelJComboBoxReseau(this.utilisateur));
+        this.comboBoxFiltreCache.setModel(new DefaultComboBoxModel<>());
+
         this.comboBoxFiltreReseau.setSelectedIndex(0);
 
         this.comboBoxFiltreReseau.setVisible(true);
