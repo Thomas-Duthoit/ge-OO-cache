@@ -90,6 +90,8 @@ public class UpdateStatutCache extends JPanel implements Refreshable {
     @Override
     public void refreshData() {
         nomCache.setText("Cache n°" + ((Cache) selectionDropdown.getElementSelect("Cache")).getNumero());
+        revalidate();
+        repaint();
     }
 
 
