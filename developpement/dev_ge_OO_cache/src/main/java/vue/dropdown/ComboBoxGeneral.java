@@ -50,6 +50,9 @@ public class ComboBoxGeneral extends JPanel {
         this.selectionDropdown = selectionDropdown;
         this.modifVue = 0;
 
+        DefaultComboBoxModel<Object> model = new DefaultComboBoxModel<>();
+        model.addElement("test");
+
         //Mise en forme
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
 
@@ -57,19 +60,28 @@ public class ComboBoxGeneral extends JPanel {
         this.comboBoxAction = getComboBoxAction();
         this.comboBoxAction.setVisible(true);
 
-        this.comboBoxUtilisateur = getComboBoxUtilisateur();
+        this.comboBoxUtilisateur = new JComboBox<>();
+        this.comboBoxUtilisateur.setBackground(Color.LIGHT_GRAY);
+        this.comboBoxUtilisateur.setModel(model);
+        //Au niveau des changements de vue par rapport au choix
+        this.comboBoxUtilisateur.addActionListener(new ChoixUtilisateurListener());
         this.comboBoxUtilisateur.setVisible(false);
 
-        this.comboBoxReseauCache = getComboBoxReseauCache();
+        this.comboBoxReseauCache = new JComboBox<>();
+        this.comboBoxReseauCache.setBackground(Color.LIGHT_GRAY);
+        this.comboBoxReseauCache.setModel(model);
+        this.comboBoxReseauCache.addActionListener(new ChoixReseauListener());
         this.comboBoxReseauCache.setVisible(false);
 
-        this.comboBoxLog = getComboBoxLog();
+        this.comboBoxLog = new JComboBox<>();
+        this.comboBoxLog.setModel(getDefaultModelComboBoxLog());
+        this.comboBoxLog.setBackground(Color.LIGHT_GRAY);
+        this.comboBoxLog.addActionListener(new ChoixLogListener());
         this.comboBoxLog.setVisible(false);
 
         this.comboBoxCache = new JComboBox<>();
-        this.comboBoxCache.addActionListener(new ChoixCacheListener());
-        this.comboBoxCache.setVisible(false);
         this.comboBoxCache.setBackground(Color.LIGHT_GRAY);
+        this.comboBoxCache.setVisible(false);
 
         this.add(this.comboBoxAction);
         this.add(this.comboBoxLog);
@@ -95,7 +107,7 @@ public class ComboBoxGeneral extends JPanel {
     public JComboBox<String> getComboBoxAction() {
         //Les différentes valeurs a attribué pour le dropdown
         String[] choix = {
-                "Choix de l'interface",
+                "Accueil",
                 "Associer un utilisateur",
                 "Affichage des réseaux",
                 "Affichage de la liste des caches",
@@ -125,10 +137,8 @@ public class ComboBoxGeneral extends JPanel {
      * permet de créer la comboBox correspondant au utilisateur de l'application hors utilisateur connecté
      * @return JComboBox<Object> des utilisateurs
      */
-    public JComboBox<Object> getComboBoxUtilisateur() {
+    public DefaultComboBoxModel<Object> getDefaultModelComboBoxUtilisateur() {
         //Les différentes valeurs a attribué pour le dropdown
-        //Création du dropdown
-        JComboBox<Object> comboBox = new JComboBox<>();
 
         //Création du modèle pour la comboBox
         DefaultComboBoxModel<Object> cbModel = new DefaultComboBoxModel<>();
@@ -140,14 +150,7 @@ public class ComboBoxGeneral extends JPanel {
                 cbModel.addElement(utilisateur);
             }
         }
-        comboBox.setModel(cbModel);
-
-        comboBox.setSelectedIndex(0); //Valeur par défaut au niveau des choix
-        comboBox.setBackground(Color.LIGHT_GRAY);
-
-        //Au niveau des changements de vue par rapport au choix
-        comboBox.addActionListener(new ChoixUtilisateurListener());
-        return comboBox;
+        return cbModel;
     }
 
     /**
@@ -156,7 +159,7 @@ public class ComboBoxGeneral extends JPanel {
      * permet de créer la comboBox correspondant au réseau cache de l'application dont l'utilisateur est propriétaire ou associé
      * @return JComboBox<Object> des reseauCache
      */
-    public JComboBox<Object> getComboBoxReseauCache() {
+    public DefaultComboBoxModel<Object> getDefaultModelComboBoxReseauCache() {
         //Les différentes valeurs a attribué pour le dropdown
         //Récupération de la liste des réseauxCache dont l'utilisateur est propriétaire
         List<ReseauCache> reseauxCacheProp = this.requeteGeOOCache.getReseauxUtilisateur(user);
@@ -180,18 +183,7 @@ public class ComboBoxGeneral extends JPanel {
                 cbModel.addElement(rc);
             }
         }
-
-        //Création du dropdown
-        JComboBox<Object> comboBox = new JComboBox<>();
-        comboBox.setModel(cbModel);
-
-        comboBox.setSelectedIndex(0); //Valeur par défaut au niveau des choix
-        comboBox.setBackground(Color.LIGHT_GRAY);
-
-        //Au niveau des changements de vue par rapport au choix
-        comboBox.addActionListener(new ChoixReseauListener());
-        //Note : L'affichage du JComboBox dans l'application dépend du toString de la classe concernée
-        return comboBox;
+        return cbModel;
     }
 
     /**
@@ -200,22 +192,14 @@ public class ComboBoxGeneral extends JPanel {
      * permet de créer la comboBox correspondant au utilisateur de l'application hors utilisateur connecté
      * @return JComboBox<Object> des logs sur les différents caches de réseau dont l'utilisateur est propriétaire
      */
-    public JComboBox<Object> getComboBoxLog() {
-        JComboBox<Object> comboBox = new JComboBox<>();
+    public DefaultComboBoxModel<Object> getDefaultModelComboBoxLog() {
         List<Log> logs = this.requeteGeOOCache.getLogs(user, null, null);
         DefaultComboBoxModel<Object> cbModel = new DefaultComboBoxModel<>();
         cbModel.addElement("Choix du log");
         for (Log log : logs){
             cbModel.addElement(log);
         }
-        comboBox.setModel(cbModel);
-        comboBox.setSelectedIndex(0); //Valeur par défaut au niveau des choix
-        comboBox.setBackground(Color.LIGHT_GRAY);
-
-        //Au niveau des changements de vue par rapport au choix
-        comboBox.addActionListener(new ChoixLogListener());
-
-        return comboBox;
+        return cbModel;
     }
 
     /**
@@ -302,31 +286,34 @@ public class ComboBoxGeneral extends JPanel {
                 selectionDropdown.supprAllElementSelect();
             }
 
-            if(choixActionSelectionnee.equals("Choix de l'interface")){
-                cl.show(mainPanel, "Choix de l'interface");
+            if("Accueil".equals(choixActionSelectionnee)){
+                cl.show(mainPanel, "Accueil");
             }
             else {
                 // Affichage de certains dropdown
                 selectionDropdown.addElementSelect("Action", choixActionSelectionnee);
                 if ("Associer un utilisateur".equals(choixActionSelectionnee)) {
                     comboBoxUtilisateur.setVisible(true);
+                    comboBoxUtilisateur.setModel(getDefaultModelComboBoxUtilisateur());
                 }
                 if ("Afficher les statistiques".equals(choixActionSelectionnee) || "Affichage de la liste des caches".equals(choixActionSelectionnee) || "Créer une cache".equals(choixActionSelectionnee) || "Modifier le statut d'une cache".equals(choixActionSelectionnee)) {
                     comboBoxReseauCache.setVisible(true);
+                    comboBoxReseauCache.setModel(getDefaultModelComboBoxReseauCache());
                 }
                 if("Afficher les loggins".equals(choixActionSelectionnee)){
                     comboBoxLog.setVisible(true);
+                    comboBoxLog.setModel(getDefaultModelComboBoxLog());
                 }
 
                 // Affichage de la page adéquate
-                if ("Créer une cache".equals(choixActionSelectionnee) || "Modifier le statut d'une cache".equals(choixActionSelectionnee) || "Associer un utilisateur".equals(choixActionSelectionnee) || "Afficher les statistiques".equals(choixActionSelectionnee)) {
+                if ("Créer une cache".equals(choixActionSelectionnee) || "Modifier le statut d'une cache".equals(choixActionSelectionnee) || "Associer un utilisateur".equals(choixActionSelectionnee) || "Afficher les statistiques".equals(choixActionSelectionnee) || "Affichage de la liste des caches".equals(choixActionSelectionnee)) {
                     System.out.println("Pas de changement de page à effectuer pour le moment");
-                    cl.show(mainPanel, "Choix de l'interface");
+                    cl.show(mainPanel, "Accueil");
                 } else {
                     cl.show(mainPanel, choixActionSelectionnee);
                 }
-
             }
+
             modifVue = 0;
             refresh();
             refreshDataView();
@@ -348,7 +335,7 @@ public class ComboBoxGeneral extends JPanel {
                 refreshDataView();
             }else{
                 selectionDropdown.supprElementSelect("Utilisateur");
-                cl.show(mainPanel, "Choix de l'interface");
+                cl.show(mainPanel, "Accueil");
             }
             refresh();
         }
@@ -378,16 +365,16 @@ public class ComboBoxGeneral extends JPanel {
 
                 if ("Modifier le statut d'une cache".equals(actionPrec)) {
                     System.out.println("Pas de nouveau affichage");
-                    cl.show(mainPanel, "Choix de l'interface");
+                    cl.show(mainPanel, "Accueil");
                 } else if ("Affichage de la liste des caches".equals(actionPrec)) {
-                    cl.show(mainPanel, "Liste des caches");
+                    cl.show(mainPanel, "Affichage de la liste des caches");
                 } else {
                     cl.show(mainPanel, actionPrec);
                 }
                 refreshDataView();
             }else{
                 selectionDropdown.supprElementSelect("Reseau");
-                cl.show(mainPanel, "Choix de l'interface");
+                cl.show(mainPanel, "Accueil");
             }
             refresh();
         }
@@ -404,16 +391,16 @@ public class ComboBoxGeneral extends JPanel {
                 selectionDropdown.addElementSelect("Cache", cb.getSelectedItem());
                 System.out.println("Choix des caches : " + cb.getSelectedItem());
 
-                cl.show(mainPanel, comboBoxAction.getSelectedItem().toString());
+                cl.show(mainPanel, "détails caches");
                 refreshDataView();
             }
             else{
                 selectionDropdown.supprElementSelect("Cache");
                 if("modifier le statut d'une cache".equals(cb.getSelectedItem())) {
-                    cl.show(mainPanel, "Choix de l'interface");
+                    cl.show(mainPanel, "Accueil");
                 }
                 else{
-                    cl.show(mainPanel, "Liste des caches");
+                    cl.show(mainPanel, "Affichage de la liste des caches");
                 }
 
             }
