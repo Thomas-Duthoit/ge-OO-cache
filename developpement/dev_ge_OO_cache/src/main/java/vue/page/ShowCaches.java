@@ -14,7 +14,7 @@ public class ShowCaches extends JPanel {
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
         JLabel label =  new JLabel();
-        label.setText("Show Caches");
+        label.setText("Show Caches TEST");
         this.add(label,BorderLayout.NORTH);
         this.setVisible(true);
     }

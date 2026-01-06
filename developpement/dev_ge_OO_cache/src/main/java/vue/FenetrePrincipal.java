@@ -94,9 +94,9 @@ public class FenetrePrincipal extends JFrame {
             mainPanel.add(new CreateCache(this.requeteGeOOCache, this.selectionDropdown), "Créer une cache");
             mainPanel.add(new CreateUser(this.requeteGeOOCache), "Créer un utilisateur");
             mainPanel.add(new UpdateStatutCache(this.requeteGeOOCache, this.selectionDropdown), "Modifier le statut d'une cache");
-            mainPanel.add(new ShowListCache(this.requeteGeOOCache, this.selectionDropdown), "Affichage de la liste des caches");
+            mainPanel.add(new ShowListCache(this.requeteGeOOCache, this.user, this.selectionDropdown, this.cl, this.mainPanel, this.comboBoxGeneral), "Affichage de la liste des caches");
             mainPanel.add(new CreateType(this.requeteGeOOCache), "Créer un type");
-        }catch(SQLException e){
+        } catch(SQLException e){
             System.out.println("Erreur d'ajout des vues de l'application");
         }
         refreshDataView();
