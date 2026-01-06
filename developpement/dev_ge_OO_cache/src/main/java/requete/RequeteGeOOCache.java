@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import modele.*;
 import modele.Cache;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -319,14 +320,34 @@ public class RequeteGeOOCache {
      * @param reseauCache le réseau dont on veut le nombre de caches
      * @return le nombre de caches du réseau
      */
-    public int getStatNbCaches(ReseauCache reseauCache) {
+    public Long getStatNbCaches(ReseauCache reseauCache) {
         EntityManager em = emFactory.createEntityManager();
 
         String strQuery = "SELECT COUNT(c) FROM Cache c JOIN c.appartient r WHERE r = :reseau";
 
         Query query = em.createQuery(strQuery);
         query.setParameter("reseau", reseauCache);
-        List<Integer> res = query.getResultList();
+        List<Long> res = query.getResultList();
+        em.close();
+        return res.getFirst();
+    }
+
+    /**
+     * méthode: getStatNbCaches
+     * ----------------------------
+     * Renvoie le nombre d'utilisateurs qui accèdent au réseau pour l'affichage des statistiques
+     *
+     * @param reseauCache le réseau dont on veut le nombre d'utilisateurs
+     * @return le nombre de caches du réseau
+     */
+    public Long getStatNbUtilisateurs(ReseauCache reseauCache) {
+        EntityManager em = emFactory.createEntityManager();
+
+        String strQuery = "SELECT COUNT(u) FROM Utilisateur u JOIN u.accede r WHERE r = :reseau";
+
+        Query query = em.createQuery(strQuery);
+        query.setParameter("reseau", reseauCache);
+        List<Long> res = query.getResultList();
         em.close();
         return res.getFirst();
     }
@@ -339,14 +360,14 @@ public class RequeteGeOOCache {
      * @param reseauCache le réseau dont on veut le nombre de logs
      * @return le nombre de logs du réseau
      */
-    public int getStatNbLogs(ReseauCache reseauCache) {
+    public Long getStatNbLogs(ReseauCache reseauCache) {
         EntityManager em = emFactory.createEntityManager();
 
         String strQuery = "SELECT COUNT(l) FROM Log l JOIN l.enregistrer c JOIN c.appartient r WHERE r = :reseau";
 
         Query query = em.createQuery(strQuery);
         query.setParameter("reseau", reseauCache);
-        List<Integer> res = query.getResultList();
+        List<Long> res = query.getResultList();
         em.close();
         return res.getFirst();
     }
@@ -359,14 +380,14 @@ public class RequeteGeOOCache {
      * @param reseauCache le réseau dont on veut le nombre de logs avec une cache trouvée
      * @return le nombre de logs avec une cache trouvée du réseau
      */
-    public int getStatNbTrouve(ReseauCache reseauCache) {
+    public Long getStatNbTrouve(ReseauCache reseauCache) {
         EntityManager em = emFactory.createEntityManager();
 
         String strQuery = "SELECT COUNT(l) FROM Log l JOIN l.enregistrer c JOIN c.appartient r WHERE r = :reseau AND l.trouver = TRUE";
 
         Query query = em.createQuery(strQuery);
         query.setParameter("reseau", reseauCache);
-        List<Integer> res = query.getResultList();
+        List<Long> res = query.getResultList();
         em.close();
         return res.getFirst();
     }
@@ -379,14 +400,14 @@ public class RequeteGeOOCache {
      * @param reseauCache le réseau dont on veut le nombre de logs avec une cache non trouvée
      * @return le nombre de logs avec une cache non trouvée du réseau
      */
-    public int getStatNbPasTrouve(ReseauCache reseauCache) {
+    public Long getStatNbPasTrouve(ReseauCache reseauCache) {
         EntityManager em = emFactory.createEntityManager();
 
         String strQuery = "SELECT COUNT(l) FROM Log l JOIN l.enregistrer c JOIN c.appartient r WHERE r = :reseau AND l.trouver = FALSE";
 
         Query query = em.createQuery(strQuery);
         query.setParameter("reseau", reseauCache);
-        List<Integer> res = query.getResultList();
+        List<Long> res = query.getResultList();
         em.close();
         return res.getFirst();
     }
@@ -479,6 +500,32 @@ public class RequeteGeOOCache {
         return caches;
     }
 
+        /**
+         * méthode : updateStatutCache
+         * ----------------------------
+         * modifie le statut du cache
+         * @param cache la cache
+         * @param statutCache le statut cache à changer
+         * @return boolean indiquant la réussite de l'update
+         */
+        public boolean updateStatutCache(Cache cache, StatutCache statutCache) {
+            final EntityManager em = this.getEm();
+
+            cache = em.merge(cache);
+            statutCache = em.merge(statutCache);
+
+            final EntityTransaction et = em.getTransaction();
+            try{
+                et.begin();
+                cache.setStatutCache(statutCache);
+                et.commit();
+            }catch(Exception ex){
+                et.rollback();
+                System.out.println("ERREUR updateStatutCache : " + ex);
+                return false;
+            }
+            em.close();
+            return true;
     /**
      * méthode : getDataCachesById
      * ----------------------------
@@ -509,7 +556,63 @@ public class RequeteGeOOCache {
         query.setParameter("numero", numero);
         Cache cache = (Cache)query.getSingleResult();
 
-        StatutCache statutCache = getStatutCacheById(statutCacheId);
+    /**
+     * méthode : creerCache
+     * ----------------------------
+     * crée une cache
+     *
+     * @param text description textuelle
+     * @param tech description technique
+     * @param libre rubrique libre
+     * @param loc localisation GPS
+     * @param type type de la cache
+     * @param statut statut de la cache
+     * @param reseau réseau de la cache
+     * @return création effectuée
+     */
+    public boolean creerCache(String text, String tech, String libre, String loc, TypeCache type, StatutCache statut, ReseauCache reseau) {
+        EntityManager em = emFactory.createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+
+            type = em.merge(type);  // on réattache à l'EM pour éviter les erreurs de LAZY init
+            statut = em.merge(statut);  // on réattache à l'EM pour éviter les erreurs de LAZY init
+            reseau = em.merge(reseau);  // on réattache à l'EM pour éviter les erreurs de LAZY init
+
+            Cache cache = new Cache(text, tech, loc, libre);
+
+            em.persist(cache);
+
+            if (!cache.addTypeCache(type)) {
+                // echec du addTypeCache
+                et.rollback();
+                return false;
+            }
+            if (!cache.setStatutCache(statut)) {
+                // echec du setStatutCache
+                et.rollback();
+                return false;
+            }
+            if (!cache.setReseau(reseau)) {
+                // echec du setReseau
+                et.rollback();
+                return false;
+            }
+
+            et.commit();  // application des MàJ
+
+        } catch (Exception e) {
+            et.rollback();
+            System.out.println("ERREUR creerCache : " + e);
+            return false;
+        } finally {
+            em.close();
+        }
+
+        return true;  // on est arrivé là sans retourner false -> création effectuée
+    }
+
 
         final EntityTransaction et = em.getTransaction();
         try{
@@ -525,6 +628,25 @@ public class RequeteGeOOCache {
 
     }
 
+        /**
+         *              METHODES RequeteGeOOCache
+         *              (Pour la classe TypeCache)
+         */
+
+        /**
+         * méthode : getTypeCache
+         * ----------------------------
+         * donne la liste des types possibles pour un cache
+         * @return la liste des types
+         */
+        public List<TypeCache> getTypeCache(){
+            List<TypeCache> types = new ArrayList<TypeCache>();
+            final EntityManager em = this.getEm();
+            String strQuery = "Select t from TypeCache t";
+            Query query = em.createQuery(strQuery);
+            types = query.getResultList();
+            return types;
+        }
 
     /**
      *              METHODES RequeteGeOOCache
