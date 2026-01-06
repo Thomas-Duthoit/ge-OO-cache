@@ -521,18 +521,15 @@ public class RequeteGeOOCache {
          * méthode : updateStatutCache
          * ----------------------------
          * modifie le statut du cache
-         * @param numero l'identifiant du réseau de cache
-         * @param statutCacheId l'identifiant du nouveau statut du cache
+         * @param cache la cache
+         * @param statutCache le statut cache à changer
          * @return boolean indiquant la réussite de l'update
          */
-        public boolean updateStatutCache(int numero, int statutCacheId) {
+        public boolean updateStatutCache(Cache cache, StatutCache statutCache) {
             final EntityManager em = this.getEm();
-            String strQuery = "Select c from Cache c where c.numero = :numero";
-            Query query = em.createQuery(strQuery);
-            query.setParameter("numero", numero);
-            Cache cache = (Cache)query.getSingleResult();
 
-            StatutCache statutCache = getStatutCacheById(statutCacheId);
+            cache = em.merge(cache);
+            statutCache = em.merge(statutCache);
 
             final EntityTransaction et = em.getTransaction();
             try{
@@ -541,6 +538,7 @@ public class RequeteGeOOCache {
                 et.commit();
             }catch(Exception ex){
                 et.rollback();
+                System.out.println("ERREUR updateStatutCache : " + ex);
                 return false;
             }
             em.close();

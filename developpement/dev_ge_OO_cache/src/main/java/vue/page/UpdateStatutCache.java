@@ -3,6 +3,7 @@ package vue.page;
 import modele.Cache;
 import modele.StatutCache;
 import requete.RequeteGeOOCache;
+import vue.Refreshable;
 import vue.SelectionDropdown;
 
 import javax.swing.*;
@@ -11,7 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-public class UpdateStatutCache extends JPanel {
+public class UpdateStatutCache extends JPanel implements Refreshable {
 
     private RequeteGeOOCache requeteGeOOCache;
     private SelectionDropdown selectionDropdown;
@@ -86,6 +87,11 @@ public class UpdateStatutCache extends JPanel {
         this.setVisible(true);
     }
 
+    @Override
+    public void refreshData() {
+        nomCache.setText("Cache n°" + ((Cache) selectionDropdown.getElementSelect("Cache")).getNumero());
+    }
+
 
     // classe interne à la vue car elle y est spécifique
     class UpdateStatutActionListener implements ActionListener {
@@ -106,8 +112,8 @@ public class UpdateStatutCache extends JPanel {
             System.out.println("Statut : " + statut.getSelectedItem());
 
             req.updateStatutCache(
-                    ((Cache) sel.getElementSelect("Cache")).getNumero(),
-                    ((StatutCache) statut.getSelectedItem()).getId());
+                    ((Cache) sel.getElementSelect("Cache")),
+                    ((StatutCache) statut.getSelectedItem()));
         }
     }
 }
