@@ -303,7 +303,7 @@ public class ShowLoggings extends JPanel implements Refreshable {
         @Override
         public Component getListCellRendererComponent(JList<? extends Log> list, Log value, int index, boolean isSelected, boolean cellHasFocus) {
             JLabel label = new JLabel();
-            label.setText("Log " + value.getId());
+            label.setText("Log " + value.getId() + "- provenant du cache : " + value.getEnregistrer() + " | note : " + value.getNote() + "/5");
 
             if (cellHasFocus) {
                 label.setForeground(Color.BLACK);
@@ -312,7 +312,7 @@ public class ShowLoggings extends JPanel implements Refreshable {
             } else {
                 label.setForeground(Color.BLACK);
             }
-            label.setFont(new Font("consolas", Font.BOLD, 30));
+            label.setFont(new Font("consolas", Font.BOLD, 15));
 
             return label;
         }

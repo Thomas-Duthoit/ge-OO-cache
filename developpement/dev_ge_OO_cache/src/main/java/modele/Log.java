@@ -163,6 +163,10 @@ public class Log {
         return commentaire;
     }
 
+    public Cache getEnregistrer() {
+        return enregistrer;
+    }
+
     /**
      *              HASHCODE ET EQUALS
      */

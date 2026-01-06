@@ -119,6 +119,14 @@ public class Utilisateur {
         return false;
     }
 
+    protected boolean supprAccesReseau(ReseauCache reseauCache) {
+        if (reseauCache != null) {
+            this.accede.remove(reseauCache);
+            return true;
+        }
+        return false;
+    }
+
     /**
      * méthode : ajouterReseauPossede
      * ------------------------------

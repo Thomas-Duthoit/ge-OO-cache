@@ -307,10 +307,12 @@ public class ComboBoxGeneral extends JPanel {
                 }
 
                 // Affichage de la page adéquate
-                if ("Créer une cache".equals(choixActionSelectionnee) || "Modifier le statut d'une cache".equals(choixActionSelectionnee) || "Associer un utilisateur".equals(choixActionSelectionnee) || "Afficher les statistiques".equals(choixActionSelectionnee) || "Affichage de la liste des caches".equals(choixActionSelectionnee)) {
+                if ("Créer une cache".equals(choixActionSelectionnee) || "Modifier le statut d'une cache".equals(choixActionSelectionnee) || "Associer un utilisateur".equals(choixActionSelectionnee) || "Afficher les statistiques".equals(choixActionSelectionnee)) {
                     System.out.println("Pas de changement de page à effectuer pour le moment");
                     cl.show(mainPanel, "Accueil");
-                } else {
+                }else if ( "Affichage de la liste des caches".equals(choixActionSelectionnee)){
+                    cl.show(mainPanel, "Affichage des réseaux pour cache");
+                }else {
                     cl.show(mainPanel, choixActionSelectionnee);
                 }
             }
@@ -375,7 +377,7 @@ public class ComboBoxGeneral extends JPanel {
                 refreshDataView();
             }else{
                 selectionDropdown.supprElementSelect("Reseau");
-                cl.show(mainPanel, "Accueil");
+                cl.show(mainPanel, "Affichage des réseaux pour cache");
             }
             refresh();
         }

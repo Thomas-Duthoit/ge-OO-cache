@@ -126,6 +126,20 @@ public class RequeteGeOOCache {
     }
 
     /**
+     *
+     *
+     */
+    public List<Utilisateur> getListeUtilisateursFromReseau(ReseauCache reseauCache){
+        EntityManager em = emFactory.createEntityManager();
+        String strQuery = "SELECT u FROM Utilisateur u where :reseauCache MEMBER OF u.accede";
+        Query query = em.createQuery(strQuery);
+        query.setParameter("reseauCache", reseauCache);
+        List<Utilisateur> res = query.getResultList();
+        em.close();
+        return res;
+    }
+
+    /**
      *              METHODES RequeteGeOOCache
      *              (Pour la classe ReseauCache)
      */
@@ -269,6 +283,35 @@ public class RequeteGeOOCache {
         }
 
         return true;  // on est arrivé là sans retourner false -> association effectuée
+    }
+
+    public boolean deleteAccessReseau(Utilisateur utilisateur, ReseauCache reseauCache) {
+        EntityManager em = emFactory.createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+
+            utilisateur = em.merge(utilisateur);  // on réattache l'utilisateur à l'EM pour éviter les erreurs de LAZY init
+            reseauCache = em.merge(reseauCache);  // on réattache le réseau à l'EM pour éviter les erreurs de LAZY init
+
+            if(!(reseauCache.supprAccesUtilisateur(utilisateur))){
+                et.rollback();
+                return false;
+            };
+
+            et.commit();  // application des MàJ
+
+        } catch (Exception e) {
+            et.rollback();
+            System.out.println("ERREUR ajouterAccesReseau : " + e);
+            return false;
+        } finally {
+            em.close();
+        }
+
+
+
+        return true;
     }
 
     /**

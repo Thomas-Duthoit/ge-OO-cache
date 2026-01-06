@@ -113,6 +113,17 @@ public class ReseauCache {
         return false;
     }
 
+    public boolean supprAccesUtilisateur(Utilisateur utilisateur) {
+        if (utilisateur != null) {
+            if(this.utilisateurs.contains(utilisateur)){
+                this.utilisateurs.remove(utilisateur);
+                return utilisateur.supprAccesReseau(this);
+            }
+            return false;
+        }
+        return false;
+    }
+
     /**
      * Méthode : setProprietaire
      * ---------------------------------
