@@ -200,9 +200,6 @@ public class Cache {
         return false;
     }
 
-
-    public int getNumero() {
-        return numero;
     /**
      *              HASHCODE et EQUALS
      */
