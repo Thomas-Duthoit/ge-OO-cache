@@ -1,6 +1,8 @@
 package vue.page;
 
+import modele.Cache;
 import requete.RequeteGeOOCache;
+import vue.Refreshable;
 import vue.SelectionDropdown;
 
 import javax.swing.*;
@@ -8,7 +10,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.sql.SQLException;
 
-public class ShowCaches extends JPanel {
+public class ShowCaches extends JPanel implements Refreshable {
 
     private RequeteGeOOCache requeteGeOOCache;
     private SelectionDropdown selectionDropdown;
@@ -24,6 +26,12 @@ public class ShowCaches extends JPanel {
 
     public ShowCaches(RequeteGeOOCache requeteGeOOCache, SelectionDropdown selectionDropdown) throws SQLException {
         super();
+
+
+        this.requeteGeOOCache = requeteGeOOCache;
+        this.selectionDropdown = selectionDropdown;
+
+
         this.setBackground(Color.WHITE);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));  // comme un flow layout mais en mode vertical
@@ -112,4 +120,18 @@ public class ShowCaches extends JPanel {
         this.setVisible(true);
     }
 
+    @Override
+    public void refreshData() {
+        Cache cache = (Cache) selectionDropdown.getElementSelect("Cache");
+
+        nomCache.setText("Cache n°" + cache.getNumero());
+
+        descriptionTextuelle.setText(cache.getDescriptionTextuelle());
+        descriptionTechnique.setText(cache.getDescriptionTechnique());
+        rubriqueLibre.setText(cache.getRubriqueLibre());
+        locLabel.setText("Localisation : " + cache.getInformationsGeolocalisation());
+        typeLabel.setText("Type : " + requeteGeOOCache.getTypeCache(cache));
+        statutLabel.setText("Statut : " + requeteGeOOCache.getStatutCache(cache));
+
+    }
 }
