@@ -129,7 +129,7 @@ public class ShowReseau extends JPanel {
                 label.setForeground(Color.BLACK);
             }
 
-            label.setFont(new Font("consolas", Font.BOLD, 30));
+            label.setFont(new Font("consolas", Font.BOLD, 20));
             return label;
         }
     }
@@ -144,8 +144,8 @@ public class ShowReseau extends JPanel {
                 selectionDropdown.addElementSelect("Action", "Affichage de la liste des caches");
                 cardLayout.show(mainPanel, "Affichage de la liste des caches");
                 refreshDataView(); //Permet d'activer la méthode refreshData de la vue d'affichage de la liste des caches
-                comboBoxGeneral.refreshComboBoxReseau();
                 comboBoxGeneral.refreshComboBoxAction();
+                comboBoxGeneral.refreshComboBoxReseau();
             }
         }
 

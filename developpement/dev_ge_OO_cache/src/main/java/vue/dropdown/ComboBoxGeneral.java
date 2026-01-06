@@ -319,7 +319,7 @@ public class ComboBoxGeneral extends JPanel {
                 }
 
                 // Affichage de la page adéquate
-                if ("Affichage de la liste des caches".equals(choixActionSelectionnee) || "Créer une cache".equals(choixActionSelectionnee) || "Modifier le statut d'une cache".equals(choixActionSelectionnee) || "Associer un utilisateur".equals(choixActionSelectionnee) || "Afficher les statistiques".equals(choixActionSelectionnee)) {
+                if ("Créer une cache".equals(choixActionSelectionnee) || "Modifier le statut d'une cache".equals(choixActionSelectionnee) || "Associer un utilisateur".equals(choixActionSelectionnee) || "Afficher les statistiques".equals(choixActionSelectionnee)) {
                     System.out.println("Pas de changement de page à effectuer pour le moment");
                     cl.show(mainPanel, "Choix de l'interface");
                 } else {
