@@ -52,7 +52,7 @@ public class Login extends JPanel{
         JButton loginButton = createButton();
 
         //LABEL pour le texte d'erreur
-        this.errorLabel = new JLabel("Erreur sur le nom d'utilisateur ou le mot de passe");
+        this.errorLabel = new JLabel("Erreur sur le nom d'utilisateur ou le mot de passe, l'application va se fermer");
         errorLabel.setForeground(Color.RED);
         errorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         errorLabel.setVisible(false);
@@ -216,6 +216,18 @@ public class Login extends JPanel{
                 errorLabel.setVisible(true);
                 revalidate();
                 repaint();
+
+                // solution proposée par l'IA pour fermer la fenêtre après un certain délai
+                Timer closeTimer = new Timer(5000, evt -> {  // on crée un timer swing pour ne pas bloquer le thread UI de swing
+                    Window window = SwingUtilities.getWindowAncestor(Login.this);  // on récupère l'instance de la fenêtre
+                    if (window != null) {
+                        window.dispose(); // on ferme la fenêtre
+                    }
+                });
+
+                closeTimer.setRepeats(false); // une seule fois
+                closeTimer.start();  // lancer le timer
+
                 return;
             }
             System.out.println("Connexion correcte");
