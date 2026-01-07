@@ -22,7 +22,6 @@ import java.util.List;
  * Elle permet de gérer l'affichage des JComboBox et des valeurs de chacune
  */
 public class ComboBoxGeneral extends JPanel {
-    //Attributs
     private CardLayout cl;
     private JPanel mainPanel;
     private RequeteGeOOCache requeteGeOOCache;
@@ -92,6 +91,22 @@ public class ComboBoxGeneral extends JPanel {
 
         this.setVisible(true);
 
+        //Dimension des tailles de comboBox
+        Dimension comboBoxDimension = new Dimension(250, 40);
+        this.comboBoxAction.setPreferredSize(comboBoxDimension);
+        this.comboBoxUtilisateur.setPreferredSize(comboBoxDimension);
+        this.comboBoxLog.setPreferredSize(comboBoxDimension);
+        this.comboBoxCache.setPreferredSize(comboBoxDimension);
+        this.comboBoxReseauCache.setPreferredSize(comboBoxDimension);
+
+        //Taille des textes de comboBox
+        Font font = new Font("Consolas", Font.PLAIN, 16);
+
+        this.comboBoxAction.setFont(font);
+        this.comboBoxUtilisateur.setFont(font);
+        this.comboBoxReseauCache.setFont(font);
+        this.comboBoxLog.setFont(font);
+        this.comboBoxCache.setFont(font);
     }
 
     /**
@@ -111,7 +126,7 @@ public class ComboBoxGeneral extends JPanel {
                 "Accueil",
                 "Associer un utilisateur",
                 "Affichage des réseaux",
-                "Affichage de la liste des caches",
+                "Affichage des caches",
                 "Afficher les statistiques",
                 "Afficher les loggins",
                 "Créer un réseau",
@@ -133,10 +148,10 @@ public class ComboBoxGeneral extends JPanel {
     }
 
     /**
-     * getComboBoxUtilisateur
+     * getDefaultModelComboBoxUtilisateur
      * ------
-     * permet de créer la comboBox correspondant au utilisateur de l'application hors utilisateur connecté
-     * @return JComboBox<Object> des utilisateurs
+     * permet de créer le modèle de la comboBox correspondant au utilisateur de l'application hors utilisateur connecté
+     * @return DefaultComboBoxModel<Object> des utilisateurs
      */
     public DefaultComboBoxModel<Object> getDefaultModelComboBoxUtilisateur() {
         //Les différentes valeurs a attribué pour le dropdown
@@ -155,10 +170,10 @@ public class ComboBoxGeneral extends JPanel {
     }
 
     /**
-     * getComboBoxReseauCache
+     * getDefaultModelComboBoxReseauCache
      * ------
-     * permet de créer la comboBox correspondant au réseau cache de l'application dont l'utilisateur est propriétaire ou associé
-     * @return JComboBox<Object> des reseauCache
+     * permet de créer le modèle de la comboBox correspondant au réseau cache de l'application dont l'utilisateur est propriétaire ou associé
+     * @return DefaultComboBoxModel<Object> des reseauCache
      */
     public DefaultComboBoxModel<Object> getDefaultModelComboBoxReseauCache() {
         //Les différentes valeurs a attribué pour le dropdown
@@ -188,10 +203,10 @@ public class ComboBoxGeneral extends JPanel {
     }
 
     /**
-     * getComboBoxLog
+     * getDefaultModelComboBoxLog()
      * ------
-     * permet de créer la comboBox correspondant au utilisateur de l'application hors utilisateur connecté
-     * @return JComboBox<Object> des logs sur les différents caches de réseau dont l'utilisateur est propriétaire
+     * permet de créer le modèle de la comboBox correspondant au utilisateur de l'application hors utilisateur connecté
+     * @return DefaultComboBoxModel<Object> des logs sur les différents caches de réseau dont l'utilisateur est propriétaire
      */
     public DefaultComboBoxModel<Object> getDefaultModelComboBoxLog() {
         List<Log> logs = this.requeteGeOOCache.getLogs(user, null, null);
@@ -297,7 +312,7 @@ public class ComboBoxGeneral extends JPanel {
                     comboBoxUtilisateur.setVisible(true);
                     comboBoxUtilisateur.setModel(getDefaultModelComboBoxUtilisateur());
                 }
-                if ("Afficher les statistiques".equals(choixActionSelectionnee) || "Affichage de la liste des caches".equals(choixActionSelectionnee) || "Créer une cache".equals(choixActionSelectionnee) || "Modifier le statut d'une cache".equals(choixActionSelectionnee)) {
+                if ("Afficher les statistiques".equals(choixActionSelectionnee) || "Affichage des caches".equals(choixActionSelectionnee) || "Créer une cache".equals(choixActionSelectionnee) || "Modifier le statut d'une cache".equals(choixActionSelectionnee)) {
                     comboBoxReseauCache.setVisible(true);
                     comboBoxReseauCache.setModel(getDefaultModelComboBoxReseauCache());
                 }
@@ -310,7 +325,7 @@ public class ComboBoxGeneral extends JPanel {
                 if ("Créer une cache".equals(choixActionSelectionnee) || "Modifier le statut d'une cache".equals(choixActionSelectionnee) || "Associer un utilisateur".equals(choixActionSelectionnee) || "Afficher les statistiques".equals(choixActionSelectionnee)) {
                     System.out.println("Pas de changement de page à effectuer pour le moment");
                     cl.show(mainPanel, "Accueil");
-                }else if ( "Affichage de la liste des caches".equals(choixActionSelectionnee)){
+                }else if ( "Affichage des caches".equals(choixActionSelectionnee)){
                     cl.show(mainPanel, "Affichage des réseaux pour cache");
                 }else {
                     cl.show(mainPanel, choixActionSelectionnee);
@@ -360,7 +375,7 @@ public class ComboBoxGeneral extends JPanel {
 
                 String actionPrec = comboBoxAction.getSelectedItem().toString();
 
-                if ("Modifier le statut d'une cache".equals(actionPrec) || "Affichage de la liste des caches".equals(actionPrec)) {
+                if ("Modifier le statut d'une cache".equals(actionPrec) || "Affichage des caches".equals(actionPrec)) {
                     System.out.println("test affichage cache");
                     comboBoxCache.setModel(getDefaultComboBoxModelCache(reseauCache));
                     comboBoxCache.setVisible(true);
@@ -369,8 +384,8 @@ public class ComboBoxGeneral extends JPanel {
                 if ("Modifier le statut d'une cache".equals(actionPrec)) {
                     System.out.println("Pas de nouveau affichage");
                     cl.show(mainPanel, "Accueil");
-                } else if ("Affichage de la liste des caches".equals(actionPrec)) {
-                    cl.show(mainPanel, "Affichage de la liste des caches");
+                } else if ("Affichage des caches".equals(actionPrec)) {
+                    cl.show(mainPanel, "Affichage des caches");
                 } else {
                     cl.show(mainPanel, actionPrec);
                 }
@@ -403,7 +418,7 @@ public class ComboBoxGeneral extends JPanel {
                     cl.show(mainPanel, "Accueil");
                 }
                 else{
-                    cl.show(mainPanel, "Affichage de la liste des caches");
+                    cl.show(mainPanel, "Affichage des caches");
                 }
 
             }

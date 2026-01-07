@@ -24,7 +24,6 @@ import java.sql.SQLException;
  * Permet de se connecter à l'application
  */
 public class Login extends JPanel{
-    //Attributs
     private FenetrePrincipal fenetrePrincipal;
     private JTextField username;
     private JPasswordField password;

@@ -25,7 +25,6 @@ import java.util.List;
  * Elle permet l'affichage de la liste des logs
  */
 public class ShowLoggings extends JPanel implements Refreshable {
-    //Attributs
     private RequeteGeOOCache requeteGeOOCache;
     private Utilisateur utilisateur;
 

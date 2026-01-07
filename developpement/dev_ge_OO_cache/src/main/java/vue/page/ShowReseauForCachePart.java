@@ -12,9 +12,10 @@ import java.awt.*;
 import java.sql.SQLException;
 
 /**
- * Classe ShowReseau
+ * Classe ShowReseauForCachePart
+ * Classe Fille de ShowReseauMere
  * Une classe correspondant à une page de l'application
- * Elle permet l'affichage de la liste des reseaux de cache dont l'utilisateur est propriétaire ou associé à
+ * Elle permet l'affichage de la liste des réseaux dans le choix "affichage des caches" au moment du choix du réseau
  */
 public class ShowReseauForCachePart extends ShowReseauMere implements Refreshable{
 
@@ -22,6 +23,13 @@ public class ShowReseauForCachePart extends ShowReseauMere implements Refreshabl
     public ShowReseauForCachePart(RequeteGeOOCache requeteGeOOCache, Utilisateur utilisateur, JPanel mainPanel, CardLayout cl, SelectionDropdown selectionDropdown, ComboBoxGeneral comboBoxGeneral) throws SQLException {
         super(requeteGeOOCache, utilisateur, mainPanel, cl,  selectionDropdown, comboBoxGeneral);
     }
+
+    /**
+     * actionClick
+     * ------------------
+     * permet de passer à l'affichage de la liste des caches au moment d'un double click sur une des lignes de la JList
+     * @param reseauCache : le reseauCache sélectionné
+     */
 
     @Override
     public void actionClick(ReseauCache reseauCache) {
@@ -32,6 +40,13 @@ public class ShowReseauForCachePart extends ShowReseauMere implements Refreshabl
         comboBoxGeneral.refreshComboBoxReseau();
     }
 
+    /**
+     * méthode : createPanelRenderer
+     * -----------------------
+     * permet de régler l'affichage des différents éléments de la JList
+     * @param reseauCache : reseauCache de la ligne courante
+     * @return JPanel correspondant au design de la ligne
+     */
     @Override
     public JPanel createPanelRenderer(ReseauCache reseauCache){
         JPanel panel = new JPanel();

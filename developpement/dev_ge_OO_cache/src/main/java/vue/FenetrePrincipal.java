@@ -84,7 +84,7 @@ public class FenetrePrincipal extends JFrame {
     public void addAllView(){
         try {
             mainPanel.add(new Accueil(this), "Accueil");
-            mainPanel.add(new ManageUser(this.selectionDropdown, this.requeteGeOOCache), "Affichage gestion utilisateur");
+            mainPanel.add(new ManageUser(this.selectionDropdown, this.requeteGeOOCache, this.cl, this.mainPanel), "Affichage gestion utilisateur");
             mainPanel.add(new CreateReseau(this.requeteGeOOCache, this.user), "Créer un réseau");
             mainPanel.add(new ShowReseauForCachePart(this.requeteGeOOCache, this.user, this.mainPanel, this.cl, this.selectionDropdown, this.comboBoxGeneral), "Affichage des réseaux pour cache");
             mainPanel.add(new ShowReseau(this.requeteGeOOCache, this.user, this.mainPanel, this.cl, this.selectionDropdown, this.comboBoxGeneral), "Affichage des réseaux");

@@ -16,12 +16,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Classe ShowReseau
- * Une classe correspondant à une page de l'application
- * Elle permet l'affichage de la liste des reseaux de cache dont l'utilisateur est propriétaire ou associé à
+ * Classe ShowReseauMere
+ * Classe mère de 2 vues de l'application
+ * Permet de gérer les comportements communs entre les 2 vues
  */
 public abstract class ShowReseauMere extends JPanel implements Refreshable{
-    //Attributs
     protected RequeteGeOOCache requeteGeOOCache;
     protected Utilisateur utilisateur;
     protected JPanel mainPanel;
@@ -88,10 +87,10 @@ public abstract class ShowReseauMere extends JPanel implements Refreshable{
     }
 
     /**
-     * Méthode : createListReseauCache
+     * Méthode : createDefaultModelListReseauCache
      * ------
-     * permet de créer la JList des réseaux de cache
-     * @return JList<ReseauCache> une jList de réseau de cache
+     * permet de créer le modèle de la JList des réseaux de cache
+     * @return DefaultListModel<ReseauCache> un modèle de jList de réseau de cache
      */
     public DefaultListModel<ReseauCache> createDefaultModelListReseauCache(){
         //Récupération des valeurs pour la liste
@@ -127,6 +126,12 @@ public abstract class ShowReseauMere extends JPanel implements Refreshable{
         }
     }
 
+    /**
+     *              LISTENER
+     */
+
+    // classe interne à la vue car elle y est spécifique
+    // Permet de réagir au double click sur une ligne de la JList
     public class MouseReseauListener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -159,8 +164,25 @@ public abstract class ShowReseauMere extends JPanel implements Refreshable{
         }
     }
 
+    /**
+     *              METHODES ABSTRAITE
+     */
+
+    /**
+     * Méthode : createPanelRenderer
+     * -----------------
+     * le design des lignes de la JList
+     * @param reseau : reseau correspondant à celui de la ligne courante
+     * @return JPanel correspondant au design adéquat
+     */
     public abstract JPanel createPanelRenderer(ReseauCache reseau);
 
+    /**
+     * Méthode : actionClick
+     * -----------------
+     * action effectué au moment du double clique sur une vue
+     * @param reseauCache : reseau correspondant à celui de la ligne cliquée
+     */
     public abstract void actionClick(ReseauCache reseauCache);
 
     /**
