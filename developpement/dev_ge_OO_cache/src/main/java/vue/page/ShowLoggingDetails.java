@@ -19,7 +19,6 @@ import static java.awt.Color.LIGHT_GRAY;
  * Elle permet l'affichage des détails d'un log choisit précédemment dans la page affichant la liste des logs
  */
 public class ShowLoggingDetails extends JPanel implements Refreshable {
-    //Attributs
     private SelectionDropdown selectionDropdown;
     private CardLayout cardLayout;
     private JPanel panelFenetre;
@@ -60,8 +59,6 @@ public class ShowLoggingDetails extends JPanel implements Refreshable {
          * 4. Date et Note
          * 6. Commentaire
          */
-        //TODO : Ajouter Image si on a le temps
-
 
         JPanel mainDataPanel = new JPanel();
         JPanel mainPanel = new JPanel();

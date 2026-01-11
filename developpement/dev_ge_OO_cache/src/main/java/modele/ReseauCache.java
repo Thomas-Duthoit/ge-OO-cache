@@ -114,6 +114,25 @@ public class ReseauCache {
     }
 
     /**
+     * Méthode : supprAccesUtilisateur
+     * ---------------------------------
+     * Supprime l'accès au réseau pour l'utilisateur courant
+     *
+     * @param utilisateur l'utilisateur qui n'aura plus accès au réseau courant
+     * @return la suppresion a réussi ou non
+     */
+    public boolean supprAccesUtilisateur(Utilisateur utilisateur) {
+        if (utilisateur != null) {
+            if(this.utilisateurs.contains(utilisateur)){
+                this.utilisateurs.remove(utilisateur);
+                return utilisateur.supprAccesReseau(this);
+            }
+            return false;
+        }
+        return false;
+    }
+
+    /**
      * Méthode : setProprietaire
      * ---------------------------------
      * Définit l'utilisateur comme étant le propriétaire du réseau actuel

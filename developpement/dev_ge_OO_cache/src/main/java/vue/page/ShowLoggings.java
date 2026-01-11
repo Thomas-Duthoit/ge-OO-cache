@@ -25,7 +25,6 @@ import java.util.List;
  * Elle permet l'affichage de la liste des logs
  */
 public class ShowLoggings extends JPanel implements Refreshable {
-    //Attributs
     private RequeteGeOOCache requeteGeOOCache;
     private Utilisateur utilisateur;
 
@@ -129,7 +128,6 @@ public class ShowLoggings extends JPanel implements Refreshable {
         List<Log> listeLogs = this.requeteGeOOCache.getLogs(utilisateur, filtreReseau, filtreCache);
 
         //Etape 2
-        JList<Log> logsJList = new JList<>();
         DefaultListModel<Log> listeLogsModel = new DefaultListModel<>();
         for(Log log : listeLogs){
             listeLogsModel.addElement(log);
@@ -155,7 +153,6 @@ public class ShowLoggings extends JPanel implements Refreshable {
         List<ReseauCache> listeReseauxCache = this.requeteGeOOCache.getReseauxUtilisateur(utilisateur);
 
         //Etape 2
-        JComboBox<Object> comboBoxReseau = new JComboBox<>();
         DefaultComboBoxModel<Object> comboBoxReseauModel = new DefaultComboBoxModel<>();
         comboBoxReseauModel.addElement("Filtrer par Réseau");
         for(ReseauCache reseauCache : listeReseauxCache){
@@ -305,7 +302,7 @@ public class ShowLoggings extends JPanel implements Refreshable {
         @Override
         public Component getListCellRendererComponent(JList<? extends Log> list, Log value, int index, boolean isSelected, boolean cellHasFocus) {
             JLabel label = new JLabel();
-            label.setText("Log " + value.getId());
+            label.setText("Log " + value.getId() + "- provenant du cache : " + value.getEnregistrer() + " | note : " + value.getNote() + "/5");
 
             if (cellHasFocus) {
                 label.setForeground(Color.BLACK);
@@ -314,7 +311,7 @@ public class ShowLoggings extends JPanel implements Refreshable {
             } else {
                 label.setForeground(Color.BLACK);
             }
-            label.setFont(new Font("consolas", Font.BOLD, 30));
+            label.setFont(new Font("consolas", Font.BOLD, 15));
 
             return label;
         }

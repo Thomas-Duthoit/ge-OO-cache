@@ -21,7 +21,6 @@ import java.util.List;
  * Elle permet l'affichage de la page sur l'association d'un utilisateur à une vue
  */
 public class AssociateUser extends JPanel implements Refreshable {
-    //Attributs
     private Utilisateur utilisateurConnecte;
     private RequeteGeOOCache requeteGeOOCache;
     private JComboBox<Utilisateur> comboBoxUtilisateur;
@@ -66,10 +65,10 @@ public class AssociateUser extends JPanel implements Refreshable {
      */
 
     /**
-     * Méthode getComboBoxReseau
+     * Méthode getDefaultComboBoxModelReseau
      * -------
-     * permet de créer la comboBox pour la partie ReseauCache
-     * @return JComboBox<Object> correspondant à la partie ReseauCache des utilisateurs du reseau
+     * permet de créer le modèle de la comboBox pour la partie ReseauCache
+     * @return DefaultComboBoxModel<Object> correspondant à la partie ReseauCache des utilisateurs du reseau
      */
     public DefaultComboBoxModel<Object> getDefaultComboBoxModelReseau(Utilisateur utilisateurProprietaire, Utilisateur utilisateurChoisi) {
         // Liste des réseaux du propriétaire
@@ -89,10 +88,10 @@ public class AssociateUser extends JPanel implements Refreshable {
     }
 
     /**
-     * Méthode getComboBoxUtilisateur
+     * Méthode getDefaultModelComboBoxUtilisateur
      * -------
-     * permet de créer la comboBox pour la partie Utilisateur
-     * @return JComboBox<Object> correspondant à la partie Utilisateur (hors utilisateur courant/connecté)
+     * permet de créer le modèle de la comboBox pour la partie Utilisateur
+     * @return DefaultComboBoxModel<Utilisateur> correspondant à la partie Utilisateur (hors utilisateur courant/connecté)
      */
     public DefaultComboBoxModel<Utilisateur> getDefaultModelComboBoxUtilisateur(Utilisateur utilisateur) {
         List<Utilisateur> utilisateurs = this.requeteGeOOCache.getListeUtilisateurs();
@@ -239,13 +238,15 @@ public class AssociateUser extends JPanel implements Refreshable {
             comboBoxUtilisateur.setModel(getDefaultModelComboBoxUtilisateur(utilisateurConnecte));
             comboBoxUtilisateur.setSelectedItem(user);
             comboBoxReseau.setModel(getDefaultComboBoxModelReseau(utilisateurConnecte, user));
+            reussite.setVisible(false);
+            echec.setVisible(false);
         }
         revalidate();
         repaint();
     }
 
     /**
-     *         LISTENER
+     *                       LISTENER
      */
 
     // classe interne à la vue car elle y est spécifique
@@ -291,6 +292,8 @@ public class AssociateUser extends JPanel implements Refreshable {
         public void actionPerformed(ActionEvent e) {
             selectionDropdown.addElementSelect("Utilisateur", comboBoxUtilisateur.getSelectedItem());
             comboBoxGeneral.refreshComboBoxUtilisateur();
+            reussite.setVisible(false);
+            echec.setVisible(false);
         }
     }
 }
