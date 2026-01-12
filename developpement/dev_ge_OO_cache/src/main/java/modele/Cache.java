@@ -120,6 +120,23 @@ public class Cache {
         return logs;
     }
 
+    public String getDescriptionTextuelle() {
+        return descriptionTextuelle;
+    }
+
+    public String getDescriptionTechnique() {
+        return descriptionTechnique;
+    }
+
+    public String getInformationsGeolocalisation() {
+        return informationsGeolocalisation;
+    }
+
+    public String getRubriqueLibre() {
+        return rubriqueLibre;
+    }
+
+
     /**
      *              METHODES ASSOCIATIONS CACHE
      *.

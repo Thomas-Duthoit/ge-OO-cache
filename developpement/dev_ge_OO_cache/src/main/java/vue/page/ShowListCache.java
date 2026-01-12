@@ -10,6 +10,7 @@ import vue.SelectionDropdown;
 import vue.dropdown.ComboBoxGeneral;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -45,6 +46,7 @@ public class ShowListCache extends JPanel implements Refreshable {
 
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
+        this.setBorder(new EmptyBorder(50, 100, 50, 100));
 
 
 
@@ -53,7 +55,14 @@ public class ShowListCache extends JPanel implements Refreshable {
 
         this.listeCaches.addMouseListener(new ShowListCache.MouseCacheListener(selectionDropdown));
 
-        this.add(listeCaches);
+
+        JPanel bordure = new JPanel(new BorderLayout());
+        bordure.setBorder(new EmptyBorder(2, 2, 2, 2));
+        bordure.add(listeCaches);
+
+
+        this.add(bordure);
+
 
         this.setVisible(true);
     }

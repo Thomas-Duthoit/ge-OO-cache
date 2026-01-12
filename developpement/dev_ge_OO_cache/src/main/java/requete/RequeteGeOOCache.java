@@ -655,6 +655,39 @@ public class RequeteGeOOCache {
 
 
     /**
+     * méthode : getStatutCache
+     * ----------------------------
+     * récupère le statut de la cache
+     * @param cache la cache
+     * @return le statut de la cache
+     */
+    public StatutCache getStatutCache(Cache cache){
+        final EntityManager em = this.getEm();
+        String strQuery = "Select c.statutCache from Cache c where c = :cache";
+        Query query = em.createQuery(strQuery);
+        query.setParameter("cache", cache);
+        return (StatutCache) query.getSingleResult();
+    }
+
+    /**
+     * méthode : getTypeCache
+     * ----------------------------
+     * récupère le type de la cache
+     * @param cache la cache
+     * @return le type de la cache
+     */
+    public TypeCache getTypeCache(Cache cache){
+        final EntityManager em = this.getEm();
+        String strQuery = "Select c.typeCache from Cache c where c = :cache";
+        Query query = em.createQuery(strQuery);
+        query.setParameter("cache", cache);
+        return (TypeCache) query.getSingleResult();
+    }
+
+/**
+ *              METHODES RequeteGeOOCache
+ *              (Pour la classe StatutCache)
+ */
      *              METHODES RequeteGeOOCache
      *              (Pour la classe StatutCache)
      */
