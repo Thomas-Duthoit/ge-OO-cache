@@ -688,9 +688,6 @@ public class RequeteGeOOCache {
  *              METHODES RequeteGeOOCache
  *              (Pour la classe StatutCache)
  */
-     *              METHODES RequeteGeOOCache
-     *              (Pour la classe StatutCache)
-     */
 
     /**
      * méthode : getStatutCache
