@@ -12,13 +12,12 @@ import java.util.Map;
 
 //L'idée de la création d'une "mémoire partagée" a été présenté par l'IA
 public class SelectionDropdown {
-    //Attributs
     private final Map<String, Object> elementsSelec;
     //Mettre la variable en final permet d'éviter de la mettre en paramètres de chaque création d'instances
     //En effet la référence restera la même pour chaque class créant une instance de la class SelectionDropdown
     private FenetrePrincipal fenetrePrincipal;
 
-    //Constructeur par défaut
+    //Constructeur par données
     public SelectionDropdown(FenetrePrincipal fenetrePrincipal) {
         this.elementsSelec = new HashMap<>();
         this.fenetrePrincipal = fenetrePrincipal;

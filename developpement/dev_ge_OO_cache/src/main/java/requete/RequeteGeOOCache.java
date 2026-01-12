@@ -126,6 +126,22 @@ public class RequeteGeOOCache {
     }
 
     /**
+     *  méthode : getListUtilisateursFromReseau
+     *  ----------
+     * @param reseauCache : reseauCache où l'on cherche les utilisateurs
+     * @return la liste des utilisateurs de l'application sauvegardés en BDD ayant accès au reseau donné
+     */
+    public List<Utilisateur> getListeUtilisateursFromReseau(ReseauCache reseauCache){
+        EntityManager em = emFactory.createEntityManager();
+        String strQuery = "SELECT u FROM Utilisateur u where :reseauCache MEMBER OF u.accede";
+        Query query = em.createQuery(strQuery);
+        query.setParameter("reseauCache", reseauCache);
+        List<Utilisateur> res = query.getResultList();
+        em.close();
+        return res;
+    }
+
+    /**
      *              METHODES RequeteGeOOCache
      *              (Pour la classe ReseauCache)
      */
@@ -269,6 +285,43 @@ public class RequeteGeOOCache {
         }
 
         return true;  // on est arrivé là sans retourner false -> association effectuée
+    }
+
+    /**
+     * Méthode : deleteAccessReseau
+     * ----------
+     * Permet de retirer l'accès au réseau à un utilisateur donné
+     * @param utilisateur : utilisateur cible de la suppression
+     * @param reseauCache : reseau dont on veut enlever l'association
+     * @return boolean indiquant la réussite de l'association
+     */
+    public boolean deleteAccessReseau(Utilisateur utilisateur, ReseauCache reseauCache) {
+        EntityManager em = emFactory.createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+
+            utilisateur = em.merge(utilisateur);  // on réattache l'utilisateur à l'EM pour éviter les erreurs de LAZY init
+            reseauCache = em.merge(reseauCache);  // on réattache le réseau à l'EM pour éviter les erreurs de LAZY init
+
+            if(!(reseauCache.supprAccesUtilisateur(utilisateur))){
+                et.rollback();
+                return false;
+            };
+
+            et.commit();  // application des MàJ
+
+        } catch (Exception e) {
+            et.rollback();
+            System.out.println("ERREUR ajouterAccesReseau : " + e);
+            return false;
+        } finally {
+            em.close();
+        }
+
+
+
+        return true;
     }
 
     /**
@@ -635,78 +688,81 @@ public class RequeteGeOOCache {
  *              METHODES RequeteGeOOCache
  *              (Pour la classe StatutCache)
  */
+     *              METHODES RequeteGeOOCache
+     *              (Pour la classe StatutCache)
+     */
 
-/**
- * méthode : getStatutCache
- * ----------------------------
- * donne la liste des statuts possibles pour un cache
- * @return la liste des statuts
- */
-public List<StatutCache> getStatutCache(){
-    List<StatutCache> statuts = new ArrayList<StatutCache>();
-    final EntityManager em = this.getEm();
-    String strQuery = "Select s from StatutCache s";
-    Query query = em.createQuery(strQuery);
-    statuts = query.getResultList();
-    return statuts;
-}
+    /**
+     * méthode : getStatutCache
+     * ----------------------------
+     * donne la liste des statuts possibles pour un cache
+     * @return la liste des statuts
+     */
+    public List<StatutCache> getStatutCache(){
+        List<StatutCache> statuts = new ArrayList<StatutCache>();
+        final EntityManager em = this.getEm();
+        String strQuery = "Select s from StatutCache s";
+        Query query = em.createQuery(strQuery);
+        statuts = query.getResultList();
+        return statuts;
+    }
 
-/**
- * méthode : getStatutCacheById
- * ----------------------------
- * donne le statut cache correspondant à l'Id donné
- * @param id identifiant du StatutCache cherché
- * @return le statut cache correspondant
- */
-public StatutCache getStatutCacheById(int id){
-    final EntityManager em = this.getEm();
+    /**
+     * méthode : getStatutCacheById
+     * ----------------------------
+     * donne le statut cache correspondant à l'Id donné
+     * @param id identifiant du StatutCache cherché
+     * @return le statut cache correspondant
+     */
+    public StatutCache getStatutCacheById(int id){
+        final EntityManager em = this.getEm();
 
-    String strQuery = "Select s from StatutCache s where s.id = :id";
-    Query query = em.createQuery(strQuery);
-    query.setParameter("id", id);
-    StatutCache statutCache = (StatutCache) query.getSingleResult();
-    return statutCache;
-}
+        String strQuery = "Select s from StatutCache s where s.id = :id";
+        Query query = em.createQuery(strQuery);
+        query.setParameter("id", id);
+        StatutCache statutCache = (StatutCache) query.getSingleResult();
+        return statutCache;
+    }
 
-/**
- *              METHODES RequeteGeOOCache
- *              (Pour la classe TypeCache)
- */
+    /**
+     *              METHODES RequeteGeOOCache
+     *              (Pour la classe TypeCache)
+     */
 
-/**
- * méthode : getTypeCache
- * ----------------------------
- * donne la liste des types possibles pour un cache
- * @return la liste des types
- */
-public List<TypeCache> getTypeCache(){
-    List<TypeCache> types = new ArrayList<TypeCache>();
-    final EntityManager em = this.getEm();
-    String strQuery = "Select t from TypeCache t";
-    Query query = em.createQuery(strQuery);
-    types = query.getResultList();
-    return types;
-}
+    /**
+     * méthode : getTypeCache
+     * ----------------------------
+     * donne la liste des types possibles pour un cache
+     * @return la liste des types
+     */
+    public List<TypeCache> getTypeCache(){
+        List<TypeCache> types = new ArrayList<TypeCache>();
+        final EntityManager em = this.getEm();
+        String strQuery = "Select t from TypeCache t";
+        Query query = em.createQuery(strQuery);
+        types = query.getResultList();
+        return types;
+    }
 
-/**
- *             TESTS
- */
+    /**
+     *             TESTS
+     */
 
-    /*public static void main(String[] args) {
-        RequeteGeOOCache r = new  RequeteGeOOCache();
-        System.out.println("Début des tests");
-        //List<Cache> caches = r.getCachesByReseauCacheId();
-        System.out.println(caches);
-        List<StatutCache> statuts = r.getStatutCache();
-        System.out.println(statuts);
-        //List<Cache> result = r.updateStatutCache(2, statuts.getFirst());
-        System.out.println(statuts.getFirst());
-        Cache c = r.getDataCachesById(2);
-        System.out.println(c);
-        boolean result = r.updateStatutCache(2, statuts.getFirst().getId());
-        c = r.getDataCachesById(2);
-        System.out.println(c);
-        System.out.println(result);
-        System.out.println(caches);
-    }*/
+        /*public static void main(String[] args) {
+            RequeteGeOOCache r = new  RequeteGeOOCache();
+            System.out.println("Début des tests");
+            //List<Cache> caches = r.getCachesByReseauCacheId();
+            System.out.println(caches);
+            List<StatutCache> statuts = r.getStatutCache();
+            System.out.println(statuts);
+            //List<Cache> result = r.updateStatutCache(2, statuts.getFirst());
+            System.out.println(statuts.getFirst());
+            Cache c = r.getDataCachesById(2);
+            System.out.println(c);
+            boolean result = r.updateStatutCache(2, statuts.getFirst().getId());
+            c = r.getDataCachesById(2);
+            System.out.println(c);
+            System.out.println(result);
+            System.out.println(caches);
+        }*/
 }

@@ -16,6 +16,7 @@ public class CreateReseau extends JPanel {
     private JTextField inputNameReseau;
     private Utilisateur utilisateur;
 
+    //Constructeur par données
     public CreateReseau(RequeteGeOOCache requeteGeOOCache, Utilisateur user) throws SQLException {
         super();
 
@@ -58,8 +59,19 @@ public class CreateReseau extends JPanel {
         this.setVisible(true);
     }
 
-    // méthode pour créer une ligne, avec un label et une input de texte
-    // réalisée à l'aide d'IA générative pour comprendre le fonctionnement des bordures pour un effet de "padding"
+    /**
+     *          METHODE : creation des éléments de la vue
+     */
+
+    /**
+     * méthode : creerChamp
+     * -------
+     * méthode pour créer une ligne, avec un label et une input de texte
+     * réalisée à l'aide d'IA générative pour comprendre le fonctionnement des bordures pour un effet de "padding"
+     * @param texteLabel : texte à mettre avant l'input
+     * @param input : champ de valeur d'entrée
+     * @return JPanel du design adéquat
+     */
     private JPanel creerChamp(String texteLabel, JComponent input) {
         JPanel champ = new JPanel(new BorderLayout());
         champ.setBackground(new Color(230, 230, 230)); // fond gris du champ
@@ -87,7 +99,12 @@ public class CreateReseau extends JPanel {
         return champ;
     }
 
+    /**
+     *              LISTENER
+     */
+
     // classe interne à la vue car elle y est spécifique
+    // permet de gérer la création du réseau au moment du click sur le bouton
     class CreerReseauActionListener implements ActionListener {
 
         private JTextField inputNameReseau;  // références vers les champs d'onput de la vue

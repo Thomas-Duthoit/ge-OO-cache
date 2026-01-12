@@ -17,10 +17,9 @@ import java.sql.SQLException;
  * correspond à la page d'accueil d'une application
  */
 public class Accueil extends JPanel {
-    //Attributs
     private FenetrePrincipal fenetrePrincipal;
 
-    //Constructeur par défaut
+    //Constructeur par données
     public Accueil(FenetrePrincipal fenetrePrincipal) throws SQLException {
         super();
         this.fenetrePrincipal = fenetrePrincipal;
@@ -55,18 +54,30 @@ public class Accueil extends JPanel {
      * @return JPanel contenant le bouton de déconnexion
      */
     public JPanel createButtonDeconnexion(){
-        JPanel panel = new JPanel();
-        panel.setBackground(Color.WHITE);
-        panel.setLayout(new BorderLayout());
+        JPanel panelDown = new JPanel();
+        panelDown.setBackground(Color.WHITE);
+        panelDown.setLayout(new BorderLayout());
+
+        JPanel panelRight = new JPanel();
+        panelRight.setBackground(Color.WHITE);
+        panelRight.setLayout(new BorderLayout());
 
         //Ajout d'un bouton de deconnexion
-        JButton buttonDeconnexion = new JButton("> Deconnexion");
-        buttonDeconnexion.setBackground(Color.WHITE);
+        JButton buttonDeconnexion = new JButton("> Deconnexion !");
+        buttonDeconnexion.setBackground(Color.decode("#c8d400"));
+        buttonDeconnexion.setPreferredSize(new Dimension(180, 45));
+        buttonDeconnexion.setMaximumSize(new Dimension(180, 45));
+        buttonDeconnexion.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
         buttonDeconnexion.addActionListener(new ActionDeconnexionListener());
 
-        panel.add(buttonDeconnexion, BorderLayout.EAST);
-        return panel;
+        panelRight.add(buttonDeconnexion, BorderLayout.CENTER);
+        panelRight.add(Box.createRigidArea(new Dimension(50, 0)), BorderLayout.EAST);
+        panelRight.add(Box.createRigidArea(new Dimension(0, 50)), BorderLayout.SOUTH);
+
+        panelDown.add(panelRight, BorderLayout.EAST);
+
+        return panelDown;
     }
 
     /**

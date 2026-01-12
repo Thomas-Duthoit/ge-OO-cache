@@ -120,6 +120,24 @@ public class Utilisateur {
     }
 
     /**
+     * méthode : supprAccesReseau
+     * ----------------------------
+     * supprime l'accès au réseau pour l'utilisateur courant
+     * /!\ Comme l'utilisateur n'est pas propriétaire de l'association, on doit faire la manipulation depuis l'instance du
+     *     reseau et cette instance appelera cette méthode
+     *
+     * @param reseauCache le réseau à supprimer l'accéder
+     * @return la suppression réussie ou non
+     */
+    protected boolean supprAccesReseau(ReseauCache reseauCache) {
+        if (reseauCache != null) {
+            this.accede.remove(reseauCache);
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * méthode : ajouterReseauPossede
      * ------------------------------
      * Définit le réseau comme appartenant à l'utilisateur courant
