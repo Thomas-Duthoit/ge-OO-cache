@@ -742,6 +742,36 @@ public class RequeteGeOOCache {
     }
 
     /**
+     * méthode : creerTypeCache
+     * ----------------------------
+     * cree un types possibles pour un cache
+     * @param nom le nom du réseau à créer
+     * @return création réussie
+     */
+    public boolean creerTypeCache(String nom) {
+        EntityManager em = emFactory.createEntityManager();
+        EntityTransaction et = em.getTransaction();
+        try {
+            et.begin();
+
+            TypeCache type = new TypeCache(nom);
+
+            em.persist(type);
+
+            et.commit();  // application des MàJ
+
+        } catch (Exception e) {
+            et.rollback();
+            System.out.println("ERREUR creerType : " + e);
+            return false;
+        } finally {
+            em.close();
+        }
+
+        return true;  // on est arrivé là sans retourner false -> création effectuée
+    }
+
+    /**
      *             TESTS
      */
 
