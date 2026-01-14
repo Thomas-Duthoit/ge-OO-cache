@@ -56,6 +56,11 @@ public class UpdateStatutCache extends JPanel implements Refreshable {
                 )
         );
 
+        Font font = new Font("Consolas", Font.PLAIN, 16);
+
+        this.statutCacheCombo.setFont(font);
+        this.statutCacheCombo.setBackground(Color.decode("#e6e6e6"));
+
         panelCombo.add(statutCacheCombo, BorderLayout.CENTER);
         panelCombo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
 

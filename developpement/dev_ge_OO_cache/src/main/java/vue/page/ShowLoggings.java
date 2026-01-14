@@ -76,9 +76,18 @@ public class ShowLoggings extends JPanel implements Refreshable {
         //Ajout d'un listener pour l'écoute de la modification du choix de la comboBox
         this.comboBoxFiltreReseau.addActionListener(new ActionComboBoxReseauListener());
 
+        Font font = new Font("Consolas", Font.PLAIN, 16);
+
+        this.comboBoxFiltreReseau.setFont(font);
+        this.comboBoxFiltreReseau.setBackground(Color.decode("#e6e6e6"));
+
         //2. Partie filtre Cache
         //Pour l'instant elle n'existe pas car dépend du choix de Reseau
         this.comboBoxFiltreCache = new JComboBox<>();
+
+        this.comboBoxFiltreCache.setFont(font);
+        this.comboBoxFiltreCache.setBackground(Color.decode("#e6e6e6"));
+
         //Ajout d'un listener pour l'écoute de la modification du choix de la comboBox
         this.comboBoxFiltreReseau.addActionListener(new ActionComboBoxCacheListener());
 

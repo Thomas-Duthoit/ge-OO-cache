@@ -40,14 +40,20 @@ public class AssociateUser extends JPanel implements Refreshable {
         this.comboBoxGeneral = comboBoxGeneral;
         this.utilisateurConnecte = utilisateur;
 
+        Font font = new Font("Consolas", Font.PLAIN, 16);
+
         //DONNEES
         //Création des JComboBox pour les réseaux et les utilisateurs
         this.comboBoxReseau = new JComboBox<>();
         this.comboBoxReseau.setMaximumSize(new Dimension(200, 50));
+        this.comboBoxReseau.setFont(font);
+        this.comboBoxReseau.setBackground(Color.decode("#e6e6e6"));
 
         this.comboBoxUtilisateur = new JComboBox<>();
         this.comboBoxUtilisateur.setMaximumSize(new Dimension(200, 50));
         this.comboBoxUtilisateur.addActionListener(new ActionChangeListener());
+        this.comboBoxUtilisateur.setFont(font);
+        this.comboBoxUtilisateur.setBackground(Color.decode("#e6e6e6"));
 
         //DESIGN
         //Mise en forme
@@ -123,6 +129,7 @@ public class AssociateUser extends JPanel implements Refreshable {
         // padding gauche / droite / haut / bas
         topTextPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
         JLabel label = new JLabel(texte);
+        label.setFont(new Font(null, Font.PLAIN, 16));
         topTextPanel.add(label);
 
         topPanel.add(topTextPanel, BorderLayout.CENTER);
@@ -202,6 +209,7 @@ public class AssociateUser extends JPanel implements Refreshable {
         //Création du texte
         JLabel texte = new JLabel(" aura accès à ");
         texte.setHorizontalAlignment(SwingConstants.CENTER);
+        texte.setFont(new Font(null, Font.PLAIN, 16));
 
         //Rassemblement de la ligne
         panel.add(this.comboBoxUtilisateur);

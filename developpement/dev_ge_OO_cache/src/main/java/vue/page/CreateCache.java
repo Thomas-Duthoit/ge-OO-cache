@@ -95,6 +95,14 @@ public class CreateCache extends JPanel implements Refreshable {
                 )
         );
 
+
+        Font font = new Font("Consolas", Font.PLAIN, 16);
+
+        this.statutCacheCombo.setFont(font);
+        this.statutCacheCombo.setBackground(Color.decode("#e6e6e6"));
+        this.typeCacheCombo.setFont(font);
+        this.typeCacheCombo.setBackground(Color.decode("#e6e6e6"));
+
         typePanel.setLayout(new BorderLayout());
         typePanel.add(new JLabel("Type cache : "), BorderLayout.WEST);
         typePanel.add(typeCacheCombo, BorderLayout.EAST);
