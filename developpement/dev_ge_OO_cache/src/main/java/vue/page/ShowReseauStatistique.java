@@ -26,7 +26,7 @@ public class ShowReseauStatistique extends ShowReseauMere implements Refreshable
 
     @Override
     public void actionClick(ReseauCache reseauCache) {
-        cardLayout.show(mainPanel, "Afficher les statistiques");
+        cardLayout.show(mainPanel, "Affichage des statistiques");
         refreshDataView(); //Permet d'activer la méthode refreshData de la vue d'affichage de la liste des caches
         comboBoxGeneral.refreshComboBoxReseau();
     }

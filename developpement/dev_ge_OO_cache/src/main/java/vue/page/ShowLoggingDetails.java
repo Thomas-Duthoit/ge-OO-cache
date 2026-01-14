@@ -223,7 +223,7 @@ public class ShowLoggingDetails extends JPanel implements Refreshable {
     public class ButtonBackListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            cardLayout.show(panelFenetre, "Afficher les logs");
+            cardLayout.show(panelFenetre, "Affichage des logs");
             selectionDropdown.supprElementSelect("Log");
         }
     }

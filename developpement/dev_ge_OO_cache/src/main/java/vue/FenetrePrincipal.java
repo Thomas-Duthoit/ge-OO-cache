@@ -83,24 +83,29 @@ public class FenetrePrincipal extends JFrame {
      */
     public void addAllView(){
         try {
+            //Vue accueil
             mainPanel.add(new Accueil(this, this.selectionDropdown, this.cl, this.mainPanel, this.comboBoxGeneral), "Accueil");
-            mainPanel.add(new ManageUser(this.selectionDropdown, this.requeteGeOOCache, this.cl, this.mainPanel), "Affichage gestion utilisateur");
-            mainPanel.add(new CreateReseau(this.requeteGeOOCache, this.user), "Créer un réseau");
-            mainPanel.add(new ShowReseauForCachePart(this.requeteGeOOCache, this.user, this.mainPanel, this.cl, this.selectionDropdown, this.comboBoxGeneral), "Affichage des réseaux pour cache");
-            mainPanel.add(new ShowReseauUtilisateur(this.requeteGeOOCache, this.user, this.mainPanel, this.cl, this.selectionDropdown, this.comboBoxGeneral), "Affichage des réseaux");
+
+            //Vue ComboBox
             mainPanel.add(new AssociateUser(this.requeteGeOOCache, this.user, this.selectionDropdown, this.comboBoxGeneral), "Associer un utilisateur");
-            mainPanel.add(new ShowCaches(this.requeteGeOOCache, this.selectionDropdown), "détails caches");
-            mainPanel.add(new ShowStatistic(this.requeteGeOOCache, this.selectionDropdown), "Afficher les statistiques");
-            mainPanel.add(new ShowLoggings(this.requeteGeOOCache, this.user, this.selectionDropdown, this.cl, this.mainPanel, this.comboBoxGeneral), "Afficher les logs");
-            mainPanel.add(new ShowUtilisateurs(this.requeteGeOOCache, this.user, this.selectionDropdown, this.cl, this.mainPanel, this.comboBoxGeneral), "Affichage des utilisateurs");
-            mainPanel.add(new ShowLoggingDetails(this.selectionDropdown, this.cl, this.mainPanel), "Afficher les logging détails");
-            mainPanel.add(new CreateCache(this.requeteGeOOCache, this.selectionDropdown), "Créer une cache");
-            mainPanel.add(new ShowReseauForCreation(this.requeteGeOOCache, this.user, this.mainPanel, this.cl, this.selectionDropdown, this.comboBoxGeneral),  "Affichage des réseaux pour création");
-            mainPanel.add(new ShowReseauStatistique(this.requeteGeOOCache, this.user, this.mainPanel, this.cl, this.selectionDropdown, this.comboBoxGeneral), "Afficher les réseaux pour statistique");
-            mainPanel.add(new CreateUser(this.requeteGeOOCache), "Créer un utilisateur");
-            mainPanel.add(new UpdateStatutCache(this.requeteGeOOCache, this.selectionDropdown), "Modifier le statut d'une cache");
+            mainPanel.add(new ShowReseauUtilisateur(this.requeteGeOOCache, this.user, this.mainPanel, this.cl, this.selectionDropdown, this.comboBoxGeneral), "Affichage des réseaux");
+            mainPanel.add(new ShowStatistic(this.requeteGeOOCache, this.selectionDropdown), "Affichage des statistiques");
             mainPanel.add(new ShowListCache(this.requeteGeOOCache, this.user, this.selectionDropdown, this.cl, this.mainPanel, this.comboBoxGeneral), "Affichage de la liste des caches");
+            mainPanel.add(new ShowLoggings(this.requeteGeOOCache, this.user, this.selectionDropdown, this.cl, this.mainPanel, this.comboBoxGeneral), "Affichage des logs");
+            mainPanel.add(new CreateReseau(this.requeteGeOOCache, this.user), "Créer un réseau");
+            mainPanel.add(new CreateCache(this.requeteGeOOCache, this.selectionDropdown), "Créer une cache");
+            mainPanel.add(new CreateUser(this.requeteGeOOCache), "Créer un utilisateur");
             mainPanel.add(new CreateType(this.requeteGeOOCache), "Créer un type");
+            mainPanel.add(new UpdateStatutCache(this.requeteGeOOCache, this.selectionDropdown), "Modifier le statut d'une cache");
+
+            //Vue de transition ou supplémentaire
+            mainPanel.add(new ManageUser(this.selectionDropdown, this.requeteGeOOCache, this.cl, this.mainPanel), "Affichage gestion utilisateur");  // Après la vue "Affichage des réseaux" (quand double click sur un réseau)
+            mainPanel.add(new ShowUtilisateurs(this.requeteGeOOCache, this.user, this.selectionDropdown, this.cl, this.mainPanel, this.comboBoxGeneral), "Affichage des utilisateurs");  // Transition entre Accueil et Associer un utilisateur
+            mainPanel.add(new ShowCaches(this.requeteGeOOCache, this.selectionDropdown), "détails caches");  // Après la vue "Affichage de la liste des caches" développe le détail de la liste des caches
+            mainPanel.add(new ShowLoggingDetails(this.selectionDropdown, this.cl, this.mainPanel), "Afficher les logging détails");  // Après la vue "Affichage des logs"
+            mainPanel.add(new ShowReseauForCachePart(this.requeteGeOOCache, this.user, this.mainPanel, this.cl, this.selectionDropdown, this.comboBoxGeneral), "Affichage des réseaux pour cache");  // Transition entre Accueil et Affichage de la liste des caches
+            mainPanel.add(new ShowReseauForCreation(this.requeteGeOOCache, this.user, this.mainPanel, this.cl, this.selectionDropdown, this.comboBoxGeneral),  "Affichage des réseaux pour création");  // Transition entre Accueil et Création d'un cache
+            mainPanel.add(new ShowReseauStatistique(this.requeteGeOOCache, this.user, this.mainPanel, this.cl, this.selectionDropdown, this.comboBoxGeneral), "Afficher les réseaux pour statistique");  // Transition entre Accueil et Affichage des statistiques
         } catch(SQLException e){
             System.out.println("Erreur d'ajout des vues de l'application");
         }
