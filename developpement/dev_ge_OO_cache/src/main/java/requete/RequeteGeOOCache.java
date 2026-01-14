@@ -141,6 +141,18 @@ public class RequeteGeOOCache {
         return res;
     }
 
+    public Long getNbReseauUtilisateur(Utilisateur utilisateur){
+        EntityManager em = emFactory.createEntityManager();
+
+        String strQuery = "SELECT count(r) FROM Utilisateur u JOIN u.accede r where u = :utilisateur";
+        Query query = em.createQuery(strQuery);
+        query.setParameter("utilisateur", utilisateur);
+
+        List<Long> res = query.getResultList();
+        em.close();
+        return res.getFirst();
+    }
+
     /**
      *              METHODES RequeteGeOOCache
      *              (Pour la classe ReseauCache)

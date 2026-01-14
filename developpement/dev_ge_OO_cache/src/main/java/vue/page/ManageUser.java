@@ -8,6 +8,7 @@ import vue.SelectionDropdown;
 
 import javax.smartcardio.Card;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -157,32 +158,37 @@ public class ManageUser extends JPanel implements Refreshable {
         panel.setBackground(Color.WHITE);
         panel.setLayout(new BorderLayout());
 
-        JLabel labelUtilisateur = new JLabel(utilisateur.getPseudo());
-        labelUtilisateur.setFont(new Font("consolas", Font.BOLD, 15));
+        JLabel labelUtilisateur = new JLabel(" > " + utilisateur.getPseudo());
+        labelUtilisateur.setFont(new Font("consolas", Font.BOLD, 25));
 
         JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new BorderLayout());
         leftPanel.setBackground(Color.WHITE);
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.X_AXIS));
-        leftPanel.add(Box.createRigidArea(new Dimension(10, 0)));
-        leftPanel.add(labelUtilisateur);
+        leftPanel.add(Box.createRigidArea(new Dimension(60, 0)), BorderLayout.WEST);
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 10)), BorderLayout.NORTH);
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 10)), BorderLayout.SOUTH);
+        leftPanel.add(labelUtilisateur, BorderLayout.CENTER);
 
         JPanel rightPanel = new JPanel();
         rightPanel.setBackground(Color.WHITE);
-        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.X_AXIS));
+        rightPanel.setLayout(new BorderLayout());
 
         if (proprietaire){
             JLabel statutUtilisateur = new JLabel("( Propriétaire )");
-            statutUtilisateur.setFont(new Font("consolas", Font.PLAIN, 15));
-            rightPanel.add(statutUtilisateur);
+            statutUtilisateur.setFont(new Font("consolas", Font.PLAIN, 25));
+            rightPanel.add(statutUtilisateur, BorderLayout.CENTER);
         }else{
             JButton statutUtilisateur = new JButton("X");
             statutUtilisateur.setBackground(Color.WHITE);
             statutUtilisateur.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
             statutUtilisateur.setForeground(Color.RED);
-            rightPanel.add(statutUtilisateur);
+            statutUtilisateur.setFont(new Font("consolas", Font.PLAIN, 25));
+            rightPanel.add(statutUtilisateur, BorderLayout.CENTER);
         }
 
-        rightPanel.add(Box.createRigidArea( new Dimension(10, 0)));
+        leftPanel.add(Box.createRigidArea(new Dimension(60, 0)), BorderLayout.EAST);
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 10)), BorderLayout.NORTH);
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 10)), BorderLayout.SOUTH);
 
         panel.add(leftPanel, BorderLayout.WEST);
         panel.add(rightPanel, BorderLayout.EAST);

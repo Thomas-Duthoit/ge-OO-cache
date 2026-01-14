@@ -46,12 +46,12 @@ public class ShowReseauForCreation extends ShowReseauMere implements Refreshable
         JLabel leftLabel = new JLabel();
         leftLabel.setText(reseauCache.getNom());
         leftLabel.setForeground(Color.BLACK);
-        leftLabel.setFont(new Font("Consolas", Font.BOLD, 15));
+        leftLabel.setFont(new Font("Consolas", Font.BOLD, 25));
 
         JLabel rightLabel = new JLabel();
         rightLabel.setText("( Nbr de caches : " + requeteGeOOCache.getStatNbCaches(reseauCache) + " )");
         rightLabel.setForeground(Color.BLACK);
-        rightLabel.setFont(new Font("Consolas", Font.PLAIN, 15));
+        rightLabel.setFont(new Font("Consolas", Font.PLAIN, 25));
 
         panel.add(leftLabel, BorderLayout.WEST);
         panel.add(rightLabel, BorderLayout.EAST);

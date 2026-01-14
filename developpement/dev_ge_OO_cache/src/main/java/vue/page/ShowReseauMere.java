@@ -117,11 +117,24 @@ public abstract class ShowReseauMere extends JPanel implements Refreshable{
         public Component getListCellRendererComponent(JList<? extends ReseauCache> list, ReseauCache value, int index, boolean isSelected, boolean cellHasFocus) {
             JPanel panel = createPanelRenderer(value);
 
-            if (cellHasFocus) {
-                panel.setBackground(Color.decode("#dbdbd8"));
-            } else {
-                panel.setBackground(Color.WHITE);
+            Color bg = isSelected
+                    ? Color.decode("#dbdbd8")
+                    : Color.WHITE;
+
+            panel.setBackground(bg);
+
+            // La boucle a été créé à l'aide de l'IA
+            // Elle permet de faire en sorte que tous les éléments aient la couleur approprié selon si sélectionné ou non
+            // Sans les éléments gardent leur background personnel
+            for (Component c : panel.getComponents()) {
+                c.setBackground(bg);
+                if (c instanceof JPanel) {
+                    for (Component cc : ((JPanel) c).getComponents()) {
+                        cc.setBackground(bg);
+                    }
+                }
             }
+
             return panel;
         }
     }

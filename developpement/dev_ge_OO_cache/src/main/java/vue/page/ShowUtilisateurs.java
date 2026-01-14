@@ -164,23 +164,68 @@ public class ShowUtilisateurs extends JPanel implements Refreshable {
 
         @Override
         public Component getListCellRendererComponent(JList<? extends Utilisateur> list, Utilisateur value, int index, boolean isSelected, boolean cellHasFocus) {
-            JLabel label = new JLabel();
-            label.setText(value.getPseudo());
+            JPanel panel = createAffichageRenderer(value);
 
-            if (cellHasFocus) {
-                label.setForeground(Color.BLACK);
-                label.setOpaque(true);
-                label.setBackground(Color.decode("#dbdbd8"));
-            } else {
-                label.setForeground(Color.BLACK);
+            Color bg = isSelected
+                    ? Color.decode("#dbdbd8")
+                    : Color.WHITE;
+
+            panel.setBackground(bg);
+
+            // La boucle a été créé à l'aide de l'IA
+            // Elle permet de faire en sorte que tous les éléments aient la couleur approprié selon si sélectionné ou non
+            // Sans les éléments gardent leur background personnel
+            for (Component c : panel.getComponents()) {
+                c.setBackground(bg);
+                if (c instanceof JPanel) {
+                    for (Component cc : ((JPanel) c).getComponents()) {
+                        cc.setBackground(bg);
+                    }
+                }
             }
-            label.setFont(new Font("consolas", Font.BOLD, 15));
 
-            return label;
+            return panel;
         }
     }
 
 
+    public JPanel createAffichageRenderer(Utilisateur utilisateur){
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
 
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new BorderLayout());
+        leftPanel.setBackground(Color.WHITE);
+
+        JLabel leftLabel = new JLabel();
+        leftLabel.setText(" > " + utilisateur.getPseudo());
+        leftLabel.setForeground(Color.BLACK);
+        leftLabel.setFont(new Font("Consolas", Font.BOLD, 25));
+
+        leftPanel.add(leftLabel, BorderLayout.CENTER);
+        leftPanel.add(Box.createRigidArea(new Dimension(60, 0)), BorderLayout.WEST);
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 20)), BorderLayout.NORTH);
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 20)), BorderLayout.SOUTH);
+
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BorderLayout());
+        rightPanel.setBackground(Color.WHITE);
+
+        JLabel rightLabel = new JLabel();
+        rightLabel.setText("( Nbr de réseau associé : " + requeteGeOOCache.getNbReseauUtilisateur(utilisateur) + " )");
+        rightLabel.setForeground(Color.BLACK);
+        rightLabel.setFont(new Font("Consolas", Font.PLAIN, 25));
+
+        rightPanel.add(rightLabel, BorderLayout.CENTER);
+        rightPanel.add(Box.createRigidArea(new Dimension(20, 0)), BorderLayout.EAST);
+        rightPanel.add(Box.createRigidArea(new Dimension(0, 10)), BorderLayout.NORTH);
+        rightPanel.add(Box.createRigidArea(new Dimension(0, 10)), BorderLayout.SOUTH);
+
+        panel.add(leftPanel, BorderLayout.WEST);
+        panel.add(rightPanel, BorderLayout.EAST);
+
+        return panel;
+
+    }
 
 }
