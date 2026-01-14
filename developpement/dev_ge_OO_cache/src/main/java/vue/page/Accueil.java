@@ -47,7 +47,7 @@ public class Accueil extends JPanel {
         //Image
         try {
             BufferedImage img = ImageIO.read(getClass().getResourceAsStream("/logo.png"));
-            Image scaledImg = img.getScaledInstance(400, 200, Image.SCALE_SMOOTH);
+            Image scaledImg = img.getScaledInstance(800, 400, Image.SCALE_SMOOTH);
             JLabel imageLabel = new JLabel(new ImageIcon(scaledImg));
             imageLabel.setAlignmentX(CENTER_ALIGNMENT);
             panel.add(imageLabel, BorderLayout.CENTER);
@@ -69,7 +69,13 @@ public class Accueil extends JPanel {
             boutonsHaut.add(createButtonNav(nav));
         }
 
-        panel.add(new JLabel("> Affichage"));
+        Font fontTitre = new Font(null, Font.BOLD, 32);
+
+        JLabel titreAffichage = new JLabel("> Affichage");
+        titreAffichage.setAlignmentX(CENTER_ALIGNMENT);
+        titreAffichage.setFont(fontTitre);
+
+        panel.add(titreAffichage);
         panel.add(boutonsHaut);
 
         JPanel boutonsMilieu = new JPanel();
@@ -86,7 +92,12 @@ public class Accueil extends JPanel {
             boutonsMilieu.add(createButtonNav(nav));
         }
 
-        panel.add(new JLabel("> Gestion"));
+
+        JLabel titreGestion = new JLabel("> Gestion");
+        titreGestion.setAlignmentX(CENTER_ALIGNMENT);
+        titreGestion.setFont(fontTitre);
+
+        panel.add(titreGestion);
         panel.add(boutonsMilieu);
 
         JPanel boutonsBas = new JPanel();
@@ -101,10 +112,14 @@ public class Accueil extends JPanel {
             boutonsBas.add(createButtonNav(nav));
         }
 
-        panel.add(new JLabel("> Utilisateurs"));
+        JLabel titreUsers = new JLabel("> Utilisateurs");
+        titreUsers.setAlignmentX(CENTER_ALIGNMENT);
+        titreUsers.setFont(fontTitre);
+
+        panel.add(titreUsers);
         panel.add(boutonsBas);
 
-        this.add(panel, BorderLayout.CENTER);
+        this.add(panel, BorderLayout.NORTH);
 
         //Bouton de déconnexion
 
@@ -162,7 +177,8 @@ public class Accueil extends JPanel {
 
         JButton btn = new JButton(nav);
         btn.setBackground(Color.decode("#c8d400"));
-        btn.setBorder(new EmptyBorder(10, 10, 10, 10));
+        btn.setBorder(new EmptyBorder(25, 25, 25, 25));
+        btn.setFont(new Font("Consolas", Font.PLAIN, 24));
         btn.addActionListener(new ActionNavListener(nav));
         return btn;
 
