@@ -11,16 +11,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 
-/**
- * Classe ShowReseauForCachePart
- * Classe Fille de ShowReseauMere
- * Une classe correspondant à une page de l'application
- * Elle permet l'affichage de la liste des réseaux dans le choix "affichage des caches" au moment du choix du réseau
- */
-public class ShowReseauForCachePart extends ShowReseauMere implements Refreshable{
-
+public class ShowReseauForCreation extends ShowReseauMere implements Refreshable {
     //Constructeurs par défaut
-    public ShowReseauForCachePart(RequeteGeOOCache requeteGeOOCache, Utilisateur utilisateur, JPanel mainPanel, CardLayout cl, SelectionDropdown selectionDropdown, ComboBoxGeneral comboBoxGeneral) throws SQLException {
+    public ShowReseauForCreation(RequeteGeOOCache requeteGeOOCache, Utilisateur utilisateur, JPanel mainPanel, CardLayout cl, SelectionDropdown selectionDropdown, ComboBoxGeneral comboBoxGeneral) throws SQLException {
         super(requeteGeOOCache, utilisateur, mainPanel, cl,  selectionDropdown, comboBoxGeneral);
     }
 
@@ -33,7 +26,7 @@ public class ShowReseauForCachePart extends ShowReseauMere implements Refreshabl
 
     @Override
     public void actionClick(ReseauCache reseauCache) {
-        cardLayout.show(mainPanel, "Affichage de la liste des caches");
+        cardLayout.show(mainPanel, "Créer une cache");
         refreshDataView(); //Permet d'activer la méthode refreshData de la vue d'affichage de la liste des caches
         comboBoxGeneral.refreshComboBoxReseau();
     }
