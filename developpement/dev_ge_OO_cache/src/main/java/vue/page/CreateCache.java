@@ -43,6 +43,8 @@ public class CreateCache extends JPanel implements Refreshable {
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
 
+        Font font = new Font("Consolas", Font.PLAIN, 24);
+
 
         JPanel haut = new JPanel();  // pour les trois text areas
         haut.setLayout(new BorderLayout());
@@ -61,15 +63,24 @@ public class CreateCache extends JPanel implements Refreshable {
         librePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         descriptionTextuelle = new JTextArea(10, 20);
+        descriptionTextuelle.setFont(font);
         descriptionTechnique = new JTextArea(10, 20);
+        descriptionTechnique.setFont(font);
         rubriqueLibre = new JTextArea(10, 20);
+        rubriqueLibre.setFont(font);
 
         textuellePanel.add(descriptionTextuelle, BorderLayout.CENTER);
-        textuellePanel.add(new JLabel("Description textuelle"), BorderLayout.NORTH);
+        JLabel lab1 = new JLabel("Description textuelle");
+        lab1.setFont(font);
+        textuellePanel.add(lab1, BorderLayout.NORTH);
         techniquePanel.add(descriptionTechnique, BorderLayout.CENTER);
-        techniquePanel.add(new JLabel("Description technique"), BorderLayout.NORTH);
+        JLabel lab2 = new JLabel("Description technique");
+        lab2.setFont(font);
+        techniquePanel.add(lab2, BorderLayout.NORTH);
         librePanel.add(rubriqueLibre, BorderLayout.CENTER);
-        librePanel.add(new JLabel("Rubrique libre"), BorderLayout.NORTH);
+        JLabel lab3 = new JLabel("Rubrique libre");
+        lab3.setFont(font);
+        librePanel.add(lab3, BorderLayout.NORTH);
 
         JPanel milieu = new JPanel();  // on le laisse en FlowLayout pour avoir les text area comme on veut
         milieu.setBackground(Color.WHITE);
@@ -95,27 +106,31 @@ public class CreateCache extends JPanel implements Refreshable {
                 )
         );
 
-
-        Font font = new Font("Consolas", Font.PLAIN, 16);
-
         this.statutCacheCombo.setFont(font);
         this.statutCacheCombo.setBackground(Color.decode("#e6e6e6"));
         this.typeCacheCombo.setFont(font);
         this.typeCacheCombo.setBackground(Color.decode("#e6e6e6"));
 
         typePanel.setLayout(new BorderLayout());
-        typePanel.add(new JLabel("Type cache : "), BorderLayout.WEST);
+        JLabel lab4 = new JLabel("Type cache : ");
+        lab4.setFont(font);
+        typePanel.add(lab4, BorderLayout.WEST);
         typePanel.add(typeCacheCombo, BorderLayout.EAST);
 
         statutPanel.setLayout(new BorderLayout());
-        statutPanel.add(new JLabel("Statut cache : "), BorderLayout.WEST);
+        JLabel lab5 =new JLabel("Statut cache : ");
+        lab5.setFont(font);
+        statutPanel.add(lab5, BorderLayout.WEST);
         statutPanel.add(statutCacheCombo, BorderLayout.EAST);
 
 
         JPanel locPanel = new JPanel();
-        locPanel.add(new JLabel("Coordonnées GPS : "));
+        JLabel lab6 = new JLabel("Coordonnées GPS : ");
+        lab6.setFont(font);
+        locPanel.add(lab6);
         localisation = new JTextField();
-        localisation.setPreferredSize(new Dimension(100, 20));
+        localisation.setFont(font);
+        localisation.setPreferredSize(new Dimension(300, 40));
         locPanel.add(localisation);
 
 
@@ -133,6 +148,7 @@ public class CreateCache extends JPanel implements Refreshable {
         btnCreer.setPreferredSize(new Dimension(180, 45));
         btnCreer.setMaximumSize(new Dimension(180, 45));
         btnCreer.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        btnCreer.setFont(font);
 
         btnCreer.addActionListener(new CreerCacheActionListener(
                 this.req,
