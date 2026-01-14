@@ -22,7 +22,10 @@ public class CreateType extends JPanel {
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
 
+        Font font = new Font("Consolas", Font.PLAIN, 24);
+
         inputNameType = new JFormattedTextField();
+        inputNameType.setFont(font);
 
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
@@ -42,6 +45,7 @@ public class CreateType extends JPanel {
         btnCreer.setPreferredSize(new Dimension(180, 45));
         btnCreer.setMaximumSize(new Dimension(180, 45));
         btnCreer.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        btnCreer.setFont(font);
         
         btnCreer.addActionListener(new CreerTypeActionListener(requeteGeOOCache, inputNameType));
 
@@ -83,12 +87,13 @@ public class CreateType extends JPanel {
 
         // on crée le texte
         JLabel label = new JLabel(texteLabel);
+        label.setFont(new Font("Consolas", Font.PLAIN, 24));
         label.setOpaque(true);
         label.setBackground(new Color(230, 230, 230)); // même couleur que le champ
 
         // applique une taille et une bordure au texte
         label.setBorder(BorderFactory.createEmptyBorder(6, 10, 6, 10));
-        label.setPreferredSize(new Dimension(120, 30));
+        label.setPreferredSize(new Dimension(200, 30));
 
         // on applique une taille et une bordure à l'input
         input.setBorder(BorderFactory.createEmptyBorder(6, 10, 6, 10));
