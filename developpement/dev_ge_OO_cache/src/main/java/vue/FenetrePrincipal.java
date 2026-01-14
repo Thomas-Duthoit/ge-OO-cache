@@ -47,6 +47,8 @@ public class FenetrePrincipal extends JFrame {
         this.setLayout(new BorderLayout());
         this.add(mainPanel, BorderLayout.CENTER); // Le contenu change au milieu
         this.setVisible(true);
+
+        this.setMinimumSize(new Dimension(1600, 1200));
     }
 
     /**
