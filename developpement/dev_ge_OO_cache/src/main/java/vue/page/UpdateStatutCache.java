@@ -28,6 +28,9 @@ public class UpdateStatutCache extends JPanel implements Refreshable {
         this.requeteGeOOCache = requeteGeOOCache;
         this.selectionDropdown = selectionDropdown;
 
+        Font font = new Font("Consolas", Font.PLAIN, 24);
+
+
         JPanel panelModif = new JPanel();
         panelModif.setLayout(new BoxLayout(panelModif, BoxLayout.Y_AXIS));
         panelModif.setBackground(Color.WHITE);
@@ -36,6 +39,7 @@ public class UpdateStatutCache extends JPanel implements Refreshable {
         panelNom.setLayout(new BorderLayout());
 
         nomCache = new JLabel("Cache n° X");
+        nomCache.setFont(font);
 
         panelNom.add(nomCache, BorderLayout.CENTER);
         panelNom.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
@@ -56,7 +60,6 @@ public class UpdateStatutCache extends JPanel implements Refreshable {
                 )
         );
 
-        Font font = new Font("Consolas", Font.PLAIN, 16);
 
         this.statutCacheCombo.setFont(font);
         this.statutCacheCombo.setBackground(Color.decode("#e6e6e6"));
@@ -77,6 +80,7 @@ public class UpdateStatutCache extends JPanel implements Refreshable {
         JButton btnModif = new JButton("> Modifier");
 
         btnModif.setBackground(Color.decode("#c8d400"));
+        btnModif.setFont(font);
         btnModif.setPreferredSize(new Dimension(180, 45));
         btnModif.setMaximumSize(new Dimension(180, 45));
         btnModif.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
