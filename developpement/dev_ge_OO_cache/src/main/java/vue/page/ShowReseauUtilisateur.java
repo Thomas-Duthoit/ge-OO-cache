@@ -16,9 +16,9 @@ import java.sql.SQLException;
  * Une classe correspondant à une page de l'application
  * Elle permet l'affichage de la liste des réseaux dans le choix "affichage des réseaux"
  */
-public class ShowReseau extends ShowReseauMere {
+public class ShowReseauUtilisateur extends ShowReseauMere {
     //Constructeur par données
-    public ShowReseau(RequeteGeOOCache requeteGeOOCache, Utilisateur utilisateur, JPanel mainPanel, CardLayout cl, SelectionDropdown selectionDropdown, ComboBoxGeneral comboBoxGeneral) throws SQLException {
+    public ShowReseauUtilisateur(RequeteGeOOCache requeteGeOOCache, Utilisateur utilisateur, JPanel mainPanel, CardLayout cl, SelectionDropdown selectionDropdown, ComboBoxGeneral comboBoxGeneral) throws SQLException {
         super(requeteGeOOCache, utilisateur, mainPanel, cl, selectionDropdown, comboBoxGeneral);
     }
 
