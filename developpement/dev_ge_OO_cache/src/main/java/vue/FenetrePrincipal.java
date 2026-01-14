@@ -36,7 +36,7 @@ public class FenetrePrincipal extends JFrame {
 
         //Configuration de la fenêtre
         this.setTitle("gé-OO-cache");
-        this.setSize(800,600);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Vue de connexion
@@ -83,7 +83,7 @@ public class FenetrePrincipal extends JFrame {
      */
     public void addAllView(){
         try {
-            mainPanel.add(new Accueil(this), "Accueil");
+            mainPanel.add(new Accueil(this, this.selectionDropdown, this.cl, this.mainPanel, this.comboBoxGeneral), "Accueil");
             mainPanel.add(new ManageUser(this.selectionDropdown, this.requeteGeOOCache, this.cl, this.mainPanel), "Affichage gestion utilisateur");
             mainPanel.add(new CreateReseau(this.requeteGeOOCache, this.user), "Créer un réseau");
             mainPanel.add(new ShowReseauForCachePart(this.requeteGeOOCache, this.user, this.mainPanel, this.cl, this.selectionDropdown, this.comboBoxGeneral), "Affichage des réseaux pour cache");
