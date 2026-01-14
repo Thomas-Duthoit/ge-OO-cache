@@ -17,8 +17,8 @@ import java.util.List;
 
 /**
  * Classe ShowReseauMere
- * Classe mère de 2 vues de l'application
- * Permet de gérer les comportements communs entre les 2 vues
+ * Classe mère différentes vues de l'application
+ * Permet de gérer les comportements communs entre les différentes vues affichant la liste des réseaux
  */
 public abstract class ShowReseauMere extends JPanel implements Refreshable{
     protected RequeteGeOOCache requeteGeOOCache;
@@ -151,8 +151,10 @@ public abstract class ShowReseauMere extends JPanel implements Refreshable{
             if(e.getClickCount() == 2){
                 JList reseaux = (JList) e.getSource();
                 ReseauCache selected =  (ReseauCache) reseaux.getSelectedValue();
-                selectionDropdown.addElementSelect("Reseau", selected);
-                actionClick(selected);
+                if (selected != null) {
+                    selectionDropdown.addElementSelect("Reseau", selected);
+                    actionClick(selected);
+                }
             }
         }
 

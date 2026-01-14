@@ -50,18 +50,36 @@ public class ShowReseauForCachePart extends ShowReseauMere implements Refreshabl
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new BorderLayout());
+        leftPanel.setBackground(Color.WHITE);
+
         JLabel leftLabel = new JLabel();
-        leftLabel.setText(reseauCache.getNom());
+        leftLabel.setText(" > " + reseauCache.getNom());
         leftLabel.setForeground(Color.BLACK);
-        leftLabel.setFont(new Font("Consolas", Font.BOLD, 15));
+        leftLabel.setFont(new Font("Consolas", Font.BOLD, 25));
+
+        leftPanel.add(leftLabel, BorderLayout.CENTER);
+        leftPanel.add(Box.createRigidArea(new Dimension(60, 0)), BorderLayout.WEST);
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 20)), BorderLayout.NORTH);
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 20)), BorderLayout.SOUTH);
+
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BorderLayout());
+        rightPanel.setBackground(Color.WHITE);
 
         JLabel rightLabel = new JLabel();
         rightLabel.setText("( Nbr de caches : " + requeteGeOOCache.getStatNbCaches(reseauCache) + " )");
         rightLabel.setForeground(Color.BLACK);
-        rightLabel.setFont(new Font("Consolas", Font.PLAIN, 15));
+        rightLabel.setFont(new Font("Consolas", Font.PLAIN, 25));
 
-        panel.add(leftLabel, BorderLayout.WEST);
-        panel.add(rightLabel, BorderLayout.EAST);
+        rightPanel.add(rightLabel, BorderLayout.CENTER);
+        rightPanel.add(Box.createRigidArea(new Dimension(20, 0)), BorderLayout.EAST);
+        rightPanel.add(Box.createRigidArea(new Dimension(0, 10)), BorderLayout.NORTH);
+        rightPanel.add(Box.createRigidArea(new Dimension(0, 10)), BorderLayout.SOUTH);
+
+        panel.add(leftPanel, BorderLayout.WEST);
+        panel.add(rightPanel, BorderLayout.EAST);
 
         return panel;
     }

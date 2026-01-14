@@ -44,9 +44,10 @@ public class CreateReseau extends JPanel {
         JButton btnCreer = new JButton("> C'est partit !");
         btnCreer.setBackground(Color.decode("#c8d400"));
 
-        btnCreer.setPreferredSize(new Dimension(180, 45));
-        btnCreer.setMaximumSize(new Dimension(180, 45));
+        btnCreer.setPreferredSize(new Dimension(250, 60));
+        btnCreer.setMaximumSize(new Dimension(250, 60));
         btnCreer.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        btnCreer.setFont(new Font("Consolas", Font.BOLD, 24));
 
         btnCreer.addActionListener(new CreerReseauActionListener(requeteGeOOCache, inputNameReseau));
 
@@ -59,7 +60,7 @@ public class CreateReseau extends JPanel {
         panelBtn.add(btnCreer, BorderLayout.EAST);  // à droite
 
         this.add(panelBtn, BorderLayout.SOUTH);  // le panel du bouton est en bas
-
+        this.add(Box.createRigidArea(new Dimension(0, 200)), BorderLayout.NORTH);
 
         this.setVisible(true);
     }
@@ -81,22 +82,26 @@ public class CreateReseau extends JPanel {
         JPanel champ = new JPanel(new BorderLayout());
         champ.setBackground(new Color(230, 230, 230)); // fond gris du champ
 
+        Font font = new Font("Consolas", Font.PLAIN, 25);
+
         // padding pour le champ
         champ.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
-        champ.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+        champ.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));
 
         // on crée le texte
         JLabel label = new JLabel(texteLabel);
         label.setOpaque(true);
         label.setBackground(new Color(230, 230, 230)); // même couleur que le champ
+        label.setFont(font);
 
         // applique une taille et une bordure au texte
         label.setBorder(BorderFactory.createEmptyBorder(6, 10, 6, 10));
-        label.setPreferredSize(new Dimension(120, 30));
+        label.setPreferredSize(new Dimension(250, 60));
+        label.setMaximumSize(new Dimension(250, 60));
 
         // on applique une taille et une bordure à l'input
         input.setBorder(BorderFactory.createEmptyBorder(6, 10, 6, 10));
-        input.setPreferredSize(new Dimension(200, 30));
+        input.setFont(font);
 
         champ.add(label, BorderLayout.WEST);  // à gauche
         champ.add(input, BorderLayout.CENTER);  // au centre (prend la place restantee)

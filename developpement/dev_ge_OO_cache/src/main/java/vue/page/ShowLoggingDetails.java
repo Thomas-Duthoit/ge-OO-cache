@@ -182,14 +182,15 @@ public class ShowLoggingDetails extends JPanel implements Refreshable {
         JButton buttonLog = new JButton("< Retour");
         buttonLog.setBackground(Color.WHITE);
         buttonLog.setBorder(BorderFactory.createLineBorder(Color.WHITE));
-        buttonLog.setFont(new Font("Consolas", Font.BOLD, 10));
-        buttonLog.setMaximumSize(new Dimension(100, 20));
+        buttonLog.setFont(new Font("Consolas", Font.BOLD, 24));
+        buttonLog.setMaximumSize(new Dimension(200, 60));
         buttonLog.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0));
 
         buttonLog.addActionListener(new ButtonBackListener());
 
         panelButton.setBackground(Color.WHITE);
         panelButton.add(buttonLog, BorderLayout.WEST);
+        panelButton.add(Box.createRigidArea(new Dimension(0, 30)), BorderLayout.SOUTH);
 
         return panelButton;
     }

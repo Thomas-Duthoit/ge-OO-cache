@@ -11,6 +11,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 
+/**
+ * Classe ShowReseauForCreation
+ * Classe Fille de ShowReseauMere
+ * Une classe correspondant à une page de l'application
+ * Elle permet l'affichage de la liste des réseaux dans le choix "créer un cache"
+ */
 public class ShowReseauForCreation extends ShowReseauMere implements Refreshable {
     //Constructeurs par défaut
     public ShowReseauForCreation(RequeteGeOOCache requeteGeOOCache, Utilisateur utilisateur, JPanel mainPanel, CardLayout cl, SelectionDropdown selectionDropdown, ComboBoxGeneral comboBoxGeneral) throws SQLException {
@@ -23,7 +29,6 @@ public class ShowReseauForCreation extends ShowReseauMere implements Refreshable
      * permet de passer à l'affichage de la liste des caches au moment d'un double click sur une des lignes de la JList
      * @param reseauCache : le reseauCache sélectionné
      */
-
     @Override
     public void actionClick(ReseauCache reseauCache) {
         cardLayout.show(mainPanel, "Créer une cache");
@@ -43,18 +48,36 @@ public class ShowReseauForCreation extends ShowReseauMere implements Refreshable
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new BorderLayout());
+        leftPanel.setBackground(Color.WHITE);
+
         JLabel leftLabel = new JLabel();
-        leftLabel.setText(reseauCache.getNom());
+        leftLabel.setText(" > " + reseauCache.getNom());
         leftLabel.setForeground(Color.BLACK);
         leftLabel.setFont(new Font("Consolas", Font.BOLD, 25));
+
+        leftPanel.add(leftLabel, BorderLayout.CENTER);
+        leftPanel.add(Box.createRigidArea(new Dimension(60, 0)), BorderLayout.WEST);
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 20)), BorderLayout.NORTH);
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 20)), BorderLayout.SOUTH);
+
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BorderLayout());
+        rightPanel.setBackground(Color.WHITE);
 
         JLabel rightLabel = new JLabel();
         rightLabel.setText("( Nbr de caches : " + requeteGeOOCache.getStatNbCaches(reseauCache) + " )");
         rightLabel.setForeground(Color.BLACK);
         rightLabel.setFont(new Font("Consolas", Font.PLAIN, 25));
 
-        panel.add(leftLabel, BorderLayout.WEST);
-        panel.add(rightLabel, BorderLayout.EAST);
+        rightPanel.add(rightLabel, BorderLayout.CENTER);
+        rightPanel.add(Box.createRigidArea(new Dimension(20, 0)), BorderLayout.EAST);
+        rightPanel.add(Box.createRigidArea(new Dimension(0, 10)), BorderLayout.NORTH);
+        rightPanel.add(Box.createRigidArea(new Dimension(0, 10)), BorderLayout.SOUTH);
+
+        panel.add(leftPanel, BorderLayout.WEST);
+        panel.add(rightPanel, BorderLayout.EAST);
 
         return panel;
     }

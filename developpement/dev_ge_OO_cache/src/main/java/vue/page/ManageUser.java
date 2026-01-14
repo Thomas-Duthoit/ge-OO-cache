@@ -18,7 +18,6 @@ import java.awt.event.MouseListener;
 import java.util.List;
 
 
-
 /**
  * Classe ManageUser
  * Une classe correspondant à une page de l'application
@@ -42,7 +41,7 @@ public class ManageUser extends JPanel implements Refreshable {
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.add(listUtilisateur);
-        scrollPane.setFont(new Font("consolas", Font.BOLD, 15));
+        scrollPane.setFont(new Font("consolas", Font.BOLD, 24));
         listUtilisateur.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         listUtilisateur.setCellRenderer(new ListUtilisateurCellRenderer());
         listUtilisateur.addMouseListener(new MouseListenerActionButton());
@@ -76,6 +75,12 @@ public class ManageUser extends JPanel implements Refreshable {
     public JPanel createPanelTop(){
         JLabel labelUtilisateur = new JLabel("Utilisateur");
         JLabel labelSuppr = new JLabel("Supprimer");
+
+        Font font =  new Font("Consolas", Font.PLAIN, 20);
+
+        labelUtilisateur.setFont(font);
+        labelSuppr.setFont(font);
+
         JPanel panelTop = new JPanel();
         panelTop.setBackground(Color.decode("#dbdbd8"));
         panelTop.setLayout(new BorderLayout());
@@ -83,20 +88,20 @@ public class ManageUser extends JPanel implements Refreshable {
         JPanel panelLeft = new JPanel();
         panelLeft.setBackground(Color.decode("#dbdbd8"));
         panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.X_AXIS));
-        panelLeft.add(Box.createRigidArea(new Dimension(30, 0)));
+        panelLeft.add(Box.createRigidArea(new Dimension(80, 0)));
         panelLeft.add(labelUtilisateur);
 
         JPanel panelRight = new JPanel();
         panelRight.setBackground(Color.decode("#dbdbd8"));
         panelRight.setLayout(new BoxLayout(panelRight, BoxLayout.X_AXIS));
         panelRight.add(labelSuppr);
-        panelRight.add(Box.createRigidArea(new Dimension(30, 0)));
+        panelRight.add(Box.createRigidArea(new Dimension(80, 0)));
 
         panelTop.add(panelLeft, BorderLayout.WEST);
         panelTop.add(panelRight, BorderLayout.EAST);
 
-        panelTop.setPreferredSize(new Dimension(Integer.MAX_VALUE, 80));
-        panelTop.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
+        panelTop.setPreferredSize(new Dimension(Integer.MAX_VALUE, 100));
+        panelTop.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
 
         return panelTop;
     }
@@ -114,14 +119,15 @@ public class ManageUser extends JPanel implements Refreshable {
         JButton buttonLog = new JButton("< Retour");
         buttonLog.setBackground(Color.WHITE);
         buttonLog.setBorder(BorderFactory.createLineBorder(Color.WHITE));
-        buttonLog.setFont(new Font("Consolas", Font.BOLD, 10));
-        buttonLog.setMaximumSize(new Dimension(100, 20));
+        buttonLog.setFont(new Font("Consolas", Font.BOLD, 24));
+        buttonLog.setMaximumSize(new Dimension(200, 60));
         buttonLog.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 0));
 
         buttonLog.addActionListener(new ButtonBackListener());
 
         panelButton.setBackground(Color.WHITE);
         panelButton.add(buttonLog, BorderLayout.WEST);
+        panelButton.add(Box.createRigidArea(new Dimension(0, 30)),  BorderLayout.SOUTH);
 
         return panelButton;
     }
@@ -177,13 +183,15 @@ public class ManageUser extends JPanel implements Refreshable {
             JLabel statutUtilisateur = new JLabel("( Propriétaire )");
             statutUtilisateur.setFont(new Font("consolas", Font.PLAIN, 25));
             rightPanel.add(statutUtilisateur, BorderLayout.CENTER);
+            rightPanel.add(Box.createRigidArea(new Dimension(20, 0)), BorderLayout.EAST);
         }else{
             JButton statutUtilisateur = new JButton("X");
             statutUtilisateur.setBackground(Color.WHITE);
             statutUtilisateur.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
             statutUtilisateur.setForeground(Color.RED);
-            statutUtilisateur.setFont(new Font("consolas", Font.PLAIN, 25));
+            statutUtilisateur.setFont(new Font("consolas", Font.BOLD, 25));
             rightPanel.add(statutUtilisateur, BorderLayout.CENTER);
+            rightPanel.add(Box.createRigidArea(new Dimension(120, 0)), BorderLayout.EAST);
         }
 
         leftPanel.add(Box.createRigidArea(new Dimension(60, 0)), BorderLayout.EAST);

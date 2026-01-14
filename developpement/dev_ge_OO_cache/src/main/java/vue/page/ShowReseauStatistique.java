@@ -11,6 +11,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 
+/**
+ * Classe ShowReseauStatistique
+ * Classe Fille de ShowReseauMere
+ * Une classe correspondant à une page de l'application
+ * Elle permet l'affichage de la liste des réseaux dans le choix "affichage des statistiques"
+ */
 public class ShowReseauStatistique extends ShowReseauMere implements Refreshable {
     //Constructeurs par défaut
     public ShowReseauStatistique(RequeteGeOOCache requeteGeOOCache, Utilisateur utilisateur, JPanel mainPanel, CardLayout cl, SelectionDropdown selectionDropdown, ComboBoxGeneral comboBoxGeneral) throws SQLException {
@@ -23,7 +29,6 @@ public class ShowReseauStatistique extends ShowReseauMere implements Refreshable
      * permet de passer à l'affichage de la liste des caches au moment d'un double click sur une des lignes de la JList
      * @param reseauCache : le reseauCache sélectionné
      */
-
     @Override
     public void actionClick(ReseauCache reseauCache) {
         cardLayout.show(mainPanel, "Affichage des statistiques");
