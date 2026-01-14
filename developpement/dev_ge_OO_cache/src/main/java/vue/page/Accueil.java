@@ -148,16 +148,16 @@ public class Accueil extends JPanel {
         panelRight.setLayout(new BorderLayout());
 
         //Ajout d'un bouton de deconnexion
-        JButton buttonDeconnexion = new JButton("> Deconnexion !");
-        buttonDeconnexion.setBackground(Color.decode("#c8d400"));
-        buttonDeconnexion.setPreferredSize(new Dimension(250, 45));
-        buttonDeconnexion.setMaximumSize(new Dimension(250, 45));
-        buttonDeconnexion.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        buttonDeconnexion.setFont(new Font("Consolas", Font.BOLD, 20));
+//        JButton buttonDeconnexion = new JButton("> Deconnexion !");
+//        buttonDeconnexion.setBackground(Color.decode("#c8d400"));
+//        buttonDeconnexion.setPreferredSize(new Dimension(250, 45));
+//        buttonDeconnexion.setMaximumSize(new Dimension(250, 45));
+//        buttonDeconnexion.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+//        buttonDeconnexion.setFont(new Font("Consolas", Font.BOLD, 20));
+//
+//        buttonDeconnexion.addActionListener(new ActionDeconnexionListener());
 
-        buttonDeconnexion.addActionListener(new ActionDeconnexionListener());
-
-        panelRight.add(buttonDeconnexion, BorderLayout.CENTER);
+        // panelRight.add(buttonDeconnexion, BorderLayout.CENTER);
         panelRight.add(Box.createRigidArea(new Dimension(50, 0)), BorderLayout.EAST);
         panelRight.add(Box.createRigidArea(new Dimension(0, 50)), BorderLayout.SOUTH);
 
@@ -211,13 +211,13 @@ public class Accueil extends JPanel {
     // classe interne à la vue car elle y est spécifique
     //Listener qui s'activer au click sur le bouton déconnexion.
     //Effectue la déconnexion de l'utilisateur et le retour à l'affichage de connexion
-    public class ActionDeconnexionListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            fenetrePrincipal.deconnexionMainPanel();
-        }
-    }
-
+//    public class ActionDeconnexionListener implements ActionListener {
+//        @Override
+//        public void actionPerformed(ActionEvent e) {
+//            fenetrePrincipal.deconnexionMainPanel();
+//        }
+//    }
+//
     public class ActionNavListener implements ActionListener {
 
         private String nav;
