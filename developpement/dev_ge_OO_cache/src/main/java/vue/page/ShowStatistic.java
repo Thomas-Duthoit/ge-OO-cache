@@ -122,7 +122,7 @@ public class ShowStatistic extends JPanel implements Refreshable {
             System.out.println("Reseau : " + reseauCache);
             frame.setVisible(true);
 
-            // TODO : update les textes
+            titre.setText("Quelques infos sur le réseau : " + reseauCache.getNom());
             proprietaire.setText("- Propriétaire : " + requeteGeOOCache.getStatProprietaire(reseauCache).getPseudo());
             nbCache.setText("- Nombre de caches : " + requeteGeOOCache.getStatNbCaches(reseauCache));
             nbUtilisateurs.setText("- Nombre d'utilisateurs associés : " + requeteGeOOCache.getStatNbUtilisateurs(reseauCache));

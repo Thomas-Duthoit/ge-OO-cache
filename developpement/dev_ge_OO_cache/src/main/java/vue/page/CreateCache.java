@@ -19,7 +19,7 @@ import java.awt.event.ActionListener;
 import java.lang.reflect.Type;
 import java.sql.SQLException;
 
-public class CreateCache extends JPanel {
+public class CreateCache extends JPanel implements Refreshable {
 
     private RequeteGeOOCache req;
 
@@ -145,7 +145,24 @@ public class CreateCache extends JPanel {
         this.setVisible(true);
     }
 
+    @Override
+    public void refreshData() {
+        System.out.println("Refresh de CreateCache");
+        statutCacheCombo.setModel(
+                new DefaultComboBoxModel<>(
+                        req.getStatutCache().toArray(new StatutCache[0])  // recuperer la lsite des sttus en BDD et en faire un combobox
+                )
+        );
 
+        typeCacheCombo.setModel(
+                new DefaultComboBoxModel<>(
+                        req.getTypeCache().toArray(new TypeCache[0])  // recuperer la lsite des types en BDD et en faire un combobox
+                )
+        );
+
+        revalidate();
+        repaint();
+    }
 
 
     // classe interne car utile juste ici
