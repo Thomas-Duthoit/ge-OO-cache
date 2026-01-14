@@ -90,6 +90,13 @@ public class UpdateStatutCache extends JPanel implements Refreshable {
     @Override
     public void refreshData() {
         nomCache.setText("Cache n°" + ((Cache) selectionDropdown.getElementSelect("Cache")).getNumero());
+
+        statutCacheCombo.setModel(
+                new DefaultComboBoxModel<>(
+                        requeteGeOOCache.getStatutCache().toArray(new StatutCache[0])  // recuperer la lsite des sttus en BDD et en faire un combobox
+                )
+        );
+
         revalidate();
         repaint();
     }
