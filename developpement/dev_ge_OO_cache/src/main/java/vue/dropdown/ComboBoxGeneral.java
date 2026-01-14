@@ -324,8 +324,7 @@ public class ComboBoxGeneral extends JPanel {
 
                 // Affichage de la page adéquate
                 if ("Associer un utilisateur".equals(choixActionSelectionnee)) {
-                    System.out.println("Pas de changement de page à effectuer pour le moment");
-                    cl.show(mainPanel, "Accueil");
+                    cl.show(mainPanel, "Affichage des utilisateurs");
                 }else if("Créer une cache".equals(choixActionSelectionnee) ){
                     cl.show(mainPanel, "Affichage des réseaux pour création");
                 }
@@ -359,7 +358,7 @@ public class ComboBoxGeneral extends JPanel {
                 refreshDataView();
             }else{
                 selectionDropdown.supprElementSelect("Utilisateur");
-                cl.show(mainPanel, "Accueil");
+                cl.show(mainPanel, "Affichage des utilisateurs");
             }
             refresh();
         }
@@ -469,6 +468,7 @@ public class ComboBoxGeneral extends JPanel {
      * setter qui vient modifier l'élément selectionné Utilisateur selon l'élément dans la mémoire partagée
      */
     public void refreshComboBoxUtilisateur(){
+        System.out.println("refresh Utilisateur " + selectionDropdown.getElementSelect("Utilisateur"));
         comboBoxUtilisateur.setSelectedItem(selectionDropdown.getElementSelect("Utilisateur"));
     }
 

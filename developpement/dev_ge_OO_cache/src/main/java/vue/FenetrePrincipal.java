@@ -92,6 +92,7 @@ public class FenetrePrincipal extends JFrame {
             mainPanel.add(new ShowCaches(this.requeteGeOOCache, this.selectionDropdown), "détails caches");
             mainPanel.add(new ShowStatistic(this.requeteGeOOCache, this.selectionDropdown), "Afficher les statistiques");
             mainPanel.add(new ShowLoggings(this.requeteGeOOCache, this.user, this.selectionDropdown, this.cl, this.mainPanel, this.comboBoxGeneral), "Afficher les logs");
+            mainPanel.add(new ShowUtilisateurs(this.requeteGeOOCache, this.user, this.selectionDropdown, this.cl, this.mainPanel, this.comboBoxGeneral), "Affichage des utilisateurs");
             mainPanel.add(new ShowLoggingDetails(this.selectionDropdown, this.cl, this.mainPanel), "Afficher les logging détails");
             mainPanel.add(new CreateCache(this.requeteGeOOCache, this.selectionDropdown), "Créer une cache");
             mainPanel.add(new ShowReseauForCreation(this.requeteGeOOCache, this.user, this.mainPanel, this.cl, this.selectionDropdown, this.comboBoxGeneral),  "Affichage des réseaux pour création");
