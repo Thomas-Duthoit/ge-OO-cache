@@ -334,6 +334,13 @@ public class ShowLoggings extends JPanel implements Refreshable {
         }
     }
 
+    /**
+     * méthode createAffichageRenderer
+     * ----------
+     * permet de créer la JPanel de chaque ligne de la Jlist
+     * @param log : le log de la ligne courante
+     * @return JPanel de la ligne de la Jlist
+     */
     public JPanel createAffichageRenderer(Log log){
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -471,14 +478,16 @@ public class ShowLoggings extends JPanel implements Refreshable {
                 JList log = (JList) e.getSource();
                 Log selected =  (Log) log.getSelectedValue();
                 System.out.println(selected);
-                this.selectionDropdown.addElementSelect("Log", selected);
+                if (selected != null) {
+                    this.selectionDropdown.addElementSelect("Log", selected);
 
-                System.out.println(this.selectionDropdown.getElementSelect("Log"));
+                    System.out.println(this.selectionDropdown.getElementSelect("Log"));
 
-                cl.show(mainPanel, "Afficher les logging détails");
-                refreshDataView(); //Permet d'activer la méthode refreshData de la vue d'affichage des détails d'un log
+                    cl.show(mainPanel, "Afficher les logging détails");
+                    refreshDataView(); //Permet d'activer la méthode refreshData de la vue d'affichage des détails d'un log
 
-                comboBoxGeneral.refreshComboBoxLog();
+                    comboBoxGeneral.refreshComboBoxLog();
+                }
             }
         }
 

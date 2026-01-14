@@ -14,6 +14,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
 
+/**
+ * Classe ShowUtilisateurs
+ * Une classe correspondant à une page de l'application
+ * Elle permet l'affichage de la liste des utilisateurs hors l'utilisateur connecté
+ */
 public class ShowUtilisateurs extends JPanel implements Refreshable {
     private RequeteGeOOCache requeteGeOOCache;
     private Utilisateur utilisateur;
@@ -25,7 +30,7 @@ public class ShowUtilisateurs extends JPanel implements Refreshable {
     private JPanel mainPanel;
     private ComboBoxGeneral comboBoxGeneral;
 
-
+    // Constructeurs par données
     public ShowUtilisateurs(RequeteGeOOCache requeteGeOOCache, Utilisateur utilisateur, SelectionDropdown selectionDropdown, CardLayout cl, JPanel mainPanel, ComboBoxGeneral comboBoxGeneral){
         super();
         this.requeteGeOOCache = requeteGeOOCache;
@@ -52,7 +57,7 @@ public class ShowUtilisateurs extends JPanel implements Refreshable {
 
         JPanel panelList = new JPanel();
         panelList.setLayout(new BorderLayout());
-        panelList.add(this.utilisateurs, BorderLayout.CENTER);
+        panelList.add(scrollPaneListLog, BorderLayout.CENTER);
 
         //Mise en place d'un cadre vide autour de panelList
         this.add(Box.createRigidArea(new Dimension(0, 50)), BorderLayout.NORTH);
@@ -63,6 +68,17 @@ public class ShowUtilisateurs extends JPanel implements Refreshable {
         this.setVisible(true);
     }
 
+    /**
+     *              METHODES pour les différents éléments de la vues
+     */
+
+    /**
+     * méthode : createModelJListUtilisateur
+     *-----------------------
+     * méthode de création d'un modèle pour la JList utilisateur
+     * @param utilisateurConnecte : l'utilisateur connecté à l'application
+     * @return le modèle de la JList utilisateur selon les informations récupérées
+     */
     public DefaultListModel<Utilisateur> createModelJListUtilisateur(Utilisateur utilisateurConnecte){
         DefaultListModel<Utilisateur> modelUtilisateur = new DefaultListModel<>();
 
@@ -77,6 +93,16 @@ public class ShowUtilisateurs extends JPanel implements Refreshable {
         return modelUtilisateur;
     }
 
+    /**
+     *          REFRESHDATA
+     */
+
+    /**
+     * Methode : RefreshData
+     * -------
+     * Permet de refresh les données quand on revient sur cette vue
+     * Crée la JList initiale (quand aucun filtre) + réinitialise les filtres + cache le filtre de cache
+     */
     @Override
     public void refreshData() {
         //Récupère l'utilisateur sélectionné dans la dropdown
@@ -102,54 +128,6 @@ public class ShowUtilisateurs extends JPanel implements Refreshable {
 
         if (c instanceof Refreshable) {
             ((Refreshable) c).refreshData();
-        }
-    }
-
-    // classe interne à la vue car elle y est spécifique
-    // Permet de réagir à un double clic sur un élément de la JList des logs : change de vue pour celle du détails de la log
-    public class MouseUtilisateurListener implements MouseListener {
-        private SelectionDropdown selectionDropdown;
-
-        public MouseUtilisateurListener(SelectionDropdown selectionDropdown){
-            this.selectionDropdown = selectionDropdown;
-        }
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            if(e.getClickCount() == 2){
-                System.out.println("Affichage des détails d'un login");
-                JList log = (JList) e.getSource();
-                Utilisateur selected =  (Utilisateur) log.getSelectedValue();
-                System.out.println(selected);
-                this.selectionDropdown.addElementSelect("Utilisateur", selected);
-
-                System.out.println(this.selectionDropdown.getElementSelect("Utilisateur"));
-
-                cl.show(mainPanel, "Associer un utilisateur");
-                refreshDataView(); //Permet d'activer la méthode refreshData de la vue d'affichage des détails d'un log
-
-                comboBoxGeneral.refreshComboBoxUtilisateur();
-            }
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            //Non utilisé
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            //Non utilisé
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            //Non utilisé
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-            //Non utilisé
         }
     }
 
@@ -188,7 +166,13 @@ public class ShowUtilisateurs extends JPanel implements Refreshable {
         }
     }
 
-
+    /**
+     * méthode createAffichageRenderer
+     * ----------
+     * permet de créer la JPanel de chaque ligne de la Jlist
+     * @param utilisateur : l'utilisateur de la ligne courante
+     * @return JPanel de la ligne de la Jlist
+     */
     public JPanel createAffichageRenderer(Utilisateur utilisateur){
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -226,6 +210,60 @@ public class ShowUtilisateurs extends JPanel implements Refreshable {
 
         return panel;
 
+    }
+
+    /**
+     *              LISTENER
+     */
+
+    // classe interne à la vue car elle y est spécifique
+    // Permet de réagir à un double clic sur un élément de la JList des utilisateurs : change de vue pour celle de l'association utilisateur et réseau
+    public class MouseUtilisateurListener implements MouseListener {
+        private SelectionDropdown selectionDropdown;
+
+        public MouseUtilisateurListener(SelectionDropdown selectionDropdown){
+            this.selectionDropdown = selectionDropdown;
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if(e.getClickCount() == 2){
+                System.out.println("Affichage des détails d'un login");
+                JList log = (JList) e.getSource();
+                Utilisateur selected =  (Utilisateur) log.getSelectedValue();
+                if (selected != null) {
+                    System.out.println(selected);
+                    this.selectionDropdown.addElementSelect("Utilisateur", selected);
+
+                    System.out.println(this.selectionDropdown.getElementSelect("Utilisateur"));
+
+                    cl.show(mainPanel, "Associer un utilisateur");
+                    refreshDataView(); //Permet d'activer la méthode refreshData de la vue d'affichage des détails d'un log
+
+                    comboBoxGeneral.refreshComboBoxUtilisateur();
+                }
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            //Non utilisé
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            //Non utilisé
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            //Non utilisé
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            //Non utilisé
+        }
     }
 
 }

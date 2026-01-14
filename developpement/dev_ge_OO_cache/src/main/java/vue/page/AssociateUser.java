@@ -40,12 +40,12 @@ public class AssociateUser extends JPanel implements Refreshable {
         this.comboBoxGeneral = comboBoxGeneral;
         this.utilisateurConnecte = utilisateur;
 
-        Font font = new Font("Consolas", Font.PLAIN, 16);
+        Font font = new Font("Consolas", Font.PLAIN, 24);
 
         //DONNEES
         //Création des JComboBox pour les réseaux et les utilisateurs
         this.comboBoxReseau = new JComboBox<>();
-        this.comboBoxReseau.setMaximumSize(new Dimension(200, 50));
+        this.comboBoxReseau.setMaximumSize(new Dimension(300, 50));
         this.comboBoxReseau.setFont(font);
         this.comboBoxReseau.setBackground(Color.decode("#e6e6e6"));
 
@@ -60,9 +60,19 @@ public class AssociateUser extends JPanel implements Refreshable {
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
 
-        this.add(createTextTop("Attribution d'accès à un réseau"), BorderLayout.NORTH);
-        this.add(createCenterPanel(), BorderLayout.CENTER);
-        this.add(createButtonValidate("> OUI !"), BorderLayout.SOUTH);  // le panel du bouton est en bas
+        //Mise en forme centre panel
+        JPanel centerPanel = new JPanel();
+        centerPanel.setBackground(Color.WHITE);
+        centerPanel.setLayout(new BorderLayout());
+        centerPanel.add(createTextTop("Attribution d'accès à un réseau"), BorderLayout.NORTH);
+        centerPanel.add(createCenterPanel(), BorderLayout.CENTER);
+
+        this.add(centerPanel, BorderLayout.CENTER);
+        this.add(Box.createRigidArea(new Dimension(20, 0)), BorderLayout.EAST);
+        this.add(Box.createRigidArea(new Dimension(20, 0)), BorderLayout.WEST);
+        this.add(Box.createRigidArea(new Dimension(0, 300)), BorderLayout.NORTH);
+        this.add(createButtonValidate("> OUI !"), BorderLayout.SOUTH); // le panel du bouton est en bas
+
         this.setVisible(true);
     }
 
@@ -82,7 +92,6 @@ public class AssociateUser extends JPanel implements Refreshable {
         // Liste des réseaux où l'utilisateur est déjà associé
         List<ReseauCache> reseauCachesAssocie = this.requeteGeOOCache.getReseauxAvecAccesUtilisateur(utilisateurChoisi);
 
-        JComboBox<Object> comboBoxReseau = new JComboBox<>();
         DefaultComboBoxModel<Object> comboBoxReseauModel = new DefaultComboBoxModel<>();
         comboBoxReseauModel.addElement("Choix du réseau");
         for(ReseauCache rc : reseauxCacheProp){
@@ -101,7 +110,6 @@ public class AssociateUser extends JPanel implements Refreshable {
      */
     public DefaultComboBoxModel<Utilisateur> getDefaultModelComboBoxUtilisateur(Utilisateur utilisateur) {
         List<Utilisateur> utilisateurs = this.requeteGeOOCache.getListeUtilisateurs();
-        JComboBox<Utilisateur> comboBoxUtilisateur = new JComboBox<>();
         DefaultComboBoxModel<Utilisateur> comboBoxUtilisateurModel = new DefaultComboBoxModel<>();
         for(Utilisateur u : utilisateurs){
             if(!(u.equals(utilisateur))) {
@@ -129,13 +137,10 @@ public class AssociateUser extends JPanel implements Refreshable {
         // padding gauche / droite / haut / bas
         topTextPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
         JLabel label = new JLabel(texte);
-        label.setFont(new Font(null, Font.PLAIN, 16));
+        label.setFont(new Font("Consolas", Font.PLAIN, 24));
         topTextPanel.add(label);
 
         topPanel.add(topTextPanel, BorderLayout.CENTER);
-        topPanel.add(Box.createRigidArea(new Dimension(200, 0)), BorderLayout.EAST);
-        topPanel.add(Box.createRigidArea(new Dimension(200, 0)), BorderLayout.WEST);
-        topPanel.add(Box.createRigidArea(new Dimension(0, 100)), BorderLayout.NORTH);
 
         return topPanel;
     }
@@ -152,11 +157,13 @@ public class AssociateUser extends JPanel implements Refreshable {
         this.reussite.setForeground(Color.BLUE);
         this.reussite.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.reussite.setVisible(false);
+        this.reussite.setFont(new Font("Consolas", Font.PLAIN, 24));
         //Message d'échec
         this.echec = new JLabel("Association échoué");
         this.echec.setForeground(Color.RED);
         this.echec.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.echec.setVisible(false);
+        this.reussite.setFont(new Font("Consolas", Font.PLAIN, 24));
 
         JPanel messagePanel = new JPanel();
         messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.Y_AXIS));
@@ -179,9 +186,10 @@ public class AssociateUser extends JPanel implements Refreshable {
         JButton btnCreer = new JButton(texte);
         btnCreer.setBackground(Color.decode("#c8d400"));
 
-        btnCreer.setPreferredSize(new Dimension(180, 45));
-        btnCreer.setMaximumSize(new Dimension(180, 45));
+        btnCreer.setPreferredSize(new Dimension(250, 60));
+        btnCreer.setMaximumSize(new Dimension(250, 60));
         btnCreer.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        btnCreer.setFont(new Font("Consolas", Font.BOLD, 24));
 
         btnCreer.addActionListener(new ActionAssociateButtonListener());
 
@@ -209,7 +217,7 @@ public class AssociateUser extends JPanel implements Refreshable {
         //Création du texte
         JLabel texte = new JLabel(" aura accès à ");
         texte.setHorizontalAlignment(SwingConstants.CENTER);
-        texte.setFont(new Font(null, Font.PLAIN, 16));
+        texte.setFont(new Font("Consolas", Font.PLAIN, 25));
 
         //Rassemblement de la ligne
         panel.add(this.comboBoxUtilisateur);

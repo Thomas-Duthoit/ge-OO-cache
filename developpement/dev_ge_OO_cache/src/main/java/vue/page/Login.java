@@ -39,6 +39,17 @@ public class Login extends JPanel{
         //Interface de connexion
         //Img : LOGO
         JLabel logoLabel = createLogo();
+
+        JPanel panelLogo = new JPanel();
+        panelLogo.setBackground(Color.WHITE);
+        panelLogo.setLayout(new BorderLayout());
+
+        panelLogo.add(logoLabel, BorderLayout.CENTER);
+        panelLogo.add(Box.createRigidArea(new Dimension(0, 20)),  BorderLayout.NORTH);
+        panelLogo.add(Box.createRigidArea(new Dimension(0, 40)),  BorderLayout.SOUTH);
+        panelLogo.add(Box.createRigidArea(new Dimension(40, 0)),  BorderLayout.EAST);
+        panelLogo.add(Box.createRigidArea(new Dimension(40, 0)),  BorderLayout.WEST);
+
         this.add(logoLabel, BorderLayout.NORTH);
 
         //FORMULAIRE
@@ -54,6 +65,7 @@ public class Login extends JPanel{
         this.errorLabel = new JLabel("Erreur sur le nom d'utilisateur ou le mot de passe, l'application va se fermer");
         errorLabel.setForeground(Color.RED);
         errorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        errorLabel.setFont(new Font("Consolas", Font.BOLD, 20));
         errorLabel.setVisible(false);
 
         loginButton.addActionListener(new MyButtonListener(loginPanel, this.username, this.password));
@@ -63,7 +75,7 @@ public class Login extends JPanel{
         loginPanel.add(username);
         loginPanel.add(Box.createVerticalStrut(20));
         loginPanel.add(password);
-        loginPanel.add(Box.createVerticalStrut(30));
+        loginPanel.add(Box.createVerticalStrut(50));
         loginPanel.add(loginButton);
         this.add(loginPanel, BorderLayout.CENTER);
 
@@ -85,7 +97,7 @@ public class Login extends JPanel{
     public JLabel createLogo(){
         try {
             BufferedImage img = ImageIO.read(getClass().getResourceAsStream("/logo.png")); // Récupère l'image à sa position
-            Image scaledImg = img.getScaledInstance(600, 300, Image.SCALE_SMOOTH); // Rajoute une dimension à l'image
+            Image scaledImg = img.getScaledInstance(1000, 500, Image.SCALE_SMOOTH); // Rajoute une dimension à l'image
             JLabel imageLabel = new JLabel(new ImageIcon(scaledImg)); // Crée le label avec l'image
             imageLabel.setHorizontalAlignment(JLabel.CENTER);
             return imageLabel;
@@ -125,9 +137,9 @@ public class Login extends JPanel{
             }
         });
 
-        field.setMaximumSize(new Dimension(350, 45));
+        field.setMaximumSize(new Dimension(500, 60));
         field.setHorizontalAlignment(JTextField.CENTER);
-        field.setFont(new Font("Arial", Font.PLAIN, 14));
+        field.setFont(new Font("Consolas", Font.PLAIN, 24));
         field.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2, true));
         return field;
     }
@@ -163,8 +175,9 @@ public class Login extends JPanel{
             }
         });
 
-        field.setMaximumSize(new Dimension(350, 45));
+        field.setMaximumSize(new Dimension(500, 60));
         field.setHorizontalAlignment(JTextField.CENTER);
+        field.setFont(new Font("Consolas", Font.PLAIN, 24));
         field.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2, true));
         return field;
     }
@@ -181,9 +194,9 @@ public class Login extends JPanel{
         JButton button = new JButton("> Connexion");
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setBackground(Color.decode("#c8d400"));
-        button.setFont(new Font("Arial", Font.BOLD, 14));
-        button.setPreferredSize(new Dimension(180, 45));
-        button.setMaximumSize(new Dimension(180, 45));
+        button.setFont(new Font("Arial", Font.BOLD, 24));
+        button.setPreferredSize(new Dimension(250, 60));
+        button.setMaximumSize(new Dimension(250, 60));
         button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
         return button;
