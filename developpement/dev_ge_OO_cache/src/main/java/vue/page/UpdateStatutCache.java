@@ -69,9 +69,14 @@ public class UpdateStatutCache extends JPanel implements Refreshable {
         this.add(Box.createVerticalStrut(50), BorderLayout.NORTH);  // espace en haut
 
 
-        JButton btnCreer = new JButton("> Modifier");
-        btnCreer.setBackground(Color.decode("#c8d400"));
-        btnCreer.addActionListener(new UpdateStatutActionListener(requeteGeOOCache, statutCacheCombo, selectionDropdown));
+        JButton btnModif = new JButton("> Modifier");
+
+        btnModif.setBackground(Color.decode("#c8d400"));
+        btnModif.setPreferredSize(new Dimension(180, 45));
+        btnModif.setMaximumSize(new Dimension(180, 45));
+        btnModif.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+
+        btnModif.addActionListener(new UpdateStatutActionListener(requeteGeOOCache, statutCacheCombo, selectionDropdown));
 
         JPanel panelBtn = new JPanel();
         panelBtn.setLayout(new BorderLayout());
@@ -79,7 +84,7 @@ public class UpdateStatutCache extends JPanel implements Refreshable {
         panelBtn.setBackground(Color.WHITE);
 
 
-        panelBtn.add(btnCreer, BorderLayout.EAST);  // à droite
+        panelBtn.add(btnModif, BorderLayout.EAST);  // à droite
 
         this.add(panelBtn, BorderLayout.SOUTH);  // le panel du bouton est en bas
 

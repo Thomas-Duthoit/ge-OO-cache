@@ -122,6 +122,10 @@ public class CreateCache extends JPanel implements Refreshable {
 
         JButton btnCreer = new JButton("> Créer");
         btnCreer.setBackground(Color.decode("#c8d400"));
+        btnCreer.setPreferredSize(new Dimension(180, 45));
+        btnCreer.setMaximumSize(new Dimension(180, 45));
+        btnCreer.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+
         btnCreer.addActionListener(new CreerCacheActionListener(
                 this.req,
                 descriptionTextuelle,
