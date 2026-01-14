@@ -128,8 +128,8 @@ public class ComboBoxGeneral extends JPanel {
                 "Associer un utilisateur",
                 "Affichage des réseaux",
                 "Affichage de la liste des caches",
-                "Afficher les statistiques",
-                "Afficher les logs",
+                "Affichage des statistiques",
+                "Affichage des logs",
                 "Créer un réseau",
                 "Créer une cache",
                 "Créer un utilisateur",
@@ -313,11 +313,11 @@ public class ComboBoxGeneral extends JPanel {
                     comboBoxUtilisateur.setVisible(true);
                     comboBoxUtilisateur.setModel(getDefaultModelComboBoxUtilisateur());
                 }
-                if ("Afficher les statistiques".equals(choixActionSelectionnee) || "Affichage de la liste des caches".equals(choixActionSelectionnee) || "Créer une cache".equals(choixActionSelectionnee) || "Modifier le statut d'une cache".equals(choixActionSelectionnee)) {
+                if ("Affichage des statistiques".equals(choixActionSelectionnee) || "Affichage de la liste des caches".equals(choixActionSelectionnee) || "Créer une cache".equals(choixActionSelectionnee) || "Modifier le statut d'une cache".equals(choixActionSelectionnee)) {
                     comboBoxReseauCache.setVisible(true);
                     comboBoxReseauCache.setModel(getDefaultModelComboBoxReseauCache());
                 }
-                if("Afficher les logs".equals(choixActionSelectionnee)){
+                if("Affichage des logs".equals(choixActionSelectionnee)){
                     comboBoxLog.setVisible(true);
                     comboBoxLog.setModel(getDefaultModelComboBoxLog());
                 }
@@ -330,7 +330,7 @@ public class ComboBoxGeneral extends JPanel {
                 }
                 else if ( "Affichage de la liste des caches".equals(choixActionSelectionnee) || "Modifier le statut d'une cache".equals(choixActionSelectionnee) ){
                     cl.show(mainPanel, "Affichage des réseaux pour cache");
-                }else if("Afficher les statistiques".equals(choixActionSelectionnee)){
+                }else if("Affichage des statistiques".equals(choixActionSelectionnee)){
                     cl.show(mainPanel, "Afficher les réseaux pour statistique");
                 }else {
                     cl.show(mainPanel, choixActionSelectionnee);
@@ -395,7 +395,7 @@ public class ComboBoxGeneral extends JPanel {
                 refreshDataView();
             }else{
                 selectionDropdown.supprElementSelect("Reseau");
-                if("Afficher les statistiques".equals(actionPrec)){
+                if("Affichage des statistiques".equals(actionPrec)){
                     cl.show(mainPanel, "Afficher les réseaux pour statistique");
                 }else if("Créer une cache".equals(actionPrec)){
                     cl.show(mainPanel, "Affichage des réseaux pour création");
@@ -452,7 +452,7 @@ public class ComboBoxGeneral extends JPanel {
             }
             else{
                 selectionDropdown.supprElementSelect("Log");
-                cl.show(mainPanel, "Afficher les logs");
+                cl.show(mainPanel, "Affichage des logs");
             }
             System.out.println(cb.getSelectedItem().toString());
             refresh();
@@ -479,7 +479,7 @@ public class ComboBoxGeneral extends JPanel {
      */
     public void refreshComboBoxReseau(){
         comboBoxReseauCache.setSelectedItem(selectionDropdown.getElementSelect("Reseau"));
-        if(comboBoxAction.getSelectedItem().toString().equals("Afficher les statistiques") || comboBoxAction.getSelectedItem().toString().equals("Créer une cache")) {
+        if(comboBoxAction.getSelectedItem().toString().equals("Affichage des statistiques") || comboBoxAction.getSelectedItem().toString().equals("Créer une cache")) {
             comboBoxCache.setVisible(false);
         } else {
             comboBoxCache.setModel(getDefaultComboBoxModelCache((ReseauCache) selectionDropdown.getElementSelect("Reseau")));

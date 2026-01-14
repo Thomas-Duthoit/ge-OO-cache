@@ -61,8 +61,8 @@ public class Accueil extends JPanel {
         String[] choixHaut = {
                 "Affichage des réseaux",
                 "Affichage de la liste des caches",
-                "Afficher les statistiques",
-                "Afficher les logs",
+                "Affichage des statistiques",
+                "Affichage des logs",
         };
 
         for (String nav : choixHaut) {
