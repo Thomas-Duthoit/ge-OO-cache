@@ -95,6 +95,14 @@ public class CreateCache extends JPanel implements Refreshable {
                 )
         );
 
+
+        Font font = new Font("Consolas", Font.PLAIN, 16);
+
+        this.statutCacheCombo.setFont(font);
+        this.statutCacheCombo.setBackground(Color.decode("#e6e6e6"));
+        this.typeCacheCombo.setFont(font);
+        this.typeCacheCombo.setBackground(Color.decode("#e6e6e6"));
+
         typePanel.setLayout(new BorderLayout());
         typePanel.add(new JLabel("Type cache : "), BorderLayout.WEST);
         typePanel.add(typeCacheCombo, BorderLayout.EAST);
@@ -122,6 +130,10 @@ public class CreateCache extends JPanel implements Refreshable {
 
         JButton btnCreer = new JButton("> Créer");
         btnCreer.setBackground(Color.decode("#c8d400"));
+        btnCreer.setPreferredSize(new Dimension(180, 45));
+        btnCreer.setMaximumSize(new Dimension(180, 45));
+        btnCreer.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+
         btnCreer.addActionListener(new CreerCacheActionListener(
                 this.req,
                 descriptionTextuelle,

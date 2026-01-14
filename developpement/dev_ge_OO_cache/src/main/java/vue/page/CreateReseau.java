@@ -43,6 +43,11 @@ public class CreateReseau extends JPanel {
 
         JButton btnCreer = new JButton("> C'est partit !");
         btnCreer.setBackground(Color.decode("#c8d400"));
+
+        btnCreer.setPreferredSize(new Dimension(180, 45));
+        btnCreer.setMaximumSize(new Dimension(180, 45));
+        btnCreer.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+
         btnCreer.addActionListener(new CreerReseauActionListener(requeteGeOOCache, inputNameReseau));
 
         JPanel panelBtn = new JPanel();

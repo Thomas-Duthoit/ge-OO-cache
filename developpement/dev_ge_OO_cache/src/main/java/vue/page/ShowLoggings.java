@@ -76,9 +76,18 @@ public class ShowLoggings extends JPanel implements Refreshable {
         //Ajout d'un listener pour l'écoute de la modification du choix de la comboBox
         this.comboBoxFiltreReseau.addActionListener(new ActionComboBoxReseauListener());
 
+        Font font = new Font("Consolas", Font.PLAIN, 16);
+
+        this.comboBoxFiltreReseau.setFont(font);
+        this.comboBoxFiltreReseau.setBackground(Color.decode("#e6e6e6"));
+
         //2. Partie filtre Cache
         //Pour l'instant elle n'existe pas car dépend du choix de Reseau
         this.comboBoxFiltreCache = new JComboBox<>();
+
+        this.comboBoxFiltreCache.setFont(font);
+        this.comboBoxFiltreCache.setBackground(Color.decode("#e6e6e6"));
+
         //Ajout d'un listener pour l'écoute de la modification du choix de la comboBox
         this.comboBoxFiltreReseau.addActionListener(new ActionComboBoxCacheListener());
 
@@ -301,20 +310,66 @@ public class ShowLoggings extends JPanel implements Refreshable {
     public class rendererJListLogs implements ListCellRenderer<Log>{
         @Override
         public Component getListCellRendererComponent(JList<? extends Log> list, Log value, int index, boolean isSelected, boolean cellHasFocus) {
-            JLabel label = new JLabel();
-            label.setText("Log " + value.getId() + "- provenant du cache : " + value.getEnregistrer() + " | note : " + value.getNote() + "/5");
+            JPanel panel = createAffichageRenderer(value);
 
-            if (cellHasFocus) {
-                label.setForeground(Color.BLACK);
-                label.setOpaque(true);
-                label.setBackground(Color.decode("#dbdbd8"));
-            } else {
-                label.setForeground(Color.BLACK);
+            Color bg = isSelected
+                    ? Color.decode("#dbdbd8")
+                    : Color.WHITE;
+
+            panel.setBackground(bg);
+
+            // La boucle a été créé à l'aide de l'IA
+            // Elle permet de faire en sorte que tous les éléments aient la couleur approprié selon si sélectionné ou non
+            // Sans les éléments gardent leur background personnel
+            for (Component c : panel.getComponents()) {
+                c.setBackground(bg);
+                if (c instanceof JPanel) {
+                    for (Component cc : ((JPanel) c).getComponents()) {
+                        cc.setBackground(bg);
+                    }
+                }
             }
-            label.setFont(new Font("consolas", Font.BOLD, 15));
 
-            return label;
+            return panel;
         }
+    }
+
+    public JPanel createAffichageRenderer(Log log){
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new BorderLayout());
+        leftPanel.setBackground(Color.WHITE);
+
+        JLabel leftLabel = new JLabel();
+        leftLabel.setText("> Log " + log.getId());
+        leftLabel.setForeground(Color.BLACK);
+        leftLabel.setFont(new Font("Consolas", Font.BOLD, 25));
+
+        leftPanel.add(leftLabel, BorderLayout.CENTER);
+        leftPanel.add(Box.createRigidArea(new Dimension(60, 0)), BorderLayout.WEST);
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 20)), BorderLayout.NORTH);
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 20)), BorderLayout.SOUTH);
+
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BorderLayout());
+        rightPanel.setBackground(Color.WHITE);
+
+        JLabel rightLabel = new JLabel();
+        rightLabel.setText("( provenant du cache : " + log.getEnregistrer() + " | note : " + log.getNote() + "/5 )");
+        rightLabel.setForeground(Color.BLACK);
+        rightLabel.setFont(new Font("Consolas", Font.PLAIN, 25));
+
+        rightPanel.add(rightLabel, BorderLayout.CENTER);
+        rightPanel.add(Box.createRigidArea(new Dimension(20, 0)), BorderLayout.EAST);
+        rightPanel.add(Box.createRigidArea(new Dimension(0, 10)), BorderLayout.NORTH);
+        rightPanel.add(Box.createRigidArea(new Dimension(0, 10)), BorderLayout.SOUTH);
+
+        panel.add(leftPanel, BorderLayout.WEST);
+        panel.add(rightPanel, BorderLayout.EAST);
+
+        return panel;
     }
 
     /**

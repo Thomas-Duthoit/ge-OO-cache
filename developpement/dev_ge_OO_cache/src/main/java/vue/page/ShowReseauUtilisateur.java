@@ -3,7 +3,6 @@ package vue.page;
 import modele.ReseauCache;
 import modele.Utilisateur;
 import requete.RequeteGeOOCache;
-import vue.Refreshable;
 import vue.SelectionDropdown;
 import vue.dropdown.ComboBoxGeneral;
 
@@ -12,30 +11,31 @@ import java.awt.*;
 import java.sql.SQLException;
 
 /**
- * Classe ShowReseauForCachePart
+ * Classe ShowReseau
  * Classe Fille de ShowReseauMere
  * Une classe correspondant à une page de l'application
- * Elle permet l'affichage de la liste des réseaux dans le choix "affichage des caches" au moment du choix du réseau
+ * Elle permet l'affichage de la liste des réseaux dans le choix "affichage des réseaux"
  */
-public class ShowReseauForCachePart extends ShowReseauMere implements Refreshable{
-
-    //Constructeurs par défaut
-    public ShowReseauForCachePart(RequeteGeOOCache requeteGeOOCache, Utilisateur utilisateur, JPanel mainPanel, CardLayout cl, SelectionDropdown selectionDropdown, ComboBoxGeneral comboBoxGeneral) throws SQLException {
-        super(requeteGeOOCache, utilisateur, mainPanel, cl,  selectionDropdown, comboBoxGeneral);
+public class ShowReseauUtilisateur extends ShowReseauMere {
+    //Constructeur par données
+    public ShowReseauUtilisateur(RequeteGeOOCache requeteGeOOCache, Utilisateur utilisateur, JPanel mainPanel, CardLayout cl, SelectionDropdown selectionDropdown, ComboBoxGeneral comboBoxGeneral) throws SQLException {
+        super(requeteGeOOCache, utilisateur, mainPanel, cl, selectionDropdown, comboBoxGeneral);
     }
+
+    /**
+     *              METHODES
+     */
 
     /**
      * actionClick
      * ------------------
-     * permet de passer à l'affichage de la liste des caches au moment d'un double click sur une des lignes de la JList
+     * permet de passer à l'affichage de la gestion des utilisateurs au moment d'un double click sur une des lignes de la JList
      * @param reseauCache : le reseauCache sélectionné
      */
-
     @Override
-    public void actionClick(ReseauCache reseauCache) {
-        cardLayout.show(mainPanel, "Affichage de la liste des caches");
+    public void actionClick(ReseauCache reseauCache){
+        cardLayout.show(mainPanel, "Affichage gestion utilisateur");
         refreshDataView(); //Permet d'activer la méthode refreshData de la vue d'affichage de la liste des caches
-        comboBoxGeneral.refreshComboBoxReseau();
     }
 
     /**
@@ -56,7 +56,7 @@ public class ShowReseauForCachePart extends ShowReseauMere implements Refreshabl
         leftLabel.setFont(new Font("Consolas", Font.BOLD, 15));
 
         JLabel rightLabel = new JLabel();
-        rightLabel.setText("( Nbr de caches : " + requeteGeOOCache.getStatNbCaches(reseauCache) + " )");
+        rightLabel.setText("( Nbr utilisateur : " + requeteGeOOCache.getStatNbUtilisateurs(reseauCache) + " | Nbr de caches : " + requeteGeOOCache.getStatNbCaches(reseauCache) + " )");
         rightLabel.setForeground(Color.BLACK);
         rightLabel.setFont(new Font("Consolas", Font.PLAIN, 15));
 
@@ -65,4 +65,5 @@ public class ShowReseauForCachePart extends ShowReseauMere implements Refreshabl
 
         return panel;
     }
+
 }

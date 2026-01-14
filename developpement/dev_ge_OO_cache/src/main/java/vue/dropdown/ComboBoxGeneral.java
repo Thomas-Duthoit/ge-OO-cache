@@ -92,8 +92,9 @@ public class ComboBoxGeneral extends JPanel {
         this.setVisible(true);
 
         //Dimension des tailles de comboBox
-        Dimension comboBoxDimension = new Dimension(250, 40);
-        this.comboBoxAction.setPreferredSize(comboBoxDimension);
+        Dimension comboBoxDimension = new Dimension(220, 40);
+        Dimension comboBoxDimensionLarge = new Dimension(320, 40);
+        this.comboBoxAction.setPreferredSize(comboBoxDimensionLarge);
         this.comboBoxUtilisateur.setPreferredSize(comboBoxDimension);
         this.comboBoxLog.setPreferredSize(comboBoxDimension);
         this.comboBoxCache.setPreferredSize(comboBoxDimension);
@@ -126,9 +127,9 @@ public class ComboBoxGeneral extends JPanel {
                 "Accueil",
                 "Associer un utilisateur",
                 "Affichage des réseaux",
-                "Affichage des caches",
+                "Affichage de la liste des caches",
                 "Afficher les statistiques",
-                "Afficher les loggins",
+                "Afficher les logs",
                 "Créer un réseau",
                 "Créer une cache",
                 "Créer un utilisateur",
@@ -312,21 +313,25 @@ public class ComboBoxGeneral extends JPanel {
                     comboBoxUtilisateur.setVisible(true);
                     comboBoxUtilisateur.setModel(getDefaultModelComboBoxUtilisateur());
                 }
-                if ("Afficher les statistiques".equals(choixActionSelectionnee) || "Affichage des caches".equals(choixActionSelectionnee) || "Créer une cache".equals(choixActionSelectionnee) || "Modifier le statut d'une cache".equals(choixActionSelectionnee)) {
+                if ("Afficher les statistiques".equals(choixActionSelectionnee) || "Affichage de la liste des caches".equals(choixActionSelectionnee) || "Créer une cache".equals(choixActionSelectionnee) || "Modifier le statut d'une cache".equals(choixActionSelectionnee)) {
                     comboBoxReseauCache.setVisible(true);
                     comboBoxReseauCache.setModel(getDefaultModelComboBoxReseauCache());
                 }
-                if("Afficher les loggins".equals(choixActionSelectionnee)){
+                if("Afficher les logs".equals(choixActionSelectionnee)){
                     comboBoxLog.setVisible(true);
                     comboBoxLog.setModel(getDefaultModelComboBoxLog());
                 }
 
                 // Affichage de la page adéquate
-                if ("Créer une cache".equals(choixActionSelectionnee) || "Modifier le statut d'une cache".equals(choixActionSelectionnee) || "Associer un utilisateur".equals(choixActionSelectionnee) || "Afficher les statistiques".equals(choixActionSelectionnee)) {
-                    System.out.println("Pas de changement de page à effectuer pour le moment");
-                    cl.show(mainPanel, "Accueil");
-                }else if ( "Affichage des caches".equals(choixActionSelectionnee)){
+                if ("Associer un utilisateur".equals(choixActionSelectionnee)) {
+                    cl.show(mainPanel, "Affichage des utilisateurs");
+                }else if("Créer une cache".equals(choixActionSelectionnee) ){
+                    cl.show(mainPanel, "Affichage des réseaux pour création");
+                }
+                else if ( "Affichage de la liste des caches".equals(choixActionSelectionnee) || "Modifier le statut d'une cache".equals(choixActionSelectionnee) ){
                     cl.show(mainPanel, "Affichage des réseaux pour cache");
+                }else if("Afficher les statistiques".equals(choixActionSelectionnee)){
+                    cl.show(mainPanel, "Afficher les réseaux pour statistique");
                 }else {
                     cl.show(mainPanel, choixActionSelectionnee);
                 }
@@ -353,7 +358,7 @@ public class ComboBoxGeneral extends JPanel {
                 refreshDataView();
             }else{
                 selectionDropdown.supprElementSelect("Utilisateur");
-                cl.show(mainPanel, "Accueil");
+                cl.show(mainPanel, "Affichage des utilisateurs");
             }
             refresh();
         }
@@ -366,6 +371,7 @@ public class ComboBoxGeneral extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             JComboBox<Object> cb = (JComboBox<Object>) e.getSource();
+            String actionPrec = comboBoxAction.getSelectedItem().toString();
 
             comboBoxCache.setVisible(false);
             if(cb.getSelectedItem() instanceof ReseauCache){
@@ -373,26 +379,29 @@ public class ComboBoxGeneral extends JPanel {
                 System.out.println("Choix du réseau effectué : " + reseauCache);
                 selectionDropdown.addElementSelect("Reseau", reseauCache);
 
-                String actionPrec = comboBoxAction.getSelectedItem().toString();
-
-                if ("Modifier le statut d'une cache".equals(actionPrec) || "Affichage des caches".equals(actionPrec)) {
+                if ("Modifier le statut d'une cache".equals(actionPrec) || "Affichage de la liste des caches".equals(actionPrec)) {
                     System.out.println("test affichage cache");
                     comboBoxCache.setModel(getDefaultComboBoxModelCache(reseauCache));
                     comboBoxCache.setVisible(true);
                 }
 
                 if ("Modifier le statut d'une cache".equals(actionPrec)) {
-                    System.out.println("Pas de nouveau affichage");
-                    cl.show(mainPanel, "Accueil");
-                } else if ("Affichage des caches".equals(actionPrec)) {
-                    cl.show(mainPanel, "Affichage des caches");
+                    cl.show(mainPanel, "Affichage de la liste des caches");
+                } else if ("Affichage de la liste des caches".equals(actionPrec)) {
+                    cl.show(mainPanel, "Affichage de la liste des caches");
                 } else {
                     cl.show(mainPanel, actionPrec);
                 }
                 refreshDataView();
             }else{
                 selectionDropdown.supprElementSelect("Reseau");
-                cl.show(mainPanel, "Affichage des réseaux pour cache");
+                if("Afficher les statistiques".equals(actionPrec)){
+                    cl.show(mainPanel, "Afficher les réseaux pour statistique");
+                }else if("Créer une cache".equals(actionPrec)){
+                    cl.show(mainPanel, "Affichage des réseaux pour création");
+                } else{
+                    cl.show(mainPanel, "Affichage des réseaux pour cache");
+                }
             }
             refresh();
         }
@@ -409,18 +418,18 @@ public class ComboBoxGeneral extends JPanel {
                 selectionDropdown.addElementSelect("Cache", cb.getSelectedItem());
                 System.out.println("Choix des caches : " + cb.getSelectedItem());
 
-                cl.show(mainPanel, "détails caches");
+                if("Modifier le statut d'une cache".equals(comboBoxAction.getSelectedItem())) {
+                    System.out.println("test Statut");
+                    cl.show(mainPanel, "Modifier le statut d'une cache");
+                }else {
+                    cl.show(mainPanel, "détails caches");
+                }
                 refreshDataView();
             }
             else{
+                System.out.println("Pas de cache choisit !");
+                cl.show(mainPanel, "Affichage de la liste des caches");
                 selectionDropdown.supprElementSelect("Cache");
-                if("modifier le statut d'une cache".equals(cb.getSelectedItem())) {
-                    cl.show(mainPanel, "Accueil");
-                }
-                else{
-                    cl.show(mainPanel, "Affichage des caches");
-                }
-
             }
             refresh();
         }
@@ -443,7 +452,7 @@ public class ComboBoxGeneral extends JPanel {
             }
             else{
                 selectionDropdown.supprElementSelect("Log");
-                cl.show(mainPanel, "Afficher les loggins");
+                cl.show(mainPanel, "Afficher les logs");
             }
             System.out.println(cb.getSelectedItem().toString());
             refresh();
@@ -459,6 +468,7 @@ public class ComboBoxGeneral extends JPanel {
      * setter qui vient modifier l'élément selectionné Utilisateur selon l'élément dans la mémoire partagée
      */
     public void refreshComboBoxUtilisateur(){
+        System.out.println("refresh Utilisateur " + selectionDropdown.getElementSelect("Utilisateur"));
         comboBoxUtilisateur.setSelectedItem(selectionDropdown.getElementSelect("Utilisateur"));
     }
 
@@ -469,8 +479,12 @@ public class ComboBoxGeneral extends JPanel {
      */
     public void refreshComboBoxReseau(){
         comboBoxReseauCache.setSelectedItem(selectionDropdown.getElementSelect("Reseau"));
-        comboBoxCache.setModel(getDefaultComboBoxModelCache((ReseauCache) selectionDropdown.getElementSelect("Reseau")));
-        comboBoxCache.setVisible(true);
+        if(comboBoxAction.getSelectedItem().toString().equals("Afficher les statistiques") || comboBoxAction.getSelectedItem().toString().equals("Créer une cache")) {
+            comboBoxCache.setVisible(false);
+        } else {
+            comboBoxCache.setModel(getDefaultComboBoxModelCache((ReseauCache) selectionDropdown.getElementSelect("Reseau")));
+            comboBoxCache.setVisible(true);
+        }
     }
 
     /**
