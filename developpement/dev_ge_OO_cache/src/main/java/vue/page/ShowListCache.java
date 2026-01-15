@@ -142,6 +142,7 @@ public class ShowListCache extends JPanel implements Refreshable {
                 System.out.println(caches);
                 Cache selected =  (Cache) caches.getSelectedValue();
                 System.out.println(selected);
+                if (selected == null) return;  // on ne fait rien si il n'y a rien de double cliqué
                 this.selectionDropdown.addElementSelect("Cache", selected);
 
                 System.out.println(this.selectionDropdown.getElementSelect("Cache"));
