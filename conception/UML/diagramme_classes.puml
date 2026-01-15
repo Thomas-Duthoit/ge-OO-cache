@@ -3,14 +3,29 @@
 package "modele" #EEEEEE{
 
 class Utilisateur{
-  - id : int
   - pseudo : String 
   - mdp : String
   - admin : bool
+
+  + int getId()
+  + boolean isAdmin()
+  + String getPseudo()
+
+  # boolean ajouterAccesReseau()
+  # boolean suppraccesReseau()
+  # boolean ajouterReseauPossede()
+  # boolean ajouterLogPossede()
 }
 
 class ReseauCache{
   - nom : String
+
+  + int getId()
+  + String getNom()
+  + boolean ajouterAccesUtilisateur()
+  + boolean supprAccesUtilisateur()
+  + boolean setProprietaire()
+  # boolean addCache()
 }
 
 class Cache{
@@ -21,6 +36,12 @@ class Cache{
   - type : TypeCache
   - statut : StatutCache
 
+  + List<Log> getLogs()
+  + String getDescriptionTextuelle()
+  + String getDescriptionTechnique
+  + String getInformationsGeolocalisation()
+  + String getRubriqueLibre()
+  + int getNumero()
   + boolean setStatutCache()
   + boolean addTypeCache() 
   + boolean setReseau() 
@@ -29,17 +50,17 @@ class Cache{
 }
 
 class TypeCache{
-  - id : int 
   - texte : String
 
   + boolean addCacheToList()
+  + List<Cache> getCaches()
 }
 
 class StatutCache{
-  - id : int 
   - texte : String
 
   + boolean addCacheToList()
+  + List<Cache> getCaches()
 }
 
 
@@ -49,7 +70,16 @@ class Log{
   - trouver : bool
   - note : int
   - date : DateTime
-  - image : url /optionnel/
+  
+  + int getId()
+  + boolean isTrouver()
+  + Date getDate()
+  + int getNote()
+  + String getCommentaire()
+  + Cache getEnregistrer()
+  + boolean setProprietaire()
+  + boolean setCache()
+
 }
 
 Cache::numero "0..*" -- "1" TypeCache::id : caractérisé par
@@ -73,11 +103,14 @@ class RequeteGeOOCache{
   + int autoriserConnexionApp()
   + boolean creerUtilisateur()
   + List<Utilisateur> getListeUtilisateurs()
+  + List<Utilisateur> getListeUtilisateursFromReseau()
+  + Long getNbReseauUtilisateur()
   + List<ReseauCache> getReseauxUtilisateur() 
   + boolean creerReseau()
   + ReseauCache getReseauAvecProprietaireEtNom()
   + boolean checkAssociationReseauUtilisateurExist()
-  + boolean ajouterAccessReseau()
+  + boolean ajouterAccesReseau()
+  + boolean deleteAccesReseau()
   + List<ReseauCache> getReseauxAvecAccessUtilisateur()
   + Utilisateur getStatProprietaire()
   + int getStatNbCaches()
@@ -89,10 +122,50 @@ class RequeteGeOOCache{
   + List<Cache> getCachesByReseauCache()
   + Cache getDataCachesById()
   + boolean updateStatutCache()
+  + boolean creerCache()
   + List<StatutCache> getStatutCache()
   + StatutCache getStatutCacheById()
   + List<TypeCache> getTypeCache()
+  + boolean creerTypeCache()
 }
+
+}
+
+package "testsUnitaire" #EEEEEE{
+
+  class TestUnitaireCache {
+    + void main()
+  }
+  class TestUnitaireCacheLog {
+    + void main()
+  }
+  class TestUnitaireReseau2Caches {
+    + void main()
+  }
+  class TestUnitaireReseauCache {
+    + void main()
+  }
+  class TestUnitaireRequetesThomas {
+    + void main()
+  }
+  class TestUnitaireStatut {
+    + void main()
+  }
+  class TestUnitaireType {
+    + void main()
+  }
+  class TestUnitaireUtilisateur {
+    + void main()
+  }
+  class TestUnitaireUtilisateurLog {
+    + void main()
+  }
+  class TestUnitaireUtilisateurReseauCache {
+    + void main()
+  }
+  class TestUnitaireUtilisateurReseauCachePossede {
+    + void main()
+  }
 
 }
 
@@ -130,8 +203,14 @@ class ComboBoxGeneral{
 package "page" #EEEEEE{
 class Accueil{
   - fenetrePrincipal : FenetrePrincipal
+  - sel : SelectionDropdown
+  - cl : CardLayout
+  - mainPanel : JPanel
+  - cb : ComboBoxGeneral
 
   + JPanel createButtonDeconnexion()
+  + JPanel createButtonNav()
+  + void refreshDataView()
 }
 
 class AssociateUser{
@@ -143,6 +222,7 @@ class AssociateUser{
   - comboBoxGeneral : ComboBoxGeneral
   - reussite : JLabel
   - echec : JLabel
+  - utilisateur : Utilisateur
 
   + DefaultComboBoxModel<Object> getDefaultComboBoxModelReseau()
   + JComboBox<Utilisateur> getComboBoxUtilisateur()
@@ -151,7 +231,19 @@ class AssociateUser{
   + JPanel createButtonValidate()
   + JPanel createCenterPanel()
   + void refreshData()
-  + 
+}
+
+class CreateCache {
+  - req : RequeteGeOOCache
+  - descriptionTextuelle : JTextField
+  - descriptionTechnique : JTextField
+  - rubriqueLibre : JTextField
+  - typeCacheComnbo : JComboBox<TypeCache>
+  - statutCacheComnbo : JComboBox<StatutCache>
+  - localisation : JTextField
+  - selectionDropdown : SelectionDropdown
+
+  + void refreshData()
 }
 
 class CreateReseau{
@@ -162,6 +254,32 @@ class CreateReseau{
   + JPanel creerChamp() 
 }
 
+class CreateType {
+  - requeteGeOOCache : RequeteGeOOCache
+  - inputNameType : JTextField
+
+  + JPanel creerChamp() 
+}
+
+class CreateUser {
+  - req : RequeteGeOOCache
+  - inputPseudo : JTextField
+  - inputMdp : JTextField
+
+  + JPanel creerChamp() 
+}
+
+class Footer{
+  - fenetrePrincipal : FenetrePrincipal
+  - cl : CardLayout
+  - mainPanel : JPanel
+  - requeteGeOOCache : RequeteGeOOCache
+  - selectionDropdown : SelectionDropdown
+  - cb : ComboBoxGeneral
+
+  + void refreshDataView()
+}
+
 class Login{
   - fenetrePrincipal : FenetrePrincipal
   - username : JTextField 
@@ -170,8 +288,49 @@ class Login{
 
   + JLabel createLogo()
   + JTextField createTextField()
-  + JPasswordField createPasswordField() 
-  + JButton createButton()
+  - JPasswordField createPasswordField() 
+  - JButton createButton()
+}
+
+class ManageUser{
+  - selectionDropdown : SelectionDropdown 
+  - requeteGeOOCache : RequeteGeOOCache
+  - listUtilisateurs : List<Utilisateur>
+  - cardLayout : CardLayout
+  - mainPanel : JPanel
+  
+  + JPanel createPanelTop()
+  + JPanel createButtonBack()
+  + DefaultListModel<Utilisateur> createDefaultModelUtilisateur()
+  + JPanel createPanelRenderer()
+  + void supprimerUtilisateur()
+  + void refreshData()
+}
+
+class ShowCaches{
+  - selectionDropdown : SelectionDropdown
+  - requeteGeOOCache : RequeteGeOOCache
+  - nomCache : JLabel
+  - descriptionTextuelle : JTextArea
+  - descriptionTechnique : JTextArea
+  - rubriqueLibre : JTextArea
+  - typeLabel : JLabel
+  - statutLabel : JLabel
+  - locLabel : JLabel
+  
+  + void refreshData()
+}
+
+class ShowListCaches{
+  - selectionDropdown : SelectionDropdown 
+  - requeteGeOOCache : RequeteGeOOCache
+  - cl : CardLayout
+  - mainPanel : JPanel
+  - comboBoxGeneral : ComboBoxGeneral
+  - listeCaches : JList<Cache>
+  
+  + DefaultListModel<Cache> createModelJListCache()
+  + void refreshData()
 }
 
 class ShowLoggingDetails{
@@ -202,20 +361,87 @@ class ShowLoggings{
   + JPanel createFilterPanel()
   + void refreshData()
   + void refreshDataView()
+  + JPanel createAffichageRenderer()
 }
 
-class ShowReseau{
-  - requeteGeOOCache : requeteGeOOCache
-  - utilisateur : Utilisateur 
-  - mainPanel : JPanel
-  - cardLayout : CardLayout
-  - selectionDropdown : SelectionDropdown 
-  - comboBoxGeneral : ComboBoxGeneral
+
+
+
+
+class ShowReseauMere {
+  # requeteGeOOCache : requeteGeOOCache
+  # utilisateur : Utilisateur 
+  # mainPanel : JPanel
+  # cardLayout : CardLayout
+  # selectionDropdown : SelectionDropdown 
+  # listReseaux : JList<ReseauCache>
+  # comboBoxGeneral : ComboBoxGeneral
 
   + JPanel getMainPanel()
-  + JList<ReseauCache> createListReseauCache()
+  + DefaultListModel<ReseauCache> createDefaultModelListReseauCache()
+  + JPanel createPanelRenderer()
+  + void actionClick()
   + void refreshDataView()
+  + void refreshData()
 }
+
+
+class ShowReseauForCachePart {
+  + JPanel createPanelRenderer()
+  + void actionClick()
+}
+
+class ShowReseauForCreation {
+  + JPanel createPanelRenderer()
+  + void actionClick()
+}
+
+class ShowReseauStatistique {
+  + JPanel createPanelRenderer()
+  + void actionClick()
+}
+
+class ShowReseauUtilisateur {
+  + JPanel createPanelRenderer()
+  + void actionClick()
+}
+
+ShowReseauMere <|-- ShowReseauForCachePart 
+ShowReseauMere <|-- ShowReseauForCreation
+ShowReseauMere <|-- ShowReseauStatistique 
+ShowReseauMere <|-- ShowReseauUtilisateur
+
+class ShowStatistic {
+  - requeteGeOOCache : RequeteGeOOCache
+  - selectionDropdown : SelectionDropdown
+  - reseauCache : ReseauCache
+  - titre : JLabel
+  - proprietaire : JLabel
+  - nbCache : JLabel
+  - nbUtilisateurs : JLabel
+  - nbLogs : JLabel
+  - nbTrouve : JLabel
+  - nbNonTrouve : JLabel
+  - pourcentage : JLabel
+  - frame : JPanel
+ 
+  + void refreshData()
+}
+
+class ShowUtilisateurs< {
+  - requeteGeOOCache : RequeteGeOOCache
+  - utilisateur : Utilisateur
+  - utilisateurs : List<Utilisateur
+  - cl : CardLayout
+  - mainPanel : JPanel
+  - comboBoxGeneral : ComboBoxGeneral
+ 
+  + DefaultListModel<Utilisateur> createModelJListUtilisateur()
+  + void refreshData()
+  + void refreshDataView()
+  + JPanel createAffichageRenderer()
+}
+
 
 }
 
@@ -226,12 +452,15 @@ class FenetrePrincipal{
   - user : Utilisateur 
   - selectionDropdown : SelectionDropdown 
   - comboBoxGeneral : ComboBoxGeneral 
+  - footer : Footer
 
   + void loginValider()
   + void addAllView()
   + void deconnexionMainPanel()
   + void refreshMainPanel()
+  + void refreshDataView()
   + RequeteGeOOCache getRequeteGeOOCache()
+  + void main()
 }
 
 interface Refreshable{
@@ -246,8 +475,14 @@ class SelectionDropdown{
   + void supprElementSelect()
   + void supprAllElementSelect()
   + Map<String, Object> getAllElementsSelec()
-  + Object getElementSelect(String key)
+  + Object getElementSelect()
 }
 }
 
+package "data" #EEEEEE {
+class CreerDataApplication{
+  + void main()
+}
+
+}
 @enduml
