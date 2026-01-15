@@ -69,3 +69,10 @@ Voici un diagramme UML permettant de visualiser les différentes informations su
 ![Diagramme de classe partie 1](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Thomas-Duthoit/ge-OO-cache/refs/heads/main/conception/UML/diagramme_classes.puml)
 ![Diagramme de classe partie 2](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Thomas-Duthoit/ge-OO-cache/refs/heads/main/conception/UML/diagramme_classes_p2.puml)
 ![Diagramme de classe partie 3](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Thomas-Duthoit/ge-OO-cache/refs/heads/main/conception/UML/diagramme_classes_p3.puml)
+
+### 4. Trello du projet 
+
+Voici un lien permettant d'accéder au Trello du projet effectué. 
+Dans ce Trello, vous retrouverez les différents diagrammes UML effectués, le lien vers les Mockups, les réunions effectuées ou les répartitions au niveau du développement.
+
+Lien Trello : https://trello.com/b/wdWe63Ao/projet-poo-geo-caches
