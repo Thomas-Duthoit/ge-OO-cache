@@ -38,12 +38,14 @@ public class ShowCaches extends JPanel implements Refreshable {
 
         this.setBorder(new EmptyBorder(40, 30, 0 ,30));
 
+        Font font = new Font("Consolas", Font.PLAIN, 24);
 
         JPanel haut = new JPanel();
-        haut.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));  // limiter la hauteur
+        haut.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));  // limiter la hauteur
         haut.setLayout(new BorderLayout());
 
         nomCache = new JLabel("Cache n°X", SwingConstants.CENTER);
+        nomCache.setFont(font);
         haut.add(nomCache, BorderLayout.CENTER);
 
 
@@ -53,16 +55,23 @@ public class ShowCaches extends JPanel implements Refreshable {
         milieu.setBackground(Color.WHITE);
 
         descriptionTextuelle = new JTextArea("Description Textuelle", 10, 20);
+        descriptionTextuelle.setFont(font);
         descriptionTechnique = new JTextArea("Description Technique", 10, 20);
+        descriptionTechnique.setFont(font);
+
         rubriqueLibre = new JTextArea("Rubrique Libre", 10, 20);
+        rubriqueLibre.setFont(font);
 
         descriptionTextuelle.setEditable(false);  // pour que ça soit juste pour l'affichage du texte
         descriptionTechnique.setEditable(false);  // pour que ça soit juste pour l'affichage du texte
         rubriqueLibre.setEditable(false);  // pour que ça soit juste pour l'affichage du texte
 
         JPanel textuellePanel = new JPanel();  // pour les bordures
+        textuellePanel.setFont(font);
         JPanel techniquePanel = new JPanel();  // pour les bordures
+        techniquePanel.setFont(font);
         JPanel librePanel = new JPanel();  // pour les bordures
+        librePanel.setFont(font);
 
         textuellePanel.setLayout(new BorderLayout());
         techniquePanel.setLayout(new BorderLayout());
@@ -73,11 +82,21 @@ public class ShowCaches extends JPanel implements Refreshable {
         librePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         textuellePanel.add(descriptionTextuelle, BorderLayout.CENTER);
-        textuellePanel.add(new JLabel("Description textuelle"), BorderLayout.NORTH);
+
+        JLabel lab1 = new JLabel("Description textuelle");
+        lab1.setFont(font);
+        textuellePanel.add(lab1, BorderLayout.NORTH);
         techniquePanel.add(descriptionTechnique, BorderLayout.CENTER);
-        techniquePanel.add(new JLabel("Description technique"), BorderLayout.NORTH);
+
+        JLabel lab2 = new JLabel("Description technique");
+        lab2.setFont(font);
+        techniquePanel.add(lab2, BorderLayout.NORTH);
         librePanel.add(rubriqueLibre, BorderLayout.CENTER);
-        librePanel.add(new JLabel("Rubrique libre"), BorderLayout.NORTH);
+
+        JLabel lab3 = new JLabel("Rubrique libre");
+        lab3.setFont(font);
+        librePanel.add(lab3, BorderLayout.NORTH);
+
 
         milieu.add(textuellePanel);
         milieu.add(techniquePanel);
@@ -96,8 +115,15 @@ public class ShowCaches extends JPanel implements Refreshable {
         locPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));  // limiter la hauteur
 
         typeLabel = new JLabel("TYPE");
+        typeLabel.setFont(font);
         statutLabel = new JLabel("STATUT");
+        statutLabel.setFont(font);
         locLabel = new JLabel("LOCALISATION");
+        locLabel.setFont(font);
+
+        typeLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        statutLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        locLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         typePanel.add(typeLabel);
         statutPanel.add(statutLabel);

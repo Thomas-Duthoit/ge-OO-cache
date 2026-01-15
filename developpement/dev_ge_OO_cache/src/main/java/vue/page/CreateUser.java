@@ -25,8 +25,13 @@ public class CreateUser extends JPanel {
         this.setLayout(new BorderLayout());
         this.setBackground(Color.WHITE);
 
+        Font font = new Font("Consolas", Font.PLAIN, 20);
+
         inputPseudo = new JFormattedTextField();
+        inputPseudo.setFont(font);
         inputMdp = new JFormattedTextField();
+        inputMdp.setFont(font);
+
 
 
         JPanel formPanel = new JPanel();
@@ -54,6 +59,8 @@ public class CreateUser extends JPanel {
         btnCreer.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         
         btnCreer.addActionListener(new CreerUtilisateurActionListener(req, inputPseudo, inputMdp));
+        btnCreer.setFont(font);
+
 
         JPanel panelBtn = new JPanel();
         panelBtn.setLayout(new BorderLayout());
@@ -83,11 +90,12 @@ public class CreateUser extends JPanel {
         // on crée le texte
         JLabel label = new JLabel(texteLabel);
         label.setOpaque(true);
+        label.setFont(new Font("Consolas", Font.PLAIN, 24));
         label.setBackground(new Color(230, 230, 230)); // même couleur que le champ
 
         // applique une taille et une bordure au texte
         label.setBorder(BorderFactory.createEmptyBorder(6, 10, 6, 10));
-        label.setPreferredSize(new Dimension(120, 30));
+        label.setPreferredSize(new Dimension(200, 30));
 
         // on applique une taille et une bordure à l'input
         input.setBorder(BorderFactory.createEmptyBorder(6, 10, 6, 10));

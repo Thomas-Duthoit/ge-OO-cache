@@ -53,12 +53,18 @@ public class ShowListCache extends JPanel implements Refreshable {
         this.listeCaches = new JList<>();
         this.listeCaches.setModel(createModelJListCache(null));
 
+        this.listeCaches.setCellRenderer(new CacheListCellRenderer());
+
         this.listeCaches.addMouseListener(new ShowListCache.MouseCacheListener(selectionDropdown));
 
 
         JPanel bordure = new JPanel(new BorderLayout());
         bordure.setBorder(new EmptyBorder(2, 2, 2, 2));
-        bordure.add(listeCaches);
+
+        JScrollPane scrollPane = new JScrollPane(listeCaches);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+        bordure.add(scrollPane, BorderLayout.CENTER);
 
 
         this.add(bordure);
@@ -167,4 +173,35 @@ public class ShowListCache extends JPanel implements Refreshable {
 
         }
     }
+
+    public class CacheListCellRenderer extends DefaultListCellRenderer {
+
+        @Override
+        public Component getListCellRendererComponent(
+                JList<?> list,
+                Object value,
+                int index,
+                boolean isSelected,
+                boolean cellHasFocus) {
+
+            JLabel label = (JLabel) super.getListCellRendererComponent(
+                    list, value, index, isSelected, cellHasFocus);
+
+            if (value instanceof Cache) {
+                Cache cache = (Cache) value;
+
+                label.setText(cache.toString());
+
+                label.setFont(new Font("Consolas", Font.BOLD, 24));
+
+                label.setBackground(Color.WHITE);
+                label.setForeground(Color.DARK_GRAY);
+
+                label.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
+            }
+
+            return label;
+        }
+    }
+
 }

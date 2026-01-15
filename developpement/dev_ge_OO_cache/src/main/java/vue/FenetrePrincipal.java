@@ -22,6 +22,7 @@ public class FenetrePrincipal extends JFrame {
     private Utilisateur user;
     private SelectionDropdown selectionDropdown;
     private ComboBoxGeneral comboBoxGeneral;
+    private Footer footer;
 
     //Constructeur par défaut
     public FenetrePrincipal() throws SQLException {
@@ -46,6 +47,8 @@ public class FenetrePrincipal extends JFrame {
         this.setLayout(new BorderLayout());
         this.add(mainPanel, BorderLayout.CENTER); // Le contenu change au milieu
         this.setVisible(true);
+
+        this.setMinimumSize(new Dimension(1600, 1200));
     }
 
     /**
@@ -65,6 +68,7 @@ public class FenetrePrincipal extends JFrame {
         try{
             this.comboBoxGeneral = new ComboBoxGeneral(this.requeteGeOOCache, mainPanel, cl, this.user, this.selectionDropdown);
             this.comboBoxGeneral.setVisible(true);
+            this.footer = new Footer(this, this.requeteGeOOCache, mainPanel, cl, this.selectionDropdown, this.comboBoxGeneral);
             addAllView();
         }catch (SQLException e){
             System.out.println("Erreur de créer de la dropDown à la connexion");
@@ -72,6 +76,7 @@ public class FenetrePrincipal extends JFrame {
 
         this.add(this.comboBoxGeneral, BorderLayout.NORTH);
         this.cl.show(this.mainPanel, "Accueil");
+        this.add(this.footer, BorderLayout.SOUTH);
         this.revalidate();
         this.repaint();
     }
@@ -121,6 +126,14 @@ public class FenetrePrincipal extends JFrame {
         this.mainPanel.removeAll();
         this.comboBoxGeneral.setVisible(false);
         this.add(this.mainPanel, BorderLayout.CENTER);
+        if (this.footer  != null) {
+            this.remove(this.footer);
+            this.footer = null;
+        }
+        if (this.comboBoxGeneral != null) {
+            this.remove(this.comboBoxGeneral);
+            this.comboBoxGeneral = null;
+        }
         this.user = null;
         try {
             //Vue de connexion

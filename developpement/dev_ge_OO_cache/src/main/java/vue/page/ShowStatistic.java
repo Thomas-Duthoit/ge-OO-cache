@@ -48,7 +48,8 @@ public class ShowStatistic extends JPanel implements Refreshable {
         panelTitre.setLayout(new BorderLayout());
         panelTitre.setBackground(Color.WHITE);
         titre = new JLabel("Quelques infos sur le réseau : Reseau X");
-        titre.setFont(new Font(null, Font.PLAIN, 20));
+        titre.setBorder(new EmptyBorder(10, 10, 10, 10));
+        titre.setFont(new Font(null, Font.PLAIN, 24));
         titre.setHorizontalAlignment(SwingConstants.CENTER);  // centré horizontalement
 
         panelTitre.add(titre, BorderLayout.NORTH);
@@ -100,13 +101,13 @@ public class ShowStatistic extends JPanel implements Refreshable {
         pourcentage.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelStats.add(pourcentage);
 
-        proprietaire.setFont(new Font(null, Font.PLAIN, 15));
-        nbCache.setFont(new Font(null, Font.PLAIN, 15));
-        nbUtilisateurs.setFont(new Font(null, Font.PLAIN, 15));
-        nbLogs.setFont(new Font(null, Font.PLAIN, 15));
-        nbTrouve.setFont(new Font(null, Font.PLAIN, 15));
-        nbNonTrouve.setFont(new Font(null, Font.PLAIN, 15));
-        pourcentage.setFont(new Font(null, Font.PLAIN, 15));
+        proprietaire.setFont(new Font(null, Font.PLAIN, 24));
+        nbCache.setFont(new Font(null, Font.PLAIN, 24));
+        nbUtilisateurs.setFont(new Font(null, Font.PLAIN, 24));
+        nbLogs.setFont(new Font(null, Font.PLAIN, 24));
+        nbTrouve.setFont(new Font(null, Font.PLAIN, 24));
+        nbNonTrouve.setFont(new Font(null, Font.PLAIN, 24));
+        pourcentage.setFont(new Font(null, Font.PLAIN, 24));
 
         frame.add(panelStats, BorderLayout.CENTER);
 
