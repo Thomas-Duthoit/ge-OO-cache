@@ -49,4 +49,6 @@ Pour pouvoir effectuer des tests de fonctionnalité sur l'application ainsi qu'a
 
 Voici un diagramme UML permettant de visualiser les différentes informations sur les classes tel que leurs méthodes regroupées dans l'application : 
 
-![Diagramme de classe](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Thomas-Duthoit/ge-OO-cache/refs/heads/main/conception/UML/diagramme_classes.puml)
+![Diagramme de classe partie 1](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Thomas-Duthoit/ge-OO-cache/refs/heads/main/conception/UML/diagramme_classes.puml)
+![Diagramme de classe partie 2](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Thomas-Duthoit/ge-OO-cache/refs/heads/main/conception/UML/diagramme_classes_p2.puml)
+![Diagramme de classe partie 3](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/Thomas-Duthoit/ge-OO-cache/refs/heads/main/conception/UML/diagramme_classes_p3.puml)

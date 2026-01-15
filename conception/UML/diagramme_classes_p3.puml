@@ -1,0 +1,41 @@
+@startuml
+
+package "testsUnitaire" #EEEEEE{
+
+  class TestUnitaireCache {
+    + void main()
+  }
+  class TestUnitaireCacheLog {
+    + void main()
+  }
+  class TestUnitaireReseau2Caches {
+    + void main()
+  }
+  class TestUnitaireReseauCache {
+    + void main()
+  }
+  class TestUnitaireRequetesThomas {
+    + void main()
+  }
+  class TestUnitaireStatut {
+    + void main()
+  }
+  class TestUnitaireType {
+    + void main()
+  }
+  class TestUnitaireUtilisateur {
+    + void main()
+  }
+  class TestUnitaireUtilisateurLog {
+    + void main()
+  }
+  class TestUnitaireUtilisateurReseauCache {
+    + void main()
+  }
+  class TestUnitaireUtilisateurReseauCachePossede {
+    + void main()
+  }
+
+}
+
+@enduml
