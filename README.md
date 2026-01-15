@@ -43,7 +43,24 @@ L'accès à ces fonctionnalités se fait dans des vues distinctes, et sont acces
 
 ### 2. Première utilisation de l'application
 
-Pour pouvoir effectuer des tests de fonctionnalité sur l'application ainsi qu'accèder aux différentes vues (car il est nécessaire d'avoir un compte), il suffit de lancer en premier lieu la classe "CreerDataApplication" dans le package "data" afin d'avoir des données pour les différents vues. 
+Afin de connecter l'application à votre base de données, il est important de modifier le fichier persistance.xml (developpement/dev_ge_OO_cache/src/main/resources/META-INF/persistence.xml) pour y indiquer les champs suivants:
+- l'url pour accéder à votre base de donnée dans le champ `<property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://adresse:port/table"/>`
+- l'identifiant pour accéder à votre base de donnée dans le champ `<property name="jakarta.persistence.jdbc.user" value="identifiant"/>`
+- Le mot de passe correspondant pour se connecter dans le champ `<property name="jakarta.persistence.jdbc.password" value="mot de passe"/>`
+
+Pour pouvoir effectuer des tests de fonctionnalité sur l'application ainsi qu'accèder aux différentes vues (car il est nécessaire d'avoir un compte), il suffit de lancer en premier lieu la méthode main de la classe "CreerDataApplication" dans le package "data" afin d'avoir des données pour les différents vues. 
+Elle créera en base de donnée un ensemble d'utilisateurs, de réseaux et de caches, ainsi que quelques logs pour ces caches.
+
+On notera nottament la création de 3 comptes administrateurs nécessaire pour accéder à l'application:
+- **Alice** 
+  - identifiant : `Alice`
+  - mot de passe : `1234`
+- **Bob** 
+  - identifiant : `Bob`
+  - mot de passe : `5678`
+- **Charlie** 
+  - identifiant : `Charlie`
+  - mot de passe : `mdp`
 
 ### 3. Diagramme de classe
 
