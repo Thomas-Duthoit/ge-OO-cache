@@ -428,7 +428,7 @@ class ShowStatistic {
   + void refreshData()
 }
 
-class ShowUtilisateurs< {
+class ShowUtilisateurs {
   - requeteGeOOCache : RequeteGeOOCache
   - utilisateur : Utilisateur
   - utilisateurs : List<Utilisateur
