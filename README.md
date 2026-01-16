@@ -43,7 +43,9 @@ L'accès à ces fonctionnalités se fait dans des vues distinctes, et sont acces
 
 ### 2. Première utilisation de l'application
 
-Afin de connecter l'application à votre base de données, il est important de modifier le fichier persistance.xml (developpement/dev_ge_OO_cache/src/main/resources/META-INF/persistence.xml) pour y indiquer les champs suivants:
+Les fichiers sources de l'application à ouvrir par exemple dans IntelliJ sont dans le sous répértoire `developpement/dev_ge_OO_cache`
+
+Afin de connecter l'application à votre base de données, il est important de modifier le fichier `persistance.xml` (`developpement/dev_ge_OO_cache/src/main/resources/META-INF/persistence.xml`) pour y indiquer les champs suivants:
 - l'url pour accéder à votre base de donnée dans le champ `<property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://adresse:port/table"/>`
 - l'identifiant pour accéder à votre base de donnée dans le champ `<property name="jakarta.persistence.jdbc.user" value="identifiant"/>`
 - Le mot de passe correspondant pour se connecter dans le champ `<property name="jakarta.persistence.jdbc.password" value="mot de passe"/>`
