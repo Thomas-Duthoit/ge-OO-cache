@@ -75,6 +75,6 @@ Voici un diagramme UML permettant de visualiser les différentes informations su
 Voici un lien permettant d'accéder au Trello du projet effectué. 
 Dans ce Trello, vous retrouverez les différents diagrammes UML effectués, le lien vers les Mockups, les réunions effectuées ou les répartitions au niveau du développement.
 
-Lien Trello : ![Trello GéOOCaches](https://trello.com/b/wdWe63Ao/projet-poo-geo-caches)
+Lien Trello : [Trello GéOOCaches](https://trello.com/b/wdWe63Ao/projet-poo-geo-caches)
 
-Pour visualiser les diagrammes UML, il faut passer par le site de ![Plant UML](https://www.plantuml.com/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa700001) et coller le contenu du fichier `.puml` à l'intérieur
+Pour visualiser les diagrammes UML, il faut passer par le site de [Plant UML](https://www.plantuml.com/plantuml/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa700001) et coller le contenu du fichier `.puml` à l'intérieur
